@@ -822,66 +822,200 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+// ── Supabase設定 ──
+const SUPABASE_URL = 'https://raevfqxevwvymxshkkfc.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJhZXZmcXhldnd2eW14c2hra2ZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NTExNDIsImV4cCI6MjA5MzEyNzE0Mn0.slh6NUucM6JqICRosOBrvyqKMRUrDBN6DEJoqUal7D8';
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 const emojis = ['🐺','🦅','🐉','🦁','🐻','🦊','🐯','🦋'];
-const vibeColors = { '怒らない':'#4caf7d','ゆるく楽しむ':'#f5a623','社会人':'#4fc3f7','初心者歓迎':'#ce93d8','ガチ勢':'#e05c5c','指示OK':'#80cbc4','VC必須':'#ffb74d','VC任意':'#aaa' };
+let allPosts = [];
+let selectedPost = null;
 
-const mockPlayers = [
-  { name:'はるか', role:'サポート', rank:'ゴールド', style:'エンジョイ', vibes:['怒らない','ゆるく楽しむ'], comment:'楽しくやりたい！固定メンバー募集中', timer:'残り1時間32分', emoji:'🦋' },
-  { name:'たけし', role:'タンク', rank:'プラチナ', style:'ランク上げ', vibes:['ガチ勢','指示OK'], comment:'シリアスにランク上げたい人！', timer:'残り44分', emoji:'🐺' },
-  { name:'あおい', role:'ダメージ', rank:'ゴールド', style:'エンジョイ', vibes:['怒らない','社会人'], comment:'社会人なので夜のみ。のんびり楽しもう', timer:'残り2時間', emoji:'🦅' },
-  { name:'ゆうき', role:'フレックス', rank:'シルバー', style:'どちらでも', vibes:['初心者歓迎','ゆるく楽しむ'], comment:'初心者も歓迎！教え合いながら上達したい', timer:'残り55分', emoji:'🐉' },
-];
+// ── フォームの入力値取得 ──
+function getFormValues() {
+  const inputs = document.querySelectorAll('.form-input, .form-select, .form-textarea');
+  return {
+    nickname: inputs[0].value.trim(),
+    role: inputs[1].value,
+    rank: inputs[2].value,
+    play_style: inputs[3].value,
+    vibes: Array.from(document.querySelectorAll('.vibe-tag.selected')).map(t => t.textContent),
+    comment: inputs[4].value.trim(),
+    expires_at: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString()
+  };
+}
 
+// ── 残り時間計算 ──
+function calcTimer(expiresAt) {
+  const diff = new Date(expiresAt) - new Date();
+  if (diff <= 0) return '期限切れ';
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  return h > 0 ? `残り${h}時間${m}分` : `残り${m}分`;
+}
+
+// ── 絵文字をIDから決定 ──
+function getEmoji(id) {
+  const code = id ? id.charCodeAt(0) % emojis.length : 0;
+  return emojis[code];
+}
+
+// ── カードHTML ──
+function playerCardHTML(p, idx) {
+  const emoji = getEmoji(p.id);
+  const timer = calcTimer(p.expires_at);
+  const vibes = Array.isArray(p.vibes) ? p.vibes : [];
+  return `
+    <div class="player-card" onclick="openJoinModal(${idx})">
+      <div class="card-role">${p.role} · ${p.rank}</div>
+      <div class="card-name">${emoji} ${p.nickname}</div>
+      <div class="card-tags">
+        ${vibes.map(v => `<span class="tag tag-vibe">${v}</span>`).join('')}
+        <span class="tag tag-rank">${p.rank}</span>
+        <span class="tag tag-role">${p.role}</span>
+      </div>
+      <div class="card-comment">${p.comment || ''}</div>
+      <div class="card-meta">
+        <span class="card-time">${p.play_style}</span>
+        <span class="card-timer">⏳ ${timer}</span>
+      </div>
+      <button class="card-btn">一緒にプレイする</button>
+    </div>
+  `;
+}
+
+function postCardHTML(p, idx) {
+  const emoji = getEmoji(p.id);
+  const timer = calcTimer(p.expires_at);
+  const vibes = Array.isArray(p.vibes) ? p.vibes : [];
+  return `
+    <div class="post-card" onclick="openJoinModal(${idx})">
+      <div class="post-avatar">${emoji}</div>
+      <div class="post-info">
+        <div class="post-name">${p.nickname}</div>
+        <div class="post-tags">
+          ${vibes.map(v => `<span class="tag tag-vibe">${v}</span>`).join('')}
+          <span class="tag tag-rank">${p.rank}</span>
+          <span class="tag tag-role">${p.role}</span>
+        </div>
+        <div style="font-size:12px;color:var(--silver);margin-top:5px">${p.comment || ''}</div>
+      </div>
+      <div class="post-right">
+        <div class="post-timer">⏳ ${timer}</div>
+        <button class="post-action">一緒にプレイする</button>
+      </div>
+    </div>
+  `;
+}
+
+// ── 投稿読み込み ──
+async function loadPosts() {
+  const now = new Date().toISOString();
+  const { data, error } = await db
+    .from('posts')
+    .select('*')
+    .gt('expires_at', now)
+    .order('created_at', { ascending: false });
+
+  if (error) { console.error(error); return; }
+  allPosts = data || [];
+  renderAll();
+  updateOnlineCount();
+}
+
+function renderAll() {
+  const onlineEl = document.getElementById('online-cards');
+  const listEl = document.getElementById('post-list');
+
+  if (allPosts.length === 0) {
+    onlineEl.innerHTML = '<div style="color:var(--text-dim);font-size:13px;padding:16px">まだ募集がありません。最初の一人になろう！</div>';
+    listEl.innerHTML = '<div style="color:var(--text-dim);font-size:13px;padding:16px;text-align:center">募集がありません</div>';
+    return;
+  }
+
+  onlineEl.innerHTML = allPosts.slice(0, 4).map((p, i) => playerCardHTML(p, i)).join('');
+  listEl.innerHTML = allPosts.map((p, i) => postCardHTML(p, i)).join('');
+}
+
+function updateOnlineCount() {
+  const badge = document.querySelector('.online-badge');
+  if (badge) {
+    badge.innerHTML = `<div class="dot-pulse"></div>今すぐ遊べる ${allPosts.length}人`;
+  }
+}
+
+// ── 投稿作成 ──
+async function submitPost() {
+  const values = getFormValues();
+  if (!values.nickname) { showToast('ニックネームを入力してください'); return; }
+
+  const { error } = await db.from('posts').insert([values]);
+  if (error) { showToast('投稿に失敗しました'); console.error(error); return; }
+
+  closeModal('form-overlay');
+  showToast('募集を投稿しました！');
+  await loadPosts();
+}
+
+// ── モーダル ──
+function openJoinModal(idx) {
+  const p = allPosts[idx];
+  if (!p) return;
+  selectedPost = p;
+  const emoji = getEmoji(p.id);
+  const vibes = Array.isArray(p.vibes) ? p.vibes : [];
+  document.getElementById('modal-player-info').innerHTML = `
+    <div class="modal-avatar">${emoji}</div>
+    <div>
+      <div style="font-size:16px;font-weight:700;margin-bottom:4px">${p.nickname}</div>
+      <div class="card-tags">
+        ${vibes.map(v => `<span class="tag tag-vibe">${v}</span>`).join('')}
+        <span class="tag tag-rank">${p.rank}</span>
+      </div>
+      <div style="font-size:12px;color:var(--silver);margin-top:6px">${p.comment || ''}</div>
+    </div>
+  `;
+  document.getElementById('join-modal').classList.add('open');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+function openForm() {
+  document.getElementById('form-overlay').classList.add('open');
+}
+
+function toggleTag(el) {
+  el.classList.toggle('selected');
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.nav-tab').forEach((t, i) => {
+    t.classList.toggle('active', (i===0&&tab==='recruit')||(i===1&&tab==='teams'));
+  });
+  document.getElementById('page-recruit').classList.toggle('active', tab==='recruit');
+  document.getElementById('page-teams').classList.toggle('active', tab==='teams');
+}
+
+function filterPosts() { renderAll(); }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// チームはモック維持（将来実装）
 const mockTeams = [
   { name:'NIGHT OWL', desc:'社会人中心の夜活チーム。怒らない・楽しむが絶対条件。週3〜4で活動中。', members:['み','た','あ','ゆ'], wins:47, games:68, open:true },
   { name:'RANK CLIMBERS', desc:'プラチナ〜ダイヤ帯でランクを本気で上げたいメンバー募集。VC必須。', members:['R','K','S'], wins:82, games:103, open:true },
   { name:'CASUAL SQUAD', desc:'週末にわいわいやる緩めのチーム。初心者歓迎。雰囲気重視。', members:['C','A','S','U','L'], wins:23, games:51, open:false },
   { name:'SUPPORT CLUB', desc:'サポートメイン同士で固定を作りたい。ロールキュー待ち時間を短縮しよう。', members:['S','U','P'], wins:31, games:45, open:true },
 ];
-
-function renderOnlineCards() {
-  const container = document.getElementById('online-cards');
-  container.innerHTML = mockPlayers.slice(0,4).map((p,i) => `
-    <div class="player-card" onclick="openJoinModal(${i})">
-      <div class="card-role">${p.role} · ${p.rank}</div>
-      <div class="card-name">${p.emoji} ${p.name}</div>
-      <div class="card-tags">
-        ${p.vibes.map(v => `<span class="tag tag-vibe">${v}</span>`).join('')}
-        <span class="tag tag-rank">${p.rank}</span>
-        <span class="tag tag-role">${p.role}</span>
-      </div>
-      <div class="card-comment">${p.comment}</div>
-      <div class="card-meta">
-        <span class="card-time">${p.style}</span>
-        <span class="card-timer">⏳ ${p.timer}</span>
-      </div>
-      <button class="card-btn">一緒にプレイする</button>
-    </div>
-  `).join('');
-}
-
-function renderPostList() {
-  const container = document.getElementById('post-list');
-  container.innerHTML = mockPlayers.map((p,i) => `
-    <div class="post-card" onclick="openJoinModal(${i})">
-      <div class="post-avatar">${p.emoji}</div>
-      <div class="post-info">
-        <div class="post-name">${p.name}</div>
-        <div class="post-tags">
-          ${p.vibes.map(v => `<span class="tag tag-vibe">${v}</span>`).join('')}
-          <span class="tag tag-rank">${p.rank}</span>
-          <span class="tag tag-role">${p.role}</span>
-        </div>
-        <div style="font-size:12px;color:var(--silver);margin-top:5px">${p.comment}</div>
-      </div>
-      <div class="post-right">
-        <div class="post-timer">⏳ ${p.timer}</div>
-        <button class="post-action">一緒にプレイする</button>
-      </div>
-    </div>
-  `).join('');
-}
 
 function renderTeams() {
   const container = document.getElementById('team-grid');
@@ -908,65 +1042,17 @@ function renderTeams() {
   `).join('');
 }
 
-function openJoinModal(idx) {
-  const p = mockPlayers[idx];
-  document.getElementById('modal-player-info').innerHTML = `
-    <div class="modal-avatar">${p.emoji}</div>
-    <div>
-      <div style="font-size:16px;font-weight:700;margin-bottom:4px">${p.name}</div>
-      <div class="card-tags">
-        ${p.vibes.map(v => `<span class="tag tag-vibe">${v}</span>`).join('')}
-        <span class="tag tag-rank">${p.rank}</span>
-      </div>
-      <div style="font-size:12px;color:var(--silver);margin-top:6px">${p.comment}</div>
-    </div>
-  `;
-  document.getElementById('join-modal').classList.add('open');
-}
-
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
-}
-
-function openForm() {
-  document.getElementById('form-overlay').classList.add('open');
-}
-
-function submitPost() {
-  closeModal('form-overlay');
-  showToast('募集を投稿しました！');
-}
-
-function toggleTag(el) {
-  el.classList.toggle('selected');
-}
-
-function switchTab(tab) {
-  document.querySelectorAll('.nav-tab').forEach((t,i) => {
-    t.classList.toggle('active', (i===0&&tab==='recruit')||(i===1&&tab==='teams'));
-  });
-  document.getElementById('page-recruit').classList.toggle('active', tab==='recruit');
-  document.getElementById('page-teams').classList.toggle('active', tab==='teams');
-}
-
-function filterPosts() { /* フィルター実装はSupabase連携後 */ }
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
-}
-
 // 閉じる
 document.querySelectorAll('.modal-overlay, .form-overlay').forEach(el => {
   el.addEventListener('click', e => { if(e.target === el) el.classList.remove('open'); });
 });
 
 // 初期化
-renderOnlineCards();
-renderPostList();
+loadPosts();
 renderTeams();
+
+// 5分ごとに自動更新
+setInterval(loadPosts, 5 * 60 * 1000);
 </script>
 </body>
 </html>
