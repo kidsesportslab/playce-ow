@@ -7,649 +7,135 @@
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0c0f;
-    --surface: #12161c;
-    --surface2: #1a1f28;
-    --border: #252b36;
-    --orange: #f5a623;
-    --orange-dim: rgba(245,166,35,0.12);
-    --orange-glow: rgba(245,166,35,0.3);
-    --blue: #4fc3f7;
-    --blue-dim: rgba(79,195,247,0.1);
-    --silver: #8a9bb5;
-    --silver-light: #c4d0e0;
-    --text: #e8edf5;
-    --text-dim: #6b7a8f;
-    --green: #4caf7d;
-    --red: #e05c5c;
-    --radius: 10px;
+    --bg: #0a0c0f; --surface: #12161c; --surface2: #1a1f28; --border: #252b36;
+    --orange: #f5a623; --orange-dim: rgba(245,166,35,0.12);
+    --blue: #4fc3f7; --blue-dim: rgba(79,195,247,0.1);
+    --silver: #8a9bb5; --silver-light: #c4d0e0;
+    --text: #e8edf5; --text-dim: #6b7a8f;
+    --green: #4caf7d; --red: #e05c5c; --radius: 10px;
   }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'Noto Sans JP',sans-serif; font-size:14px; min-height:100vh; overflow-x:hidden; }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  header { position:sticky; top:0; z-index:100; background:rgba(10,12,15,0.92); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:56px; }
+  .logo { font-family:'Rajdhani',sans-serif; font-size:22px; font-weight:700; letter-spacing:3px; }
+  .logo span { color:var(--orange); }
+  .logo-sub { font-size:10px; color:var(--text-dim); letter-spacing:2px; margin-left:8px; font-family:'Rajdhani',sans-serif; }
+  .header-right { display:flex; gap:10px; align-items:center; }
+  .user-nick { font-size:13px; color:var(--silver); }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Noto Sans JP', sans-serif;
-    font-size: 14px;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+  .btn { padding:8px 18px; border-radius:6px; font-size:13px; font-weight:500; cursor:pointer; border:none; font-family:'Noto Sans JP',sans-serif; transition:all 0.2s; }
+  .btn-primary { background:var(--orange); color:#000; }
+  .btn-primary:hover { background:#ffb83f; }
+  .btn-ghost { background:transparent; color:var(--silver); border:1px solid var(--border); }
+  .btn-ghost:hover { border-color:var(--silver); color:var(--text); }
+  .btn-red { background:transparent; color:var(--red); border:1px solid var(--red); font-size:12px; padding:6px 12px; }
 
-  /* ── HEADER ── */
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(10,12,15,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 56px;
-  }
+  .nav-tabs { display:flex; border-bottom:1px solid var(--border); padding:0 24px; background:var(--surface); }
+  .nav-tab { padding:14px 20px; font-size:13px; color:var(--text-dim); cursor:pointer; border-bottom:2px solid transparent; transition:all 0.2s; font-weight:500; }
+  .nav-tab.active { color:var(--orange); border-bottom-color:var(--orange); }
 
-  .logo {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    color: var(--text);
-  }
-  .logo span { color: var(--orange); }
+  .container { max-width:1100px; margin:0 auto; padding:24px; }
+  .now-online-section { margin-bottom:32px; }
+  .section-header { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+  .section-title { font-family:'Rajdhani',sans-serif; font-size:16px; font-weight:600; letter-spacing:1px; color:var(--silver-light); }
+  .online-badge { display:flex; align-items:center; gap:6px; background:rgba(76,175,125,0.12); border:1px solid rgba(76,175,125,0.3); padding:3px 10px; border-radius:20px; font-size:12px; color:var(--green); font-weight:500; }
+  .dot-pulse { width:6px; height:6px; background:var(--green); border-radius:50%; animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+  .cards-scroll { display:flex; gap:14px; overflow-x:auto; padding-bottom:8px; scrollbar-width:none; }
+  .cards-scroll::-webkit-scrollbar { display:none; }
 
-  .logo-sub {
-    font-size: 10px;
-    color: var(--text-dim);
-    letter-spacing: 2px;
-    margin-left: 8px;
-    font-family: 'Rajdhani', sans-serif;
-  }
+  .player-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px; min-width:220px; max-width:220px; cursor:pointer; transition:all 0.2s; position:relative; overflow:hidden; }
+  .player-card::before { content:''; position:absolute; top:0;left:0;right:0; height:2px; background:linear-gradient(90deg,var(--orange),transparent); opacity:0; transition:opacity 0.2s; }
+  .player-card:hover { border-color:var(--orange); transform:translateY(-2px); box-shadow:0 8px 24px rgba(245,166,35,0.1); }
+  .player-card:hover::before { opacity:1; }
+  .card-role { font-size:10px; color:var(--text-dim); letter-spacing:1px; font-family:'Rajdhani',sans-serif; margin-bottom:6px; }
+  .card-name { font-size:16px; font-weight:700; margin-bottom:6px; }
+  .card-tags { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:10px; }
+  .tag { font-size:10px; padding:2px 7px; border-radius:3px; font-weight:500; }
+  .tag-vibe { background:var(--orange-dim); color:var(--orange); border:1px solid rgba(245,166,35,0.2); }
+  .tag-rank { background:var(--blue-dim); color:var(--blue); border:1px solid rgba(79,195,247,0.2); }
+  .tag-role { background:rgba(138,155,181,0.1); color:var(--silver); border:1px solid rgba(138,155,181,0.2); }
+  .card-comment { font-size:12px; color:var(--silver); line-height:1.5; margin-bottom:10px; border-left:2px solid var(--border); padding-left:8px; }
+  .card-meta { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+  .card-time { font-size:11px; color:var(--text-dim); }
+  .card-timer { font-size:11px; color:var(--orange); font-family:'Rajdhani',sans-serif; font-weight:600; }
+  .card-btn { width:100%; padding:9px; background:var(--orange); color:#000; border:none; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; font-family:'Noto Sans JP',sans-serif; }
+  .card-btn:hover { background:#ffb83f; }
 
-  .header-right { display: flex; gap: 12px; align-items: center; }
+  .filter-bar { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
+  .filter-select { background:var(--surface); border:1px solid var(--border); color:var(--silver); padding:7px 12px; border-radius:6px; font-size:12px; cursor:pointer; font-family:'Noto Sans JP',sans-serif; }
+  .filter-select:focus { outline:none; border-color:var(--orange); }
 
-  .btn {
-    padding: 8px 18px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    border: none;
-    font-family: 'Noto Sans JP', sans-serif;
-    transition: all 0.2s;
-  }
-  .btn-primary {
-    background: var(--orange);
-    color: #000;
-  }
-  .btn-primary:hover { background: #ffb83f; transform: translateY(-1px); }
-  .btn-ghost {
-    background: transparent;
-    color: var(--silver);
-    border: 1px solid var(--border);
-  }
-  .btn-ghost:hover { border-color: var(--silver); color: var(--text); }
+  .post-list { display:flex; flex-direction:column; gap:10px; }
+  .post-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 20px; display:flex; align-items:center; gap:16px; cursor:pointer; transition:all 0.2s; }
+  .post-card:hover { border-color:rgba(245,166,35,0.4); background:var(--surface2); }
+  .post-avatar { width:44px; height:44px; border-radius:8px; background:linear-gradient(135deg,var(--orange),#ff6b35); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+  .post-info { flex:1; }
+  .post-name { font-size:15px; font-weight:600; margin-bottom:4px; }
+  .post-tags { display:flex; gap:4px; flex-wrap:wrap; }
+  .post-right { text-align:right; flex-shrink:0; }
+  .post-timer { font-size:12px; color:var(--orange); font-family:'Rajdhani',sans-serif; font-weight:600; }
+  .post-action { margin-top:6px; padding:6px 14px; background:transparent; border:1px solid var(--orange); color:var(--orange); border-radius:5px; font-size:12px; cursor:pointer; font-family:'Noto Sans JP',sans-serif; transition:all 0.2s; }
+  .post-action:hover { background:var(--orange); color:#000; }
 
-  /* ── NAV TABS ── */
-  .nav-tabs {
-    display: flex;
-    gap: 0;
-    border-bottom: 1px solid var(--border);
-    padding: 0 24px;
-    background: var(--surface);
-  }
-  .nav-tab {
-    padding: 14px 20px;
-    font-size: 13px;
-    color: var(--text-dim);
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    transition: all 0.2s;
-    font-weight: 500;
-  }
-  .nav-tab.active { color: var(--orange); border-bottom-color: var(--orange); }
-  .nav-tab:hover:not(.active) { color: var(--text); }
+  .team-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px; }
+  .team-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px; cursor:pointer; transition:all 0.2s; }
+  .team-card:hover { border-color:var(--blue); transform:translateY(-2px); }
+  .team-name { font-family:'Rajdhani',sans-serif; font-size:18px; font-weight:700; letter-spacing:1px; margin-bottom:4px; }
+  .team-desc { font-size:12px; color:var(--silver); margin-bottom:12px; line-height:1.5; }
+  .team-members { display:flex; margin-bottom:10px; }
+  .member-avatar { width:28px; height:28px; border-radius:50%; border:2px solid var(--surface); background:linear-gradient(135deg,#4fc3f7,#0288d1); display:flex; align-items:center; justify-content:center; font-size:11px; margin-right:-6px; }
+  .team-stats { display:flex; gap:16px; font-size:11px; color:var(--text-dim); margin-bottom:12px; }
+  .team-stat strong { color:var(--silver-light); font-family:'Rajdhani',sans-serif; font-size:14px; }
+  .team-recruiting { display:flex; align-items:center; justify-content:space-between; }
+  .recruiting-badge { font-size:11px; padding:3px 8px; border-radius:3px; font-weight:600; }
+  .recruiting-open { background:rgba(76,175,125,0.12); color:var(--green); border:1px solid rgba(76,175,125,0.3); }
+  .recruiting-closed { background:rgba(138,155,181,0.08); color:var(--text-dim); border:1px solid var(--border); }
 
-  /* ── LAYOUT ── */
-  .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  .modal-overlay,.form-overlay,.auth-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:200; align-items:center; justify-content:center; }
+  .modal-overlay.open,.form-overlay.open,.auth-overlay.open { display:flex; }
+  .modal,.form-modal,.auth-modal { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:28px; width:90%; position:relative; animation:slideUp 0.2s ease; }
+  .modal { max-width:420px; }
+  .form-modal { max-width:460px; max-height:90vh; overflow-y:auto; }
+  .auth-modal { max-width:400px; }
+  @keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .modal-close { position:absolute; top:16px; right:16px; background:none; border:none; color:var(--text-dim); font-size:20px; cursor:pointer; }
+  .modal-title { font-family:'Rajdhani',sans-serif; font-size:20px; font-weight:700; margin-bottom:6px; }
+  .modal-sub { font-size:12px; color:var(--text-dim); margin-bottom:20px; }
+  .modal-player { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:14px; margin-bottom:20px; display:flex; gap:12px; align-items:center; }
+  .modal-avatar { width:44px; height:44px; border-radius:8px; background:linear-gradient(135deg,var(--orange),#ff6b35); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+  .modal-actions { display:flex; flex-direction:column; gap:10px; }
+  .modal-btn { width:100%; padding:12px; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; border:none; font-family:'Noto Sans JP',sans-serif; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .modal-btn-primary { background:var(--orange); color:#000; }
+  .modal-btn-primary:hover { background:#ffb83f; }
+  .modal-btn-secondary { background:var(--blue-dim); color:var(--blue); border:1px solid rgba(79,195,247,0.3); }
+  .modal-btn-secondary:hover { background:rgba(79,195,247,0.2); }
 
-  /* ── NOW ONLINE ── */
-  .now-online-section { margin-bottom: 32px; }
+  .form-group { margin-bottom:16px; }
+  .form-label { display:block; font-size:12px; color:var(--silver); margin-bottom:6px; font-weight:500; }
+  .form-input,.form-select,.form-textarea { width:100%; background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:10px 12px; border-radius:7px; font-size:13px; font-family:'Noto Sans JP',sans-serif; transition:border-color 0.2s; }
+  .form-input:focus,.form-select:focus,.form-textarea:focus { outline:none; border-color:var(--orange); }
+  .form-textarea { resize:vertical; min-height:70px; }
+  .vibe-tags { display:flex; flex-wrap:wrap; gap:6px; }
+  .vibe-tag { padding:5px 12px; border-radius:4px; font-size:12px; cursor:pointer; border:1px solid var(--border); color:var(--text-dim); background:var(--surface2); transition:all 0.15s; user-select:none; }
+  .vibe-tag.selected { background:var(--orange-dim); border-color:var(--orange); color:var(--orange); }
 
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-  .section-title {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    color: var(--silver-light);
-  }
-  .online-badge {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(76,175,125,0.12);
-    border: 1px solid rgba(76,175,125,0.3);
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    color: var(--green);
-    font-weight: 500;
-  }
-  .dot-pulse {
-    width: 6px; height: 6px;
-    background: var(--green);
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%,100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
-  }
+  .auth-tabs { display:flex; margin-bottom:24px; border-bottom:1px solid var(--border); }
+  .auth-tab { flex:1; padding:10px; text-align:center; font-size:14px; font-weight:600; cursor:pointer; color:var(--text-dim); border-bottom:2px solid transparent; transition:all 0.2s; }
+  .auth-tab.active { color:var(--orange); border-bottom-color:var(--orange); }
 
-  .cards-scroll {
-    display: flex;
-    gap: 14px;
-    overflow-x: auto;
-    padding-bottom: 8px;
-    scrollbar-width: none;
-  }
-  .cards-scroll::-webkit-scrollbar { display: none; }
+  .invite-box { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px; margin-top:24px; text-align:center; }
+  .invite-title { font-family:'Rajdhani',sans-serif; font-size:18px; font-weight:600; margin-bottom:8px; color:var(--silver-light); }
+  .invite-desc { font-size:12px; color:var(--text-dim); margin-bottom:16px; }
+  .invite-link { background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:10px 16px; font-size:12px; color:var(--blue); font-family:'Rajdhani',sans-serif; display:inline-block; margin-bottom:12px; }
 
-  /* ── PLAYER CARD ── */
-  .player-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px;
-    min-width: 220px;
-    max-width: 220px;
-    cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-  .player-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--orange), transparent);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .player-card:hover {
-    border-color: var(--orange);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(245,166,35,0.1);
-  }
-  .player-card:hover::before { opacity: 1; }
+  .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--surface2); border:1px solid var(--orange); color:var(--text); padding:12px 24px; border-radius:8px; font-size:13px; z-index:300; transition:transform 0.3s ease; }
+  .toast.show { transform:translateX(-50%) translateY(0); }
 
-  .card-role {
-    font-size: 10px;
-    color: var(--text-dim);
-    letter-spacing: 1px;
-    font-family: 'Rajdhani', sans-serif;
-    margin-bottom: 6px;
-  }
-  .card-name {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 6px;
-  }
-  .card-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    margin-bottom: 10px;
-  }
-  .tag {
-    font-size: 10px;
-    padding: 2px 7px;
-    border-radius: 3px;
-    font-weight: 500;
-  }
-  .tag-vibe {
-    background: var(--orange-dim);
-    color: var(--orange);
-    border: 1px solid rgba(245,166,35,0.2);
-  }
-  .tag-rank {
-    background: var(--blue-dim);
-    color: var(--blue);
-    border: 1px solid rgba(79,195,247,0.2);
-  }
-  .tag-role {
-    background: rgba(138,155,181,0.1);
-    color: var(--silver);
-    border: 1px solid rgba(138,155,181,0.2);
-  }
-
-  .card-comment {
-    font-size: 12px;
-    color: var(--silver);
-    line-height: 1.5;
-    margin-bottom: 10px;
-    border-left: 2px solid var(--border);
-    padding-left: 8px;
-  }
-  .card-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-  }
-  .card-time { font-size: 11px; color: var(--text-dim); }
-  .card-timer {
-    font-size: 11px;
-    color: var(--orange);
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 600;
-  }
-  .card-btn {
-    width: 100%;
-    padding: 9px;
-    background: var(--orange);
-    color: #000;
-    border: none;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 700;
-    cursor: pointer;
-    font-family: 'Noto Sans JP', sans-serif;
-    transition: all 0.2s;
-  }
-  .card-btn:hover { background: #ffb83f; }
-
-  /* ── FILTER BAR ── */
-  .filter-bar {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-  }
-  .filter-select {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--silver);
-    padding: 7px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    cursor: pointer;
-    font-family: 'Noto Sans JP', sans-serif;
-    transition: border-color 0.2s;
-  }
-  .filter-select:focus { outline: none; border-color: var(--orange); }
-
-  /* ── POST LIST ── */
-  .post-list { display: flex; flex-direction: column; gap: 10px; }
-
-  .post-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .post-card:hover {
-    border-color: rgba(245,166,35,0.4);
-    background: var(--surface2);
-  }
-
-  .post-avatar {
-    width: 44px; height: 44px;
-    border-radius: 8px;
-    background: linear-gradient(135deg, var(--orange), #ff6b35);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-
-  .post-info { flex: 1; }
-  .post-name { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-  .post-tags { display: flex; gap: 4px; flex-wrap: wrap; }
-
-  .post-right { text-align: right; flex-shrink: 0; }
-  .post-timer { font-size: 12px; color: var(--orange); font-family: 'Rajdhani', sans-serif; font-weight: 600; }
-  .post-action {
-    margin-top: 6px;
-    padding: 6px 14px;
-    background: transparent;
-    border: 1px solid var(--orange);
-    color: var(--orange);
-    border-radius: 5px;
-    font-size: 12px;
-    cursor: pointer;
-    font-family: 'Noto Sans JP', sans-serif;
-    transition: all 0.2s;
-  }
-  .post-action:hover { background: var(--orange); color: #000; }
-
-  /* ── TEAM SECTION ── */
-  .team-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 14px;
-  }
-
-  .team-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px;
-    cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-  .team-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--blue), var(--orange));
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .team-card:hover { border-color: var(--blue); transform: translateY(-2px); }
-  .team-card:hover::after { opacity: 1; }
-
-  .team-name {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    margin-bottom: 4px;
-  }
-  .team-desc { font-size: 12px; color: var(--silver); margin-bottom: 12px; line-height: 1.5; }
-
-  .team-members {
-    display: flex;
-    gap: -8px;
-    margin-bottom: 10px;
-  }
-  .member-avatar {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    border: 2px solid var(--surface);
-    background: linear-gradient(135deg, #4fc3f7, #0288d1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    margin-right: -6px;
-  }
-
-  .team-stats {
-    display: flex;
-    gap: 16px;
-    font-size: 11px;
-    color: var(--text-dim);
-    margin-bottom: 12px;
-  }
-  .team-stat strong {
-    color: var(--silver-light);
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 14px;
-  }
-
-  .team-recruiting {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .recruiting-badge {
-    font-size: 11px;
-    padding: 3px 8px;
-    border-radius: 3px;
-    font-weight: 600;
-  }
-  .recruiting-open {
-    background: rgba(76,175,125,0.12);
-    color: var(--green);
-    border: 1px solid rgba(76,175,125,0.3);
-  }
-  .recruiting-closed {
-    background: rgba(138,155,181,0.08);
-    color: var(--text-dim);
-    border: 1px solid var(--border);
-  }
-
-  /* ── MODAL ── */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(4px);
-    z-index: 200;
-    align-items: center;
-    justify-content: center;
-  }
-  .modal-overlay.open { display: flex; }
-
-  .modal {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 28px;
-    width: 90%;
-    max-width: 420px;
-    position: relative;
-    animation: slideUp 0.2s ease;
-  }
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .modal-close {
-    position: absolute;
-    top: 16px; right: 16px;
-    background: none;
-    border: none;
-    color: var(--text-dim);
-    font-size: 20px;
-    cursor: pointer;
-    line-height: 1;
-  }
-
-  .modal-title {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 6px;
-    color: var(--text);
-  }
-  .modal-sub { font-size: 12px; color: var(--text-dim); margin-bottom: 20px; }
-
-  .modal-player {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px;
-    margin-bottom: 20px;
-    display: flex;
-    gap: 12px;
-    align-items: center;
-  }
-  .modal-avatar {
-    width: 44px; height: 44px;
-    border-radius: 8px;
-    background: linear-gradient(135deg, var(--orange), #ff6b35);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    flex-shrink: 0;
-  }
-
-  .modal-actions { display: flex; flex-direction: column; gap: 10px; }
-  .modal-btn {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    font-family: 'Noto Sans JP', sans-serif;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-  .modal-btn-primary { background: var(--orange); color: #000; }
-  .modal-btn-primary:hover { background: #ffb83f; }
-  .modal-btn-secondary {
-    background: var(--blue-dim);
-    color: var(--blue);
-    border: 1px solid rgba(79,195,247,0.3);
-  }
-  .modal-btn-secondary:hover { background: rgba(79,195,247,0.2); }
-
-  /* ── POST FORM ── */
-  .form-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(4px);
-    z-index: 200;
-    align-items: center;
-    justify-content: center;
-  }
-  .form-overlay.open { display: flex; }
-
-  .form-modal {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 28px;
-    width: 90%;
-    max-width: 460px;
-    max-height: 90vh;
-    overflow-y: auto;
-    position: relative;
-    animation: slideUp 0.2s ease;
-  }
-
-  .form-group { margin-bottom: 16px; }
-  .form-label {
-    display: block;
-    font-size: 12px;
-    color: var(--silver);
-    margin-bottom: 6px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-  }
-  .form-input, .form-select, .form-textarea {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 10px 12px;
-    border-radius: 7px;
-    font-size: 13px;
-    font-family: 'Noto Sans JP', sans-serif;
-    transition: border-color 0.2s;
-  }
-  .form-input:focus, .form-select:focus, .form-textarea:focus {
-    outline: none;
-    border-color: var(--orange);
-  }
-  .form-textarea { resize: vertical; min-height: 70px; }
-
-  .vibe-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-  .vibe-tag {
-    padding: 5px 12px;
-    border-radius: 4px;
-    font-size: 12px;
-    cursor: pointer;
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-    background: var(--surface2);
-    transition: all 0.15s;
-    user-select: none;
-  }
-  .vibe-tag.selected {
-    background: var(--orange-dim);
-    border-color: var(--orange);
-    color: var(--orange);
-  }
-
-  /* ── TOAST ── */
-  .toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    background: var(--surface2);
-    border: 1px solid var(--orange);
-    color: var(--text);
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 13px;
-    z-index: 300;
-    transition: transform 0.3s ease;
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); }
-
-  /* ── PAGE SECTIONS ── */
-  .page { display: none; }
-  .page.active { display: block; }
-
-  /* ── INVITE SECTION ── */
-  .invite-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 24px;
-    margin-top: 24px;
-    text-align: center;
-  }
-  .invite-title {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: var(--silver-light);
-  }
-  .invite-desc { font-size: 12px; color: var(--text-dim); margin-bottom: 16px; }
-  .invite-link {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 10px 16px;
-    font-size: 12px;
-    color: var(--blue);
-    font-family: 'Rajdhani', sans-serif;
-    letter-spacing: 1px;
-    display: inline-block;
-    margin-bottom: 12px;
-  }
-
-  /* ── DIVIDER ── */
-  .divider {
-    height: 1px;
-    background: var(--border);
-    margin: 24px 0;
-  }
+  .page { display:none; }
+  .page.active { display:block; }
+  .divider { height:1px; background:var(--border); margin:24px 0; }
 </style>
 </head>
 <body>
@@ -659,9 +145,9 @@
     <div class="logo">PLAY<span>CE</span></div>
     <div class="logo-sub">for OW</div>
   </div>
-  <div class="header-right">
-    <button class="btn btn-ghost" onclick="openForm()">＋ 募集する</button>
-    <button class="btn btn-primary" onclick="showToast('招待リンクをコピーしました')">友達を招待</button>
+  <div class="header-right" id="header-right">
+    <button class="btn btn-ghost" onclick="openAuthModal('login')">ログイン</button>
+    <button class="btn btn-primary" onclick="openAuthModal('signup')">新規登録</button>
   </div>
 </header>
 
@@ -670,66 +156,42 @@
   <div class="nav-tab" onclick="switchTab('teams')">チームを探す</div>
 </div>
 
-<!-- RECRUIT PAGE -->
 <div id="page-recruit" class="page active">
   <div class="container">
-
-    <!-- NOW ONLINE -->
     <div class="now-online-section">
       <div class="section-header">
-        <div class="online-badge">
-          <div class="dot-pulse"></div>
-          今すぐ遊べる 4人
-        </div>
+        <div class="online-badge"><div class="dot-pulse"></div>今すぐ遊べる 0人</div>
         <div class="section-title">オンライン中</div>
       </div>
       <div class="cards-scroll" id="online-cards"></div>
     </div>
-
     <div class="divider"></div>
-
-    <!-- FILTER -->
     <div class="filter-bar">
-      <select class="filter-select" onchange="filterPosts()">
+      <select class="filter-select" id="filter-role" onchange="renderAll()">
         <option value="">すべてのロール</option>
-        <option value="タンク">タンク</option>
-        <option value="ダメージ">ダメージ</option>
-        <option value="サポート">サポート</option>
+        <option>タンク</option><option>ダメージ</option><option>サポート</option><option>フレックス</option>
       </select>
-      <select class="filter-select" onchange="filterPosts()">
+      <select class="filter-select" id="filter-rank" onchange="renderAll()">
         <option value="">すべてのランク</option>
-        <option value="ブロンズ">ブロンズ</option>
-        <option value="シルバー">シルバー</option>
-        <option value="ゴールド">ゴールド</option>
-        <option value="プラチナ">プラチナ</option>
-        <option value="ダイヤ">ダイヤ</option>
+        <option>ブロンズ</option><option>シルバー</option><option>ゴールド</option><option>プラチナ</option><option>ダイヤ</option><option>マスター以上</option>
       </select>
-      <select class="filter-select" onchange="filterPosts()">
+      <select class="filter-select" id="filter-style" onchange="renderAll()">
         <option value="">スタイル問わず</option>
-        <option value="エンジョイ">エンジョイ</option>
-        <option value="ランク上げ">ランク上げ</option>
+        <option>エンジョイ</option><option>ランク上げ重視</option><option>どちらでも</option>
       </select>
     </div>
-
-    <!-- POST LIST -->
-    <div class="section-header">
-      <div class="section-title">募集一覧</div>
-    </div>
+    <div class="section-header"><div class="section-title">募集一覧</div></div>
     <div class="post-list" id="post-list"></div>
-
-    <!-- INVITE BOX -->
     <div class="invite-box">
       <div class="invite-title">フレンドを招待する</div>
       <div class="invite-desc">招待リンクを送ると、信頼できる仲間だけが参加できます</div>
-      <div class="invite-link">playce.gg/invite/ow-abc123</div>
+      <div class="invite-link">kidsesportslab.github.io/playce-ow/</div>
       <br>
-      <button class="btn btn-primary" onclick="showToast('招待リンクをコピーしました')">リンクをコピー</button>
+      <button class="btn btn-primary" onclick="copyInviteLink()">リンクをコピー</button>
     </div>
-
   </div>
 </div>
 
-<!-- TEAMS PAGE -->
 <div id="page-teams" class="page">
   <div class="container">
     <div class="section-header" style="margin-bottom:20px;justify-content:space-between">
@@ -748,12 +210,8 @@
     <div class="modal-sub">相手の情報を確認してから参加してください</div>
     <div class="modal-player" id="modal-player-info"></div>
     <div class="modal-actions">
-      <button class="modal-btn modal-btn-primary" onclick="showToast('IDをクリップボードにコピーしました');closeModal('join-modal')">
-        🎮 IDをコピーしてフレンド申請
-      </button>
-      <button class="modal-btn modal-btn-secondary" onclick="showToast('Discordサーバーに移動します');closeModal('join-modal')">
-        💬 Discordで連絡する
-      </button>
+      <button class="modal-btn modal-btn-primary" onclick="copyBattleTag()">🎮 BattleTagをコピーしてフレンド申請</button>
+      <button class="modal-btn modal-btn-secondary" onclick="copyDiscordId()">💬 Discord IDをコピー</button>
     </div>
   </div>
 </div>
@@ -764,42 +222,29 @@
     <button class="modal-close" onclick="closeModal('form-overlay')">✕</button>
     <div class="modal-title" style="margin-bottom:4px">募集を作る</div>
     <div class="modal-sub">一緒に遊ぶメンバーを探しましょう</div>
-
-    <div class="form-group">
-      <label class="form-label">ニックネーム</label>
-      <input class="form-input" type="text" placeholder="BattleTag（例: みゆ#1234）">
-    </div>
     <div class="form-group">
       <label class="form-label">メインロール</label>
-      <select class="form-select">
-        <option>タンク</option>
-        <option>ダメージ</option>
-        <option>サポート</option>
-        <option>フレックス</option>
-      </select>
+      <select class="form-select" id="f-role"><option>タンク</option><option>ダメージ</option><option>サポート</option><option>フレックス</option></select>
     </div>
     <div class="form-group">
       <label class="form-label">ランク帯</label>
-      <select class="form-select">
-        <option>ブロンズ</option>
-        <option>シルバー</option>
-        <option>ゴールド</option>
-        <option>プラチナ</option>
-        <option>ダイヤ</option>
-        <option>マスター以上</option>
-      </select>
+      <select class="form-select" id="f-rank"><option>ブロンズ</option><option>シルバー</option><option>ゴールド</option><option>プラチナ</option><option>ダイヤ</option><option>マスター以上</option></select>
     </div>
     <div class="form-group">
       <label class="form-label">プレイスタイル</label>
-      <select class="form-select">
-        <option>エンジョイ</option>
-        <option>ランク上げ重視</option>
-        <option>どちらでも</option>
-      </select>
+      <select class="form-select" id="f-style"><option>エンジョイ</option><option>ランク上げ重視</option><option>どちらでも</option></select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">BattleTag（例: 名前#1234）</label>
+      <input class="form-input" id="f-battletag" type="text" placeholder="名前#1234">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Discord ID（任意）</label>
+      <input class="form-input" id="f-discord" type="text" placeholder="username">
     </div>
     <div class="form-group">
       <label class="form-label">雰囲気（複数選択可）</label>
-      <div class="vibe-tags">
+      <div class="vibe-tags" id="vibe-tags-container">
         <div class="vibe-tag" onclick="toggleTag(this)">怒らない</div>
         <div class="vibe-tag" onclick="toggleTag(this)">ゆるく楽しむ</div>
         <div class="vibe-tag" onclick="toggleTag(this)">社会人</div>
@@ -812,11 +257,61 @@
     </div>
     <div class="form-group">
       <label class="form-label">一言コメント</label>
-      <textarea class="form-textarea" placeholder="一言どうぞ（例：楽しくやりたい！怒らない人歓迎）"></textarea>
+      <textarea class="form-textarea" id="f-comment" placeholder="例：楽しくやりたい！怒らない人歓迎"></textarea>
     </div>
-    <button class="btn btn-primary" style="width:100%;padding:13px;font-size:14px" onclick="submitPost()">
-      募集を投稿する
-    </button>
+    <button class="btn btn-primary" style="width:100%;padding:13px;font-size:14px" onclick="submitPost()">募集を投稿する</button>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="auth-overlay" id="auth-overlay">
+  <div class="auth-modal">
+    <button class="modal-close" onclick="closeModal('auth-overlay')">✕</button>
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">ログイン</div>
+      <div class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">新規登録</div>
+    </div>
+    <div id="auth-login">
+      <div class="form-group">
+        <label class="form-label">メールアドレス</label>
+        <input class="form-input" id="login-email" type="email" placeholder="example@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">パスワード</label>
+        <input class="form-input" id="login-password" type="password" placeholder="パスワード">
+      </div>
+      <button class="btn btn-primary" style="width:100%;padding:12px;font-size:14px" onclick="doLogin()">ログイン</button>
+    </div>
+    <div id="auth-signup" style="display:none">
+      <div class="form-group">
+        <label class="form-label">ニックネーム</label>
+        <input class="form-input" id="signup-nick" type="text" placeholder="ゲーム内で表示される名前">
+      </div>
+      <div class="form-group">
+        <label class="form-label">メールアドレス</label>
+        <input class="form-input" id="signup-email" type="email" placeholder="example@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">パスワード（6文字以上）</label>
+        <input class="form-input" id="signup-password" type="password" placeholder="パスワード">
+      </div>
+      <button class="btn btn-primary" style="width:100%;padding:12px;font-size:14px" onclick="doSignup()">登録する</button>
+      <p style="font-size:11px;color:var(--text-dim);margin-top:12px;text-align:center">登録後、確認メールが届きます。リンクをクリックして認証してください。</p>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE EDIT MODAL -->
+<div class="modal-overlay" id="profile-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('profile-modal')">✕</button>
+    <div class="modal-title">プロフィール編集</div>
+    <div class="modal-sub">ニックネームを変更できます</div>
+    <div class="form-group">
+      <label class="form-label">ニックネーム</label>
+      <input class="form-input" id="profile-nick" type="text">
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:12px" onclick="updateNickname()">保存する</button>
   </div>
 </div>
 
@@ -824,234 +319,266 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ── Supabase設定 ──
 const SUPABASE_URL = 'https://raevfqxevwvymxshkkfc.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJhZXZmcXhldnd2eW14c2hra2ZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NTExNDIsImV4cCI6MjA5MzEyNzE0Mn0.slh6NUucM6JqICRosOBrvyqKMRUrDBN6DEJoqUal7D8';
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const emojis = ['🐺','🦅','🐉','🦁','🐻','🦊','🐯','🦋'];
-let allPosts = [];
-let selectedPost = null;
+let allPosts = [], currentUser = null, currentNickname = '', selectedPost = null;
 
-// ── フォームの入力値取得 ──
-function getFormValues() {
-  const inputs = document.querySelectorAll('.form-input, .form-select, .form-textarea');
-  return {
-    nickname: inputs[0].value.trim(),
-    role: inputs[1].value,
-    rank: inputs[2].value,
-    play_style: inputs[3].value,
-    vibes: Array.from(document.querySelectorAll('.vibe-tag.selected')).map(t => t.textContent),
-    comment: inputs[4].value.trim(),
-    expires_at: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString()
-  };
+function getEmoji(id) {
+  if (!id) return emojis[0];
+  let n = 0;
+  for (let i = 0; i < Math.min(id.length, 8); i++) n += id.charCodeAt(i);
+  return emojis[n % emojis.length];
 }
 
-// ── 残り時間計算 ──
 function calcTimer(expiresAt) {
   const diff = new Date(expiresAt) - new Date();
   if (diff <= 0) return '期限切れ';
-  const h = Math.floor(diff / 3600000);
-  const m = Math.floor((diff % 3600000) / 60000);
+  const h = Math.floor(diff / 3600000), m = Math.floor((diff % 3600000) / 60000);
   return h > 0 ? `残り${h}時間${m}分` : `残り${m}分`;
 }
 
-// ── 絵文字をIDから決定 ──
-function getEmoji(id) {
-  const code = id ? id.charCodeAt(0) % emojis.length : 0;
-  return emojis[code];
+async function checkAuth() {
+  const { data: { user } } = await db.auth.getUser();
+  if (user) { currentUser = user; await loadNickname(); updateHeader(true); }
+  else updateHeader(false);
 }
 
-// ── カードHTML ──
-function playerCardHTML(p, idx) {
-  const emoji = getEmoji(p.id);
-  const timer = calcTimer(p.expires_at);
-  const vibes = Array.isArray(p.vibes) ? p.vibes : [];
-  return `
-    <div class="player-card" onclick="openJoinModal(${idx})">
-      <div class="card-role">${p.role} · ${p.rank}</div>
-      <div class="card-name">${emoji} ${p.nickname}</div>
-      <div class="card-tags">
-        ${vibes.map(v => `<span class="tag tag-vibe">${v}</span>`).join('')}
-        <span class="tag tag-rank">${p.rank}</span>
-        <span class="tag tag-role">${p.role}</span>
-      </div>
-      <div class="card-comment">${p.comment || ''}</div>
-      <div class="card-meta">
-        <span class="card-time">${p.play_style}</span>
-        <span class="card-timer">⏳ ${timer}</span>
-      </div>
-      <button class="card-btn">一緒にプレイする</button>
-    </div>
-  `;
+async function loadNickname() {
+  const { data } = await db.from('users').select('nickname').eq('id', currentUser.id).single();
+  currentNickname = data?.nickname || currentUser.email.split('@')[0];
 }
 
-function postCardHTML(p, idx) {
-  const emoji = getEmoji(p.id);
-  const timer = calcTimer(p.expires_at);
-  const vibes = Array.isArray(p.vibes) ? p.vibes : [];
-  return `
-    <div class="post-card" onclick="openJoinModal(${idx})">
-      <div class="post-avatar">${emoji}</div>
-      <div class="post-info">
-        <div class="post-name">${p.nickname}</div>
-        <div class="post-tags">
-          ${vibes.map(v => `<span class="tag tag-vibe">${v}</span>`).join('')}
-          <span class="tag tag-rank">${p.rank}</span>
-          <span class="tag tag-role">${p.role}</span>
-        </div>
-        <div style="font-size:12px;color:var(--silver);margin-top:5px">${p.comment || ''}</div>
-      </div>
-      <div class="post-right">
-        <div class="post-timer">⏳ ${timer}</div>
-        <button class="post-action">一緒にプレイする</button>
-      </div>
-    </div>
-  `;
+function updateHeader(loggedIn) {
+  const hr = document.getElementById('header-right');
+  hr.innerHTML = loggedIn
+    ? `<span class="user-nick">👤 ${currentNickname}</span>
+       <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="openProfileModal()">編集</button>
+       <button class="btn btn-ghost" onclick="openForm()">＋ 募集する</button>
+       <button class="btn btn-red" onclick="doLogout()">ログアウト</button>`
+    : `<button class="btn btn-ghost" onclick="openAuthModal('login')">ログイン</button>
+       <button class="btn btn-primary" onclick="openAuthModal('signup')">新規登録</button>`;
 }
 
-// ── 投稿読み込み ──
+function openAuthModal(tab) { document.getElementById('auth-overlay').classList.add('open'); switchAuthTab(tab); }
+function switchAuthTab(tab) {
+  document.getElementById('auth-login').style.display = tab==='login'?'block':'none';
+  document.getElementById('auth-signup').style.display = tab==='signup'?'block':'none';
+  document.getElementById('tab-login').classList.toggle('active', tab==='login');
+  document.getElementById('tab-signup').classList.toggle('active', tab==='signup');
+}
+
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  if (!email||!password) { showToast('メールとパスワードを入力してください'); return; }
+  const { data, error } = await db.auth.signInWithPassword({ email, password });
+  if (error) { showToast('ログイン失敗: ' + error.message); return; }
+  currentUser = data.user;
+  await loadNickname();
+  updateHeader(true);
+  closeModal('auth-overlay');
+  showToast(`おかえりなさい、${currentNickname}さん！`);
+}
+
+async function doSignup() {
+  const nick = document.getElementById('signup-nick').value.trim();
+  const email = document.getElementById('signup-email').value.trim();
+  const password = document.getElementById('signup-password').value;
+  if (!nick) { showToast('ニックネームを入力してください'); return; }
+  if (!email||!password) { showToast('メールとパスワードを入力してください'); return; }
+  if (password.length < 6) { showToast('パスワードは6文字以上にしてください'); return; }
+  const { data, error } = await db.auth.signUp({ email, password });
+  if (error) { showToast('登録失敗: ' + error.message); return; }
+  if (data.user) await db.from('users').upsert([{ id: data.user.id, nickname: nick }]);
+  closeModal('auth-overlay');
+  showToast('確認メールを送信しました。メール内のリンクをクリックしてください。');
+}
+
+async function doLogout() {
+  await db.auth.signOut();
+  currentUser = null; currentNickname = '';
+  updateHeader(false);
+  showToast('ログアウトしました');
+}
+
+function openProfileModal() {
+  document.getElementById('profile-nick').value = currentNickname;
+  document.getElementById('profile-modal').classList.add('open');
+}
+
+async function updateNickname() {
+  const nick = document.getElementById('profile-nick').value.trim();
+  if (!nick) { showToast('ニックネームを入力してください'); return; }
+  const { error } = await db.from('users').update({ nickname: nick }).eq('id', currentUser.id);
+  if (error) { showToast('更新失敗'); return; }
+  currentNickname = nick;
+  updateHeader(true);
+  closeModal('profile-modal');
+  showToast('ニックネームを更新しました');
+}
+
 async function loadPosts() {
   const now = new Date().toISOString();
-  const { data, error } = await db
-    .from('posts')
-    .select('*')
-    .gt('expires_at', now)
-    .order('created_at', { ascending: false });
-
+  const { data, error } = await db.from('posts').select('*').gt('expires_at', now).order('created_at', { ascending: false });
   if (error) { console.error(error); return; }
   allPosts = data || [];
   renderAll();
-  updateOnlineCount();
+}
+
+function getFiltered() {
+  const r = document.getElementById('filter-role')?.value||'';
+  const rk = document.getElementById('filter-rank')?.value||'';
+  const s = document.getElementById('filter-style')?.value||'';
+  return allPosts.filter(p => (!r||p.role===r) && (!rk||p.rank===rk) && (!s||p.play_style===s));
 }
 
 function renderAll() {
+  const filtered = getFiltered();
+  const badge = document.querySelector('.online-badge');
+  if (badge) badge.innerHTML = `<div class="dot-pulse"></div>今すぐ遊べる ${filtered.length}人`;
   const onlineEl = document.getElementById('online-cards');
   const listEl = document.getElementById('post-list');
-
-  if (allPosts.length === 0) {
+  if (filtered.length === 0) {
     onlineEl.innerHTML = '<div style="color:var(--text-dim);font-size:13px;padding:16px">まだ募集がありません。最初の一人になろう！</div>';
     listEl.innerHTML = '<div style="color:var(--text-dim);font-size:13px;padding:16px;text-align:center">募集がありません</div>';
     return;
   }
-
-  onlineEl.innerHTML = allPosts.slice(0, 4).map((p, i) => playerCardHTML(p, i)).join('');
-  listEl.innerHTML = allPosts.map((p, i) => postCardHTML(p, i)).join('');
+  onlineEl.innerHTML = filtered.slice(0,4).map((p,i) => playerCardHTML(p,i)).join('');
+  listEl.innerHTML = filtered.map((p,i) => postCardHTML(p,i)).join('');
 }
 
-function updateOnlineCount() {
-  const badge = document.querySelector('.online-badge');
-  if (badge) {
-    badge.innerHTML = `<div class="dot-pulse"></div>今すぐ遊べる ${allPosts.length}人`;
-  }
+function playerCardHTML(p, idx) {
+  const emoji = getEmoji(p.user_id||p.id), timer = calcTimer(p.expires_at), vibes = Array.isArray(p.vibes)?p.vibes:[];
+  return `<div class="player-card" onclick="openJoinModal(${idx})">
+    <div class="card-role">${p.role||''} · ${p.rank||''}</div>
+    <div class="card-name">${emoji} ${p.nickname||'名無し'}</div>
+    <div class="card-tags">${vibes.map(v=>`<span class="tag tag-vibe">${v}</span>`).join('')}<span class="tag tag-rank">${p.rank||''}</span><span class="tag tag-role">${p.role||''}</span></div>
+    <div class="card-comment">${p.comment||''}</div>
+    <div class="card-meta"><span class="card-time">${p.play_style||''}</span><span class="card-timer">⏳ ${timer}</span></div>
+    <button class="card-btn">一緒にプレイする</button>
+  </div>`;
 }
 
-// ── 投稿作成 ──
+function postCardHTML(p, idx) {
+  const emoji = getEmoji(p.user_id||p.id), timer = calcTimer(p.expires_at), vibes = Array.isArray(p.vibes)?p.vibes:[];
+  return `<div class="post-card" onclick="openJoinModal(${idx})">
+    <div class="post-avatar">${emoji}</div>
+    <div class="post-info">
+      <div class="post-name">${p.nickname||'名無し'}</div>
+      <div class="post-tags">${vibes.map(v=>`<span class="tag tag-vibe">${v}</span>`).join('')}<span class="tag tag-rank">${p.rank||''}</span><span class="tag tag-role">${p.role||''}</span></div>
+      <div style="font-size:12px;color:var(--silver);margin-top:5px">${p.comment||''}</div>
+    </div>
+    <div class="post-right"><div class="post-timer">⏳ ${timer}</div><button class="post-action">一緒にプレイする</button></div>
+  </div>`;
+}
+
 async function submitPost() {
-  const values = getFormValues();
-  if (!values.nickname) { showToast('ニックネームを入力してください'); return; }
-
-  const { error } = await db.from('posts').insert([values]);
+  if (!currentUser) { showToast('募集するにはログインが必要です'); openAuthModal('login'); return; }
+  const battletag = document.getElementById('f-battletag').value.trim();
+  if (!battletag) { showToast('BattleTagを入力してください'); return; }
+  const { error } = await db.from('posts').insert([{
+    user_id: currentUser.id,
+    nickname: currentNickname,
+    role: document.getElementById('f-role').value,
+    rank: document.getElementById('f-rank').value,
+    play_style: document.getElementById('f-style').value,
+    battletag,
+    discord_id: document.getElementById('f-discord').value.trim(),
+    vibes: Array.from(document.querySelectorAll('#vibe-tags-container .vibe-tag.selected')).map(t=>t.textContent),
+    comment: document.getElementById('f-comment').value.trim(),
+    expires_at: new Date(Date.now() + 2*60*60*1000).toISOString()
+  }]);
   if (error) { showToast('投稿に失敗しました'); console.error(error); return; }
-
   closeModal('form-overlay');
   showToast('募集を投稿しました！');
   await loadPosts();
 }
 
-// ── モーダル ──
 function openJoinModal(idx) {
-  const p = allPosts[idx];
+  const p = getFiltered()[idx];
   if (!p) return;
   selectedPost = p;
-  const emoji = getEmoji(p.id);
-  const vibes = Array.isArray(p.vibes) ? p.vibes : [];
+  const emoji = getEmoji(p.user_id||p.id), vibes = Array.isArray(p.vibes)?p.vibes:[];
   document.getElementById('modal-player-info').innerHTML = `
     <div class="modal-avatar">${emoji}</div>
     <div>
-      <div style="font-size:16px;font-weight:700;margin-bottom:4px">${p.nickname}</div>
-      <div class="card-tags">
-        ${vibes.map(v => `<span class="tag tag-vibe">${v}</span>`).join('')}
-        <span class="tag tag-rank">${p.rank}</span>
-      </div>
-      <div style="font-size:12px;color:var(--silver);margin-top:6px">${p.comment || ''}</div>
-    </div>
-  `;
+      <div style="font-size:16px;font-weight:700;margin-bottom:4px">${p.nickname||'名無し'}</div>
+      <div class="card-tags">${vibes.map(v=>`<span class="tag tag-vibe">${v}</span>`).join('')}<span class="tag tag-rank">${p.rank||''}</span></div>
+      <div style="font-size:12px;color:var(--silver);margin-top:6px">${p.comment||''}</div>
+      ${p.battletag?`<div style="font-size:12px;color:var(--orange);margin-top:6px">🎮 ${p.battletag}</div>`:''}
+      ${p.discord_id?`<div style="font-size:12px;color:var(--blue);margin-top:4px">💬 ${p.discord_id}</div>`:''}
+    </div>`;
   document.getElementById('join-modal').classList.add('open');
 }
 
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
+async function copyBattleTag() {
+  if (!selectedPost?.battletag) { showToast('BattleTagが登録されていません'); return; }
+  try { await navigator.clipboard.writeText(selectedPost.battletag); } catch {}
+  showToast('BattleTag: ' + selectedPost.battletag);
+  closeModal('join-modal');
 }
 
+async function copyDiscordId() {
+  if (!selectedPost?.discord_id) { showToast('Discord IDが登録されていません'); return; }
+  try { await navigator.clipboard.writeText(selectedPost.discord_id); } catch {}
+  showToast('Discord ID: ' + selectedPost.discord_id);
+  closeModal('join-modal');
+}
+
+async function copyInviteLink() {
+  const url = window.location.href;
+  try { await navigator.clipboard.writeText(url); showToast('招待リンクをコピーしました'); }
+  catch { showToast('URLをコピーしてください: ' + url); }
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 function openForm() {
+  if (!currentUser) { showToast('募集するにはログインが必要です'); openAuthModal('login'); return; }
   document.getElementById('form-overlay').classList.add('open');
 }
-
-function toggleTag(el) {
-  el.classList.toggle('selected');
-}
-
+function toggleTag(el) { el.classList.toggle('selected'); }
 function switchTab(tab) {
-  document.querySelectorAll('.nav-tab').forEach((t, i) => {
-    t.classList.toggle('active', (i===0&&tab==='recruit')||(i===1&&tab==='teams'));
-  });
+  document.querySelectorAll('.nav-tab').forEach((t,i) => t.classList.toggle('active',(i===0&&tab==='recruit')||(i===1&&tab==='teams')));
   document.getElementById('page-recruit').classList.toggle('active', tab==='recruit');
   document.getElementById('page-teams').classList.toggle('active', tab==='teams');
 }
-
-function filterPosts() { renderAll(); }
-
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// チームはモック維持（将来実装）
 const mockTeams = [
-  { name:'NIGHT OWL', desc:'社会人中心の夜活チーム。怒らない・楽しむが絶対条件。週3〜4で活動中。', members:['み','た','あ','ゆ'], wins:47, games:68, open:true },
+  { name:'NIGHT OWL', desc:'社会人中心の夜活チーム。怒らない・楽しむが絶対条件。', members:['み','た','あ','ゆ'], wins:47, games:68, open:true },
   { name:'RANK CLIMBERS', desc:'プラチナ〜ダイヤ帯でランクを本気で上げたいメンバー募集。VC必須。', members:['R','K','S'], wins:82, games:103, open:true },
-  { name:'CASUAL SQUAD', desc:'週末にわいわいやる緩めのチーム。初心者歓迎。雰囲気重視。', members:['C','A','S','U','L'], wins:23, games:51, open:false },
-  { name:'SUPPORT CLUB', desc:'サポートメイン同士で固定を作りたい。ロールキュー待ち時間を短縮しよう。', members:['S','U','P'], wins:31, games:45, open:true },
+  { name:'CASUAL SQUAD', desc:'週末にわいわいやる緩めのチーム。初心者歓迎。', members:['C','A','S','U','L'], wins:23, games:51, open:false },
+  { name:'SUPPORT CLUB', desc:'サポートメイン同士で固定を作りたい。', members:['S','U','P'], wins:31, games:45, open:true },
 ];
 
 function renderTeams() {
-  const container = document.getElementById('team-grid');
-  container.innerHTML = mockTeams.map(t => `
+  document.getElementById('team-grid').innerHTML = mockTeams.map(t => `
     <div class="team-card" onclick="showToast('チーム詳細は近日公開予定です')">
       <div class="team-name">${t.name}</div>
       <div class="team-desc">${t.desc}</div>
-      <div class="team-members">
-        ${t.members.map(m => `<div class="member-avatar">${m}</div>`).join('')}
-        <div style="margin-left:12px;font-size:12px;color:var(--text-dim);align-self:center">${t.members.length}人</div>
-      </div>
-      <div class="team-stats">
-        <div class="team-stat"><strong>${t.wins}</strong>勝</div>
-        <div class="team-stat"><strong>${t.games}</strong>試合</div>
-        <div class="team-stat"><strong>${Math.round(t.wins/t.games*100)}%</strong>勝率</div>
-      </div>
+      <div class="team-members">${t.members.map(m=>`<div class="member-avatar">${m}</div>`).join('')}<div style="margin-left:12px;font-size:12px;color:var(--text-dim);align-self:center">${t.members.length}人</div></div>
+      <div class="team-stats"><div class="team-stat"><strong>${t.wins}</strong>勝</div><div class="team-stat"><strong>${t.games}</strong>試合</div><div class="team-stat"><strong>${Math.round(t.wins/t.games*100)}%</strong>勝率</div></div>
       <div class="team-recruiting">
-        <span class="recruiting-badge ${t.open ? 'recruiting-open' : 'recruiting-closed'}">
-          ${t.open ? '🟢 メンバー募集中' : '⚫ 募集停止中'}
-        </span>
-        ${t.open ? '<button class="post-action" style="font-size:11px;padding:5px 10px">参加を申請</button>' : ''}
+        <span class="recruiting-badge ${t.open?'recruiting-open':'recruiting-closed'}">${t.open?'🟢 メンバー募集中':'⚫ 募集停止中'}</span>
+        ${t.open?'<button class="post-action" style="font-size:11px;padding:5px 10px">参加を申請</button>':''}
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
-// 閉じる
-document.querySelectorAll('.modal-overlay, .form-overlay').forEach(el => {
-  el.addEventListener('click', e => { if(e.target === el) el.classList.remove('open'); });
+document.querySelectorAll('.modal-overlay,.form-overlay,.auth-overlay').forEach(el => {
+  el.addEventListener('click', e => { if(e.target===el) el.classList.remove('open'); });
 });
 
-// 初期化
+checkAuth();
 loadPosts();
 renderTeams();
-
-// 5分ごとに自動更新
 setInterval(loadPosts, 5 * 60 * 1000);
 </script>
 </body>
