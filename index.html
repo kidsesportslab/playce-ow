@@ -575,7 +575,20 @@ function renderTeams() {
 document.querySelectorAll('.modal-overlay,.form-overlay,.auth-overlay').forEach(el => {
   el.addEventListener('click', e => { if(e.target===el) el.classList.remove('open'); });
 });
-
+// メール認証後のトークン処理
+const hash = window.location.hash;
+if (hash && hash.includes('access_token')) {
+  db.auth.getSession().then(({ data: { session } }) => {
+    if (session) {
+      currentUser = session.user;
+      loadNickname().then(() => {
+        updateHeader(true);
+        showToast('メール認証が完了しました！');
+        window.history.replaceState(null, '', window.location.pathname);
+      });
+    }
+  });
+}
 checkAuth();
 loadPosts();
 renderTeams();
