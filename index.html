@@ -397,10 +397,12 @@ async function doSignup() {
     data: { nickname: nick }
   }
 });
-  if (error) { showToast('登録失敗: ' + error.message); return; }
-  if (data.user) await db.from('users').upsert([{ id: data.user.id, nickname: nick }]);
-  closeModal('auth-overlay');
-  showToast('確認メールを送信しました。メール内のリンクをクリックしてください。');
+  if (error && error.message !== 'Error sending confirmation email') {
+  showToast('登録失敗: ' + error.message); return;
+}
+if (data.user) await db.from('users').upsert([{ id: data.user.id, nickname: nick }]);
+closeModal('auth-overlay');
+showToast('登録完了！ログインしてください。');
 }
 
 async function doLogout() {
