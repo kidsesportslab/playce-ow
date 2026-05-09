@@ -79,8 +79,12 @@
   .post-list{display:flex;flex-direction:column;gap:10px;}
   .post-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:all 0.2s;}
   .post-card:hover{border-color:rgba(245,166,35,0.4);background:var(--surface2);}
-  .post-card.ranked{border-left:3px solid var(--orange);}
-  .post-card.unranked{border-left:3px solid var(--silver);}
+  .post-card.ranked{border-left:3px solid var(--orange);background:rgba(245,166,35,0.04);}
+  .post-card.ranked:hover{background:rgba(245,166,35,0.08);}
+  .post-card.unranked{border-left:3px solid var(--silver);background:rgba(138,155,181,0.04);}
+  .post-card.unranked:hover{background:rgba(138,155,181,0.07);}
+  .player-card.ranked{border-left:3px solid var(--orange);background:rgba(245,166,35,0.04);}
+  .player-card.unranked{border-left:3px solid var(--silver);background:rgba(138,155,181,0.04);}
   .post-avatar{width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--orange),#ff6b35);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
   .post-info{flex:1;}
   .post-name{font-size:15px;font-weight:600;margin-bottom:4px;}
@@ -269,6 +273,9 @@
     <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
       <button class="modal-btn modal-btn-secondary" onclick="copyPlayerContact()">
         📋 IDをコピーして直接連絡
+      </button>
+      <button id="modal-delete-btn" class="modal-btn" style="display:none;background:transparent;color:var(--red);border:1px solid var(--red)" onclick="deletePostFromModal()">
+        🗑️ この募集を削除する
       </button>
     </div>
   </div>
@@ -650,7 +657,25 @@ function openJoinModal(idx){
       </div>
       <button class="modal-btn modal-btn-primary" onclick="submitApplication()">参加申請を送る</button>`;
   }
+  // 削除ボタンの表示制御
+  const deleteBtn=document.getElementById('modal-delete-btn');
+  if(deleteBtn){
+    if(currentUser&&p.user_id===currentUser.id){
+      deleteBtn.style.display='flex';
+    } else {
+      deleteBtn.style.display='none';
+    }
+  }
   document.getElementById('join-modal').classList.add('open');
+}
+
+async function deletePostFromModal(){
+  if(!selectedPost) return;
+  if(!confirm('この募集を削除しますか？')) return;
+  const {error}=await db.from('posts').delete().eq('id',selectedPost.id).eq('user_id',currentUser.id);
+  if(error){showToast('削除に失敗しました');return;}
+  closeModal('join-modal');
+  showToast('募集を削除しました');await loadPosts();
 }
 
 async function submitApplication(){
