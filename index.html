@@ -7,135 +7,157 @@
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0c0f; --surface: #12161c; --surface2: #1a1f28; --border: #252b36;
-    --orange: #f5a623; --orange-dim: rgba(245,166,35,0.12);
-    --blue: #4fc3f7; --blue-dim: rgba(79,195,247,0.1);
-    --silver: #8a9bb5; --silver-light: #c4d0e0;
-    --text: #e8edf5; --text-dim: #6b7a8f;
-    --green: #4caf7d; --red: #e05c5c; --radius: 10px;
+    --bg:#0a0c0f; --surface:#12161c; --surface2:#1a1f28; --border:#252b36;
+    --orange:#f5a623; --orange-dim:rgba(245,166,35,0.12);
+    --blue:#4fc3f7; --blue-dim:rgba(79,195,247,0.1);
+    --silver:#8a9bb5; --silver-light:#c4d0e0;
+    --text:#e8edf5; --text-dim:#6b7a8f;
+    --green:#4caf7d; --red:#e05c5c; --purple:#ce93d8; --radius:10px;
   }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:var(--bg); color:var(--text); font-family:'Noto Sans JP',sans-serif; font-size:14px; min-height:100vh; overflow-x:hidden; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:14px;min-height:100vh;overflow-x:hidden;}
 
-  header { position:sticky; top:0; z-index:100; background:rgba(10,12,15,0.92); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:56px; }
-  .logo { font-family:'Rajdhani',sans-serif; font-size:22px; font-weight:700; letter-spacing:3px; }
-  .logo span { color:var(--orange); }
-  .logo-sub { font-size:10px; color:var(--text-dim); letter-spacing:2px; margin-left:8px; font-family:'Rajdhani',sans-serif; }
-  .header-right { display:flex; gap:10px; align-items:center; }
-  .user-nick { font-size:13px; color:var(--silver); }
+  header{position:sticky;top:0;z-index:100;background:rgba(10,12,15,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;}
+  .logo{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;letter-spacing:3px;}
+  .logo span{color:var(--orange);}
+  .logo-sub{font-size:10px;color:var(--text-dim);letter-spacing:2px;margin-left:8px;font-family:'Rajdhani',sans-serif;}
+  .header-right{display:flex;gap:10px;align-items:center;}
+  .user-nick{font-size:13px;color:var(--silver);}
 
-  .btn { padding:8px 18px; border-radius:6px; font-size:13px; font-weight:500; cursor:pointer; border:none; font-family:'Noto Sans JP',sans-serif; transition:all 0.2s; }
-  .btn-primary { background:var(--orange); color:#000; }
-  .btn-primary:hover { background:#ffb83f; }
-  .btn-ghost { background:transparent; color:var(--silver); border:1px solid var(--border); }
-  .btn-ghost:hover { border-color:var(--silver); color:var(--text); }
-  .btn-red { background:transparent; color:var(--red); border:1px solid var(--red); font-size:12px; padding:6px 12px; }
+  .btn{padding:8px 18px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;border:none;font-family:'Noto Sans JP',sans-serif;transition:all 0.2s;}
+  .btn-primary{background:var(--orange);color:#000;}
+  .btn-primary:hover{background:#ffb83f;}
+  .btn-ghost{background:transparent;color:var(--silver);border:1px solid var(--border);}
+  .btn-ghost:hover{border-color:var(--silver);color:var(--text);}
+  .btn-red{background:transparent;color:var(--red);border:1px solid var(--red);font-size:12px;padding:6px 12px;}
+  .btn-blue{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(79,195,247,0.3);padding:9px 16px;font-size:13px;}
 
-  .nav-tabs { display:flex; border-bottom:1px solid var(--border); padding:0 24px; background:var(--surface); }
-  .nav-tab { padding:14px 20px; font-size:13px; color:var(--text-dim); cursor:pointer; border-bottom:2px solid transparent; transition:all 0.2s; font-weight:500; }
-  .nav-tab.active { color:var(--orange); border-bottom-color:var(--orange); }
+  .nav-tabs{display:flex;border-bottom:1px solid var(--border);padding:0 24px;background:var(--surface);}
+  .nav-tab{padding:14px 20px;font-size:13px;color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;font-weight:500;}
+  .nav-tab.active{color:var(--orange);border-bottom-color:var(--orange);}
 
-  .container { max-width:1100px; margin:0 auto; padding:24px; }
-  .now-online-section { margin-bottom:32px; }
-  .section-header { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
-  .section-title { font-family:'Rajdhani',sans-serif; font-size:16px; font-weight:600; letter-spacing:1px; color:var(--silver-light); }
-  .online-badge { display:flex; align-items:center; gap:6px; background:rgba(76,175,125,0.12); border:1px solid rgba(76,175,125,0.3); padding:3px 10px; border-radius:20px; font-size:12px; color:var(--green); font-weight:500; }
-  .dot-pulse { width:6px; height:6px; background:var(--green); border-radius:50%; animation:pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
-  .cards-scroll { display:flex; gap:14px; overflow-x:auto; padding-bottom:8px; scrollbar-width:none; }
-  .cards-scroll::-webkit-scrollbar { display:none; }
+  .container{max-width:1100px;margin:0 auto;padding:24px;}
+  .now-online-section{margin-bottom:32px;}
+  .section-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+  .section-title{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:600;letter-spacing:1px;color:var(--silver-light);}
+  .online-badge{display:flex;align-items:center;gap:6px;background:rgba(76,175,125,0.12);border:1px solid rgba(76,175,125,0.3);padding:3px 10px;border-radius:20px;font-size:12px;color:var(--green);font-weight:500;}
+  .dot-pulse{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+  .cards-scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;}
+  .cards-scroll::-webkit-scrollbar{display:none;}
 
-  .player-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px; min-width:220px; max-width:220px; cursor:pointer; transition:all 0.2s; position:relative; overflow:hidden; }
-  .player-card::before { content:''; position:absolute; top:0;left:0;right:0; height:2px; background:linear-gradient(90deg,var(--orange),transparent); opacity:0; transition:opacity 0.2s; }
-  .player-card:hover { border-color:var(--orange); transform:translateY(-2px); box-shadow:0 8px 24px rgba(245,166,35,0.1); }
-  .player-card:hover::before { opacity:1; }
-  .card-role { font-size:10px; color:var(--text-dim); letter-spacing:1px; font-family:'Rajdhani',sans-serif; margin-bottom:6px; }
-  .card-name { font-size:16px; font-weight:700; margin-bottom:6px; }
-  .card-tags { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:10px; }
-  .tag { font-size:10px; padding:2px 7px; border-radius:3px; font-weight:500; }
-  .tag-vibe { background:var(--orange-dim); color:var(--orange); border:1px solid rgba(245,166,35,0.2); }
-  .tag-rank { background:var(--blue-dim); color:var(--blue); border:1px solid rgba(79,195,247,0.2); }
-  .tag-role { background:rgba(138,155,181,0.1); color:var(--silver); border:1px solid rgba(138,155,181,0.2); }
-  .card-comment { font-size:12px; color:var(--silver); line-height:1.5; margin-bottom:10px; border-left:2px solid var(--border); padding-left:8px; }
-  .card-meta { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
-  .card-time { font-size:11px; color:var(--text-dim); }
-  .card-timer { font-size:11px; color:var(--orange); font-family:'Rajdhani',sans-serif; font-weight:600; }
-  .card-btn { width:100%; padding:9px; background:var(--orange); color:#000; border:none; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; font-family:'Noto Sans JP',sans-serif; }
-  .card-btn:hover { background:#ffb83f; }
+  /* PLAYER CARD */
+  .player-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;min-width:220px;max-width:220px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
+  .player-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--orange),transparent);opacity:0;transition:opacity 0.2s;}
+  .player-card:hover{border-color:var(--orange);transform:translateY(-2px);box-shadow:0 8px 24px rgba(245,166,35,0.1);}
+  .player-card:hover::before{opacity:1;}
+  .player-card.ranked{border-left:3px solid var(--orange);}
+  .player-card.unranked{border-left:3px solid var(--silver);}
+  .card-role{font-size:10px;color:var(--text-dim);letter-spacing:1px;font-family:'Rajdhani',sans-serif;margin-bottom:6px;}
+  .card-name{font-size:16px;font-weight:700;margin-bottom:6px;}
+  .card-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;}
+  .tag{font-size:10px;padding:2px 7px;border-radius:3px;font-weight:500;}
+  .tag-vibe{background:var(--orange-dim);color:var(--orange);border:1px solid rgba(245,166,35,0.2);}
+  .tag-rank{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(79,195,247,0.2);}
+  .tag-role{background:rgba(138,155,181,0.1);color:var(--silver);border:1px solid rgba(138,155,181,0.2);}
+  .tag-platform{background:rgba(206,147,216,0.1);color:var(--purple);border:1px solid rgba(206,147,216,0.2);}
+  .tag-unranked{background:rgba(138,155,181,0.1);color:var(--silver);border:1px solid rgba(138,155,181,0.2);}
+  .tag-ranked{background:var(--orange-dim);color:var(--orange);border:1px solid rgba(245,166,35,0.2);}
+  .card-comment{font-size:12px;color:var(--silver);line-height:1.5;margin-bottom:10px;border-left:2px solid var(--border);padding-left:8px;}
+  .card-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+  .card-time{font-size:11px;color:var(--text-dim);}
+  .card-timer{font-size:11px;color:var(--orange);font-family:'Rajdhani',sans-serif;font-weight:600;}
+  .card-btn{width:100%;padding:9px;background:var(--orange);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Noto Sans JP',sans-serif;}
+  .card-btn:hover{background:#ffb83f;}
 
-  .filter-bar { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
-  .filter-select { background:var(--surface); border:1px solid var(--border); color:var(--silver); padding:7px 12px; border-radius:6px; font-size:12px; cursor:pointer; font-family:'Noto Sans JP',sans-serif; }
-  .filter-select:focus { outline:none; border-color:var(--orange); }
+  /* FILTER */
+  .filter-bar{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+  .filter-select{background:var(--surface);border:1px solid var(--border);color:var(--silver);padding:7px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;}
+  .filter-select:focus{outline:none;border-color:var(--orange);}
 
-  .post-list { display:flex; flex-direction:column; gap:10px; }
-  .post-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 20px; display:flex; align-items:center; gap:16px; cursor:pointer; transition:all 0.2s; }
-  .post-card:hover { border-color:rgba(245,166,35,0.4); background:var(--surface2); }
-  .post-avatar { width:44px; height:44px; border-radius:8px; background:linear-gradient(135deg,var(--orange),#ff6b35); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
-  .post-info { flex:1; }
-  .post-name { font-size:15px; font-weight:600; margin-bottom:4px; }
-  .post-tags { display:flex; gap:4px; flex-wrap:wrap; }
-  .post-right { text-align:right; flex-shrink:0; }
-  .post-timer { font-size:12px; color:var(--orange); font-family:'Rajdhani',sans-serif; font-weight:600; }
-  .post-action { margin-top:6px; padding:6px 14px; background:transparent; border:1px solid var(--orange); color:var(--orange); border-radius:5px; font-size:12px; cursor:pointer; font-family:'Noto Sans JP',sans-serif; transition:all 0.2s; }
-  .post-action:hover { background:var(--orange); color:#000; }
+  /* POST LIST */
+  .post-list{display:flex;flex-direction:column;gap:10px;}
+  .post-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:all 0.2s;}
+  .post-card:hover{border-color:rgba(245,166,35,0.4);background:var(--surface2);}
+  .post-card.ranked{border-left:3px solid var(--orange);}
+  .post-card.unranked{border-left:3px solid var(--silver);}
+  .post-avatar{width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--orange),#ff6b35);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+  .post-info{flex:1;}
+  .post-name{font-size:15px;font-weight:600;margin-bottom:4px;}
+  .post-tags{display:flex;gap:4px;flex-wrap:wrap;}
+  .post-right{text-align:right;flex-shrink:0;}
+  .post-timer{font-size:12px;color:var(--orange);font-family:'Rajdhani',sans-serif;font-weight:600;}
+  .post-action{margin-top:6px;padding:6px 14px;background:transparent;border:1px solid var(--orange);color:var(--orange);border-radius:5px;font-size:12px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all 0.2s;}
+  .post-action:hover{background:var(--orange);color:#000;}
 
-  .team-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px; }
-  .team-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px; cursor:pointer; transition:all 0.2s; }
-  .team-card:hover { border-color:var(--blue); transform:translateY(-2px); }
-  .team-name { font-family:'Rajdhani',sans-serif; font-size:18px; font-weight:700; letter-spacing:1px; margin-bottom:4px; }
-  .team-desc { font-size:12px; color:var(--silver); margin-bottom:12px; line-height:1.5; }
-  .team-members { display:flex; margin-bottom:10px; }
-  .member-avatar { width:28px; height:28px; border-radius:50%; border:2px solid var(--surface); background:linear-gradient(135deg,#4fc3f7,#0288d1); display:flex; align-items:center; justify-content:center; font-size:11px; margin-right:-6px; }
-  .team-stats { display:flex; gap:16px; font-size:11px; color:var(--text-dim); margin-bottom:12px; }
-  .team-stat strong { color:var(--silver-light); font-family:'Rajdhani',sans-serif; font-size:14px; }
-  .team-recruiting { display:flex; align-items:center; justify-content:space-between; }
-  .recruiting-badge { font-size:11px; padding:3px 8px; border-radius:3px; font-weight:600; }
-  .recruiting-open { background:rgba(76,175,125,0.12); color:var(--green); border:1px solid rgba(76,175,125,0.3); }
-  .recruiting-closed { background:rgba(138,155,181,0.08); color:var(--text-dim); border:1px solid var(--border); }
+  /* TEAM */
+  .team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+  .team-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;cursor:pointer;transition:all 0.2s;}
+  .team-card:hover{border-color:var(--blue);transform:translateY(-2px);}
+  .team-name{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;letter-spacing:1px;margin-bottom:4px;}
+  .team-desc{font-size:12px;color:var(--silver);margin-bottom:12px;line-height:1.5;}
+  .team-members{display:flex;margin-bottom:10px;}
+  .member-avatar{width:28px;height:28px;border-radius:50%;border:2px solid var(--surface);background:linear-gradient(135deg,#4fc3f7,#0288d1);display:flex;align-items:center;justify-content:center;font-size:11px;margin-right:-6px;}
+  .team-stats{display:flex;gap:16px;font-size:11px;color:var(--text-dim);margin-bottom:12px;}
+  .team-stat strong{color:var(--silver-light);font-family:'Rajdhani',sans-serif;font-size:14px;}
+  .team-recruiting{display:flex;align-items:center;justify-content:space-between;}
+  .recruiting-badge{font-size:11px;padding:3px 8px;border-radius:3px;font-weight:600;}
+  .recruiting-open{background:rgba(76,175,125,0.12);color:var(--green);border:1px solid rgba(76,175,125,0.3);}
+  .recruiting-closed{background:rgba(138,155,181,0.08);color:var(--text-dim);border:1px solid var(--border);}
 
-  .modal-overlay,.form-overlay,.auth-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:200; align-items:center; justify-content:center; }
-  .modal-overlay.open,.form-overlay.open,.auth-overlay.open { display:flex; }
-  .modal,.form-modal,.auth-modal { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:28px; width:90%; position:relative; animation:slideUp 0.2s ease; }
-  .modal { max-width:420px; }
-  .form-modal { max-width:460px; max-height:90vh; overflow-y:auto; }
-  .auth-modal { max-width:400px; }
-  @keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-  .modal-close { position:absolute; top:16px; right:16px; background:none; border:none; color:var(--text-dim); font-size:20px; cursor:pointer; }
-  .modal-title { font-family:'Rajdhani',sans-serif; font-size:20px; font-weight:700; margin-bottom:6px; }
-  .modal-sub { font-size:12px; color:var(--text-dim); margin-bottom:20px; }
-  .modal-player { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:14px; margin-bottom:20px; display:flex; gap:12px; align-items:center; }
-  .modal-avatar { width:44px; height:44px; border-radius:8px; background:linear-gradient(135deg,var(--orange),#ff6b35); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
-  .modal-actions { display:flex; flex-direction:column; gap:10px; }
-  .modal-btn { width:100%; padding:12px; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; border:none; font-family:'Noto Sans JP',sans-serif; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:8px; }
-  .modal-btn-primary { background:var(--orange); color:#000; }
-  .modal-btn-primary:hover { background:#ffb83f; }
-  .modal-btn-secondary { background:var(--blue-dim); color:var(--blue); border:1px solid rgba(79,195,247,0.3); }
-  .modal-btn-secondary:hover { background:rgba(79,195,247,0.2); }
+  /* MODAL */
+  .modal-overlay,.form-overlay,.auth-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:200;align-items:center;justify-content:center;}
+  .modal-overlay.open,.form-overlay.open,.auth-overlay.open{display:flex;}
+  .modal,.form-modal,.auth-modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;width:90%;position:relative;animation:slideUp 0.2s ease;}
+  .modal{max-width:460px;}
+  .form-modal{max-width:460px;max-height:90vh;overflow-y:auto;}
+  .auth-modal{max-width:400px;}
+  @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  .modal-close{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--text-dim);font-size:20px;cursor:pointer;}
+  .modal-title{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;margin-bottom:6px;}
+  .modal-sub{font-size:12px;color:var(--text-dim);margin-bottom:20px;}
+  .modal-player{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start;}
+  .modal-avatar{width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--orange),#ff6b35);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+  .modal-actions{display:flex;flex-direction:column;gap:10px;}
+  .modal-btn{width:100%;padding:12px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;font-family:'Noto Sans JP',sans-serif;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .modal-btn-primary{background:var(--orange);color:#000;}
+  .modal-btn-primary:hover{background:#ffb83f;}
+  .modal-btn-secondary{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(79,195,247,0.3);}
+  .modal-btn-secondary:hover{background:rgba(79,195,247,0.2);}
 
-  .form-group { margin-bottom:16px; }
-  .form-label { display:block; font-size:12px; color:var(--silver); margin-bottom:6px; font-weight:500; }
-  .form-input,.form-select,.form-textarea { width:100%; background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:10px 12px; border-radius:7px; font-size:13px; font-family:'Noto Sans JP',sans-serif; transition:border-color 0.2s; }
-  .form-input:focus,.form-select:focus,.form-textarea:focus { outline:none; border-color:var(--orange); }
-  .form-textarea { resize:vertical; min-height:70px; }
-  .vibe-tags { display:flex; flex-wrap:wrap; gap:6px; }
-  .vibe-tag { padding:5px 12px; border-radius:4px; font-size:12px; cursor:pointer; border:1px solid var(--border); color:var(--text-dim); background:var(--surface2); transition:all 0.15s; user-select:none; }
-  .vibe-tag.selected { background:var(--orange-dim); border-color:var(--orange); color:var(--orange); }
+  /* FORM */
+  .form-group{margin-bottom:16px;}
+  .form-label{display:block;font-size:12px;color:var(--silver);margin-bottom:6px;font-weight:500;}
+  .form-input,.form-select,.form-textarea{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:7px;font-size:13px;font-family:'Noto Sans JP',sans-serif;transition:border-color 0.2s;}
+  .form-input:focus,.form-select:focus,.form-textarea:focus{outline:none;border-color:var(--orange);}
+  .form-textarea{resize:vertical;min-height:70px;}
+  .vibe-tags{display:flex;flex-wrap:wrap;gap:6px;}
+  .vibe-tag{padding:5px 12px;border-radius:4px;font-size:12px;cursor:pointer;border:1px solid var(--border);color:var(--text-dim);background:var(--surface2);transition:all 0.15s;user-select:none;}
+  .vibe-tag.selected{background:var(--orange-dim);border-color:var(--orange);color:var(--orange);}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 
-  .auth-tabs { display:flex; margin-bottom:24px; border-bottom:1px solid var(--border); }
-  .auth-tab { flex:1; padding:10px; text-align:center; font-size:14px; font-weight:600; cursor:pointer; color:var(--text-dim); border-bottom:2px solid transparent; transition:all 0.2s; }
-  .auth-tab.active { color:var(--orange); border-bottom-color:var(--orange); }
+  /* AUTH */
+  .auth-tabs{display:flex;margin-bottom:24px;border-bottom:1px solid var(--border);}
+  .auth-tab{flex:1;padding:10px;text-align:center;font-size:14px;font-weight:600;cursor:pointer;color:var(--text-dim);border-bottom:2px solid transparent;transition:all 0.2s;}
+  .auth-tab.active{color:var(--orange);border-bottom-color:var(--orange);}
 
-  .invite-box { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px; margin-top:24px; text-align:center; }
-  .invite-title { font-family:'Rajdhani',sans-serif; font-size:18px; font-weight:600; margin-bottom:8px; color:var(--silver-light); }
-  .invite-desc { font-size:12px; color:var(--text-dim); margin-bottom:16px; }
-  .invite-link { background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:10px 16px; font-size:12px; color:var(--blue); font-family:'Rajdhani',sans-serif; display:inline-block; margin-bottom:12px; }
+  /* INVITE */
+  .invite-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-top:24px;text-align:center;}
+  .invite-title{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:600;margin-bottom:8px;color:var(--silver-light);}
+  .invite-desc{font-size:12px;color:var(--text-dim);margin-bottom:16px;}
+  .invite-link{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 16px;font-size:12px;color:var(--blue);font-family:'Rajdhani',sans-serif;display:inline-block;margin-bottom:12px;}
 
-  .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--surface2); border:1px solid var(--orange); color:var(--text); padding:12px 24px; border-radius:8px; font-size:13px; z-index:300; transition:transform 0.3s ease; }
-  .toast.show { transform:translateX(-50%) translateY(0); }
+  /* TOAST */
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--surface2);border:1px solid var(--orange);color:var(--text);padding:12px 24px;border-radius:8px;font-size:13px;z-index:300;transition:transform 0.3s ease;}
+  .toast.show{transform:translateX(-50%) translateY(0);}
 
-  .page { display:none; }
-  .page.active { display:block; }
-  .divider { height:1px; background:var(--border); margin:24px 0; }
+  .page{display:none;}
+  .page.active{display:block;}
+  .divider{height:1px;background:var(--border);margin:24px 0;}
+
+  /* APPLICATION MODAL */
+  .apply-section{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:16px;margin-top:16px;}
+  .apply-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px;}
 </style>
 </head>
 <body>
@@ -167,6 +189,18 @@
     </div>
     <div class="divider"></div>
     <div class="filter-bar">
+      <select class="filter-select" id="filter-platform" onchange="renderAll()">
+        <option value="">PC・CS問わず</option>
+        <option value="PC">PC</option>
+        <option value="PS5">PS5</option>
+        <option value="Xbox">Xbox</option>
+        <option value="Switch">Switch</option>
+      </select>
+      <select class="filter-select" id="filter-mode" onchange="renderAll()">
+        <option value="">ランク・アンランク問わず</option>
+        <option value="ランク">ランク</option>
+        <option value="アンランク">アンランク</option>
+      </select>
       <select class="filter-select" id="filter-role" onchange="renderAll()">
         <option value="">すべてのロール</option>
         <option>タンク</option><option>ダメージ</option><option>サポート</option><option>フレックス</option>
@@ -175,17 +209,13 @@
         <option value="">すべてのランク</option>
         <option>ブロンズ</option><option>シルバー</option><option>ゴールド</option><option>プラチナ</option><option>ダイヤ</option><option>マスター以上</option>
       </select>
-      <select class="filter-select" id="filter-style" onchange="renderAll()">
-        <option value="">スタイル問わず</option>
-        <option>エンジョイ</option><option>ランク上げ重視</option><option>どちらでも</option>
-      </select>
     </div>
     <div class="section-header"><div class="section-title">募集一覧</div></div>
     <div class="post-list" id="post-list"></div>
     <div class="invite-box">
       <div class="invite-title">フレンドを招待する</div>
       <div class="invite-desc">招待リンクを送ると、信頼できる仲間だけが参加できます</div>
-      <div class="invite-link">kidsesportslab.github.io/playce-ow/</div>
+      <div class="invite-link">playcegg.com</div>
       <br>
       <button class="btn btn-primary" onclick="copyInviteLink()">リンクをコピー</button>
     </div>
@@ -206,12 +236,40 @@
 <div class="modal-overlay" id="join-modal">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('join-modal')">✕</button>
-    <div class="modal-title">一緒にプレイしますか？</div>
-    <div class="modal-sub">相手の情報を確認してから参加してください</div>
+    <div class="modal-title">募集詳細</div>
+    <div class="modal-sub">参加申請を送りましょう</div>
     <div class="modal-player" id="modal-player-info"></div>
-    <div class="modal-actions">
-      <button class="modal-btn modal-btn-primary" onclick="copyBattleTag()">🎮 BattleTagをコピーしてフレンド申請</button>
-      <button class="modal-btn modal-btn-secondary" onclick="copyDiscordId()">💬 Discord IDをコピー</button>
+
+    <!-- 参加申請フォーム -->
+    <div class="apply-section" id="apply-section">
+      <div class="apply-title">🎮 参加を申請する</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">メインロール</label>
+          <select class="form-select" id="apply-role">
+            <option>タンク</option><option>ダメージ</option><option>サポート</option><option>フレックス</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">現在のランク</label>
+          <select class="form-select" id="apply-rank">
+            <option>ブロンズ</option><option>シルバー</option><option>ゴールド</option><option>プラチナ</option><option>ダイヤ</option><option>マスター以上</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">一言コメント（任意）</label>
+        <textarea class="form-textarea" id="apply-comment" placeholder="よろしくお願いします！" style="min-height:60px"></textarea>
+      </div>
+      <button class="modal-btn modal-btn-primary" onclick="submitApplication()">
+        参加申請を送る
+      </button>
+    </div>
+
+    <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
+      <button class="modal-btn modal-btn-secondary" onclick="copyPlayerContact()">
+        📋 IDをコピーして直接連絡
+      </button>
     </div>
   </div>
 </div>
@@ -222,25 +280,49 @@
     <button class="modal-close" onclick="closeModal('form-overlay')">✕</button>
     <div class="modal-title" style="margin-bottom:4px">募集を作る</div>
     <div class="modal-sub">一緒に遊ぶメンバーを探しましょう</div>
-    <div class="form-group">
-      <label class="form-label">メインロール</label>
-      <select class="form-select" id="f-role"><option>タンク</option><option>ダメージ</option><option>サポート</option><option>フレックス</option></select>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">プラットフォーム</label>
+        <select class="form-select" id="f-platform">
+          <option>PC</option><option>PS5</option><option>Xbox</option><option>Switch</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">モード</label>
+        <select class="form-select" id="f-mode">
+          <option>ランク</option><option>アンランク</option>
+        </select>
+      </div>
     </div>
-    <div class="form-group">
-      <label class="form-label">ランク帯</label>
-      <select class="form-select" id="f-rank"><option>ブロンズ</option><option>シルバー</option><option>ゴールド</option><option>プラチナ</option><option>ダイヤ</option><option>マスター以上</option></select>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">メインロール</label>
+        <select class="form-select" id="f-role">
+          <option>タンク</option><option>ダメージ</option><option>サポート</option><option>フレックス</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">ランク帯</label>
+        <select class="form-select" id="f-rank">
+          <option>ブロンズ</option><option>シルバー</option><option>ゴールド</option><option>プラチナ</option><option>ダイヤ</option><option>マスター以上</option>
+        </select>
+      </div>
     </div>
+
     <div class="form-group">
-      <label class="form-label">プレイスタイル</label>
-      <select class="form-select" id="f-style"><option>エンジョイ</option><option>ランク上げ重視</option><option>どちらでも</option></select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">BattleTag（例: 名前#1234）</label>
-      <input class="form-input" id="f-battletag" type="text" placeholder="名前#1234">
+      <label class="form-label" id="id-label">BattleTag / PS ID</label>
+      <input class="form-input" id="f-battletag" type="text" placeholder="例: 名前#1234 または PSN名">
     </div>
     <div class="form-group">
       <label class="form-label">Discord ID（任意）</label>
       <input class="form-input" id="f-discord" type="text" placeholder="username">
+    </div>
+    <div class="form-group">
+      <label class="form-label">募集人数</label>
+      <select class="form-select" id="f-maxplayers">
+        <option value="1">1人</option><option value="2">2人</option><option value="3">3人</option><option value="4">4人</option><option value="5" selected>5人（フルパ）</option>
+      </select>
     </div>
     <div class="form-group">
       <label class="form-label">雰囲気（複数選択可）</label>
@@ -296,7 +378,6 @@
         <input class="form-input" id="signup-password" type="password" placeholder="パスワード">
       </div>
       <button class="btn btn-primary" style="width:100%;padding:12px;font-size:14px" onclick="doSignup()">登録する</button>
-      <p style="font-size:11px;color:var(--text-dim);margin-top:12px;text-align:center">登録後、確認メールが届きます。リンクをクリックして認証してください。</p>
     </div>
   </div>
 </div>
@@ -324,250 +405,297 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const emojis = ['🐺','🦅','🐉','🦁','🐻','🦊','🐯','🦋'];
-let allPosts = [], currentUser = null, currentNickname = '', selectedPost = null;
+let allPosts=[], currentUser=null, currentNickname='', selectedPost=null;
 
-function getEmoji(id) {
-  if (!id) return emojis[0];
-  let n = 0;
-  for (let i = 0; i < Math.min(id.length, 8); i++) n += id.charCodeAt(i);
-  return emojis[n % emojis.length];
+function getEmoji(id){
+  if(!id) return emojis[0];
+  let n=0;
+  for(let i=0;i<Math.min(id.length,8);i++) n+=id.charCodeAt(i);
+  return emojis[n%emojis.length];
 }
 
-function calcTimer(expiresAt) {
-  const diff = new Date(expiresAt) - new Date();
-  if (diff <= 0) return '期限切れ';
-  const h = Math.floor(diff / 3600000), m = Math.floor((diff % 3600000) / 60000);
-  return h > 0 ? `残り${h}時間${m}分` : `残り${m}分`;
+function calcTimer(expiresAt){
+  const diff=new Date(expiresAt)-new Date();
+  if(diff<=0) return '期限切れ';
+  const h=Math.floor(diff/3600000),m=Math.floor((diff%3600000)/60000);
+  return h>0?`残り${h}時間${m}分`:`残り${m}分`;
 }
 
-async function checkAuth() {
-  const { data: { user } } = await db.auth.getUser();
-  if (user) { currentUser = user; await loadNickname(); updateHeader(true); }
+// ── 認証 ──
+async function checkAuth(){
+  const {data:{user}}=await db.auth.getUser();
+  if(user){currentUser=user;await loadNickname();updateHeader(true);}
   else updateHeader(false);
 }
 
-async function loadNickname() {
-  const { data } = await db.from('users').select('nickname').eq('id', currentUser.id).single();
-  currentNickname = data?.nickname || currentUser.email.split('@')[0];
+async function loadNickname(){
+  const {data}=await db.from('users').select('nickname').eq('id',currentUser.id).single();
+  currentNickname=data?.nickname||currentUser.email.split('@')[0];
 }
 
-function updateHeader(loggedIn) {
-  const hr = document.getElementById('header-right');
-  hr.innerHTML = loggedIn
-    ? `<span class="user-nick">👤 ${currentNickname}</span>
-       <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="openProfileModal()">編集</button>
-       <button class="btn btn-ghost" onclick="openForm()">＋ 募集する</button>
-       <button class="btn btn-red" onclick="doLogout()">ログアウト</button>`
-    : `<button class="btn btn-ghost" onclick="openAuthModal('login')">ログイン</button>
-       <button class="btn btn-primary" onclick="openAuthModal('signup')">新規登録</button>`;
+function updateHeader(loggedIn){
+  const hr=document.getElementById('header-right');
+  hr.innerHTML=loggedIn
+    ?`<span class="user-nick">👤 ${currentNickname}</span>
+      <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="openProfileModal()">編集</button>
+      <button class="btn btn-ghost" onclick="openForm()">＋ 募集する</button>
+      <button class="btn btn-red" onclick="doLogout()">ログアウト</button>`
+    :`<button class="btn btn-ghost" onclick="openAuthModal('login')">ログイン</button>
+      <button class="btn btn-primary" onclick="openAuthModal('signup')">新規登録</button>`;
 }
 
-function openAuthModal(tab) { document.getElementById('auth-overlay').classList.add('open'); switchAuthTab(tab); }
-function switchAuthTab(tab) {
-  document.getElementById('auth-login').style.display = tab==='login'?'block':'none';
-  document.getElementById('auth-signup').style.display = tab==='signup'?'block':'none';
-  document.getElementById('tab-login').classList.toggle('active', tab==='login');
-  document.getElementById('tab-signup').classList.toggle('active', tab==='signup');
+function openAuthModal(tab){document.getElementById('auth-overlay').classList.add('open');switchAuthTab(tab);}
+function switchAuthTab(tab){
+  document.getElementById('auth-login').style.display=tab==='login'?'block':'none';
+  document.getElementById('auth-signup').style.display=tab==='signup'?'block':'none';
+  document.getElementById('tab-login').classList.toggle('active',tab==='login');
+  document.getElementById('tab-signup').classList.toggle('active',tab==='signup');
 }
 
-async function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
-  if (!email||!password) { showToast('メールとパスワードを入力してください'); return; }
-  const { data, error } = await db.auth.signInWithPassword({ email, password });
-  if (error) { showToast('ログイン失敗: ' + error.message); return; }
-  currentUser = data.user;
-  await loadNickname();
-  updateHeader(true);
+async function doLogin(){
+  const email=document.getElementById('login-email').value.trim();
+  const password=document.getElementById('login-password').value;
+  if(!email||!password){showToast('メールとパスワードを入力してください');return;}
+  const {data,error}=await db.auth.signInWithPassword({email,password});
+  if(error){showToast('ログイン失敗: '+error.message);return;}
+  currentUser=data.user;await loadNickname();updateHeader(true);
+  closeModal('auth-overlay');showToast(`おかえりなさい、${currentNickname}さん！`);
+}
+
+async function doSignup(){
+  const nick=document.getElementById('signup-nick').value.trim();
+  const email=document.getElementById('signup-email').value.trim();
+  const password=document.getElementById('signup-password').value;
+  if(!nick){showToast('ニックネームを入力してください');return;}
+  if(!email||!password){showToast('メールとパスワードを入力してください');return;}
+  if(password.length<6){showToast('パスワードは6文字以上にしてください');return;}
+  const {data,error}=await db.auth.signUp({email,password,options:{data:{nickname:nick}}});
+  if(error&&error.message!=='Error sending confirmation email'){showToast('登録失敗: '+error.message);return;}
+  if(data.user) await db.from('users').upsert([{id:data.user.id,nickname:nick}]);
   closeModal('auth-overlay');
-  showToast(`おかえりなさい、${currentNickname}さん！`);
+  showToast('登録完了！ログインしてください。');
 }
 
-async function doSignup() {
-  const nick = document.getElementById('signup-nick').value.trim();
-  const email = document.getElementById('signup-email').value.trim();
-  const password = document.getElementById('signup-password').value;
-  if (!nick) { showToast('ニックネームを入力してください'); return; }
-  if (!email||!password) { showToast('メールとパスワードを入力してください'); return; }
-  if (password.length < 6) { showToast('パスワードは6文字以上にしてください'); return; }
-  const { data, error } = await db.auth.signUp({ 
-  email, 
-  password,
-  options: {
-    data: { nickname: nick }
-  }
-});
-  if (error && error.message !== 'Error sending confirmation email') {
-  showToast('登録失敗: ' + error.message); return;
-}
-if (data.user) await db.from('users').upsert([{ id: data.user.id, nickname: nick }]);
-closeModal('auth-overlay');
-showToast('登録完了！ログインしてください。');
+async function doLogout(){
+  await db.auth.signOut();currentUser=null;currentNickname='';
+  updateHeader(false);showToast('ログアウトしました');
 }
 
-async function doLogout() {
-  await db.auth.signOut();
-  currentUser = null; currentNickname = '';
-  updateHeader(false);
-  showToast('ログアウトしました');
-}
-
-function openProfileModal() {
-  document.getElementById('profile-nick').value = currentNickname;
+function openProfileModal(){
+  document.getElementById('profile-nick').value=currentNickname;
   document.getElementById('profile-modal').classList.add('open');
 }
 
-async function updateNickname() {
-  const nick = document.getElementById('profile-nick').value.trim();
-  if (!nick) { showToast('ニックネームを入力してください'); return; }
-  const { error } = await db.from('users').update({ nickname: nick }).eq('id', currentUser.id);
-  if (error) { showToast('更新失敗'); return; }
-  currentNickname = nick;
-  updateHeader(true);
-  closeModal('profile-modal');
+async function updateNickname(){
+  const nick=document.getElementById('profile-nick').value.trim();
+  if(!nick){showToast('ニックネームを入力してください');return;}
+  const {error}=await db.from('users').update({nickname:nick}).eq('id',currentUser.id);
+  if(error){showToast('更新失敗');return;}
+  currentNickname=nick;updateHeader(true);closeModal('profile-modal');
   showToast('ニックネームを更新しました');
 }
 
-async function loadPosts() {
-  const now = new Date().toISOString();
-  const { data, error } = await db.from('posts').select('*').gt('expires_at', now).order('created_at', { ascending: false });
-  if (error) { console.error(error); return; }
-  allPosts = data || [];
-  renderAll();
+// ── 投稿 ──
+async function loadPosts(){
+  const now=new Date().toISOString();
+  const {data,error}=await db.from('posts').select('*').gt('expires_at',now).order('created_at',{ascending:false});
+  if(error){console.error(error);return;}
+  allPosts=data||[];renderAll();
 }
 
-function getFiltered() {
-  const r = document.getElementById('filter-role')?.value||'';
-  const rk = document.getElementById('filter-rank')?.value||'';
-  const s = document.getElementById('filter-style')?.value||'';
-  return allPosts.filter(p => (!r||p.role===r) && (!rk||p.rank===rk) && (!s||p.play_style===s));
+function getFiltered(){
+  const p=document.getElementById('filter-platform')?.value||'';
+  const m=document.getElementById('filter-mode')?.value||'';
+  const r=document.getElementById('filter-role')?.value||'';
+  const rk=document.getElementById('filter-rank')?.value||'';
+  return allPosts.filter(post=>
+    (!p||post.platform===p)&&
+    (!m||post.game_mode===m)&&
+    (!r||post.role===r)&&
+    (!rk||post.rank===rk)
+  );
 }
 
-function renderAll() {
-  const filtered = getFiltered();
-  const badge = document.querySelector('.online-badge');
-  if (badge) badge.innerHTML = `<div class="dot-pulse"></div>今すぐ遊べる ${filtered.length}人`;
-  const onlineEl = document.getElementById('online-cards');
-  const listEl = document.getElementById('post-list');
-  if (filtered.length === 0) {
-    onlineEl.innerHTML = '<div style="color:var(--text-dim);font-size:13px;padding:16px">まだ募集がありません。最初の一人になろう！</div>';
-    listEl.innerHTML = '<div style="color:var(--text-dim);font-size:13px;padding:16px;text-align:center">募集がありません</div>';
+function renderAll(){
+  const filtered=getFiltered();
+  const badge=document.querySelector('.online-badge');
+  if(badge) badge.innerHTML=`<div class="dot-pulse"></div>今すぐ遊べる ${filtered.length}人`;
+  const onlineEl=document.getElementById('online-cards');
+  const listEl=document.getElementById('post-list');
+  if(filtered.length===0){
+    onlineEl.innerHTML='<div style="color:var(--text-dim);font-size:13px;padding:16px">まだ募集がありません。最初の一人になろう！</div>';
+    listEl.innerHTML='<div style="color:var(--text-dim);font-size:13px;padding:16px;text-align:center">募集がありません</div>';
     return;
   }
-  onlineEl.innerHTML = filtered.slice(0,4).map((p,i) => playerCardHTML(p,i)).join('');
-  listEl.innerHTML = filtered.map((p,i) => postCardHTML(p,i)).join('');
+  onlineEl.innerHTML=filtered.slice(0,4).map((p,i)=>playerCardHTML(p,i)).join('');
+  listEl.innerHTML=filtered.map((p,i)=>postCardHTML(p,i)).join('');
 }
 
-function playerCardHTML(p, idx) {
-  const emoji = getEmoji(p.user_id||p.id), timer = calcTimer(p.expires_at), vibes = Array.isArray(p.vibes)?p.vibes:[];
-  return `<div class="player-card" onclick="openJoinModal(${idx})">
+function modeClass(p){return p.game_mode==='ランク'?'ranked':p.game_mode==='アンランク'?'unranked':'';}
+
+function playerCardHTML(p,idx){
+  const emoji=getEmoji(p.user_id||p.id),timer=calcTimer(p.expires_at),vibes=Array.isArray(p.vibes)?p.vibes:[];
+  const mc=modeClass(p);
+  return `<div class="player-card ${mc}" onclick="openJoinModal(${idx})">
     <div class="card-role">${p.role||''} · ${p.rank||''}</div>
     <div class="card-name">${emoji} ${p.nickname||'名無し'}</div>
-    <div class="card-tags">${vibes.map(v=>`<span class="tag tag-vibe">${v}</span>`).join('')}<span class="tag tag-rank">${p.rank||''}</span><span class="tag tag-role">${p.role||''}</span></div>
+    <div class="card-tags">
+      ${vibes.map(v=>`<span class="tag tag-vibe">${v}</span>`).join('')}
+      ${p.platform?`<span class="tag tag-platform">${p.platform}</span>`:''}
+      ${p.game_mode?`<span class="tag ${p.game_mode==='ランク'?'tag-ranked':'tag-unranked'}">${p.game_mode}</span>`:''}
+      <span class="tag tag-rank">${p.rank||''}</span>
+    </div>
     <div class="card-comment">${p.comment||''}</div>
     <div class="card-meta"><span class="card-time">${p.play_style||''}</span><span class="card-timer">⏳ ${timer}</span></div>
-    <button class="card-btn">一緒にプレイする</button>
+    <button class="card-btn">参加を申請する</button>
   </div>`;
 }
 
-function postCardHTML(p, idx) {
-  const emoji = getEmoji(p.user_id||p.id), timer = calcTimer(p.expires_at), vibes = Array.isArray(p.vibes)?p.vibes:[];
-  return `<div class="post-card" onclick="openJoinModal(${idx})">
+function postCardHTML(p,idx){
+  const emoji=getEmoji(p.user_id||p.id),timer=calcTimer(p.expires_at),vibes=Array.isArray(p.vibes)?p.vibes:[];
+  const mc=modeClass(p);
+  return `<div class="post-card ${mc}" onclick="openJoinModal(${idx})">
     <div class="post-avatar">${emoji}</div>
     <div class="post-info">
       <div class="post-name">${p.nickname||'名無し'}</div>
-      <div class="post-tags">${vibes.map(v=>`<span class="tag tag-vibe">${v}</span>`).join('')}<span class="tag tag-rank">${p.rank||''}</span><span class="tag tag-role">${p.role||''}</span></div>
+      <div class="post-tags">
+        ${vibes.map(v=>`<span class="tag tag-vibe">${v}</span>`).join('')}
+        ${p.platform?`<span class="tag tag-platform">${p.platform}</span>`:''}
+        ${p.game_mode?`<span class="tag ${p.game_mode==='ランク'?'tag-ranked':'tag-unranked'}">${p.game_mode}</span>`:''}
+        <span class="tag tag-rank">${p.rank||''}</span>
+        <span class="tag tag-role">${p.role||''}</span>
+      </div>
       <div style="font-size:12px;color:var(--silver);margin-top:5px">${p.comment||''}</div>
     </div>
-    <div class="post-right"><div class="post-timer">⏳ ${timer}</div><button class="post-action">一緒にプレイする</button></div>
+    <div class="post-right"><div class="post-timer">⏳ ${timer}</div><button class="post-action">参加申請</button></div>
   </div>`;
 }
 
-async function submitPost() {
-  if (!currentUser) { showToast('募集するにはログインが必要です'); openAuthModal('login'); return; }
-  const battletag = document.getElementById('f-battletag').value.trim();
-  if (!battletag) { showToast('BattleTagを入力してください'); return; }
-  const { error } = await db.from('posts').insert([{
-    user_id: currentUser.id,
-    nickname: currentNickname,
-    role: document.getElementById('f-role').value,
-    rank: document.getElementById('f-rank').value,
-    play_style: document.getElementById('f-style').value,
-    battletag,
-    discord_id: document.getElementById('f-discord').value.trim(),
-    vibes: Array.from(document.querySelectorAll('#vibe-tags-container .vibe-tag.selected')).map(t=>t.textContent),
-    comment: document.getElementById('f-comment').value.trim(),
-    expires_at: new Date(Date.now() + 2*60*60*1000).toISOString()
+async function submitPost(){
+  if(!currentUser){showToast('募集するにはログインが必要です');openAuthModal('login');return;}
+  const battletag=document.getElementById('f-battletag').value.trim();
+  if(!battletag){showToast('BattleTag / PS IDを入力してください');return;}
+  const {error}=await db.from('posts').insert([{
+    user_id:currentUser.id,nickname:currentNickname,
+    platform:document.getElementById('f-platform').value,
+    game_mode:document.getElementById('f-mode').value,
+    role:document.getElementById('f-role').value,
+    rank:document.getElementById('f-rank').value,
+    play_style:document.getElementById('f-mode').value,
+    battletag,discord_id:document.getElementById('f-discord').value.trim(),
+    max_players:parseInt(document.getElementById('f-maxplayers').value),
+    vibes:Array.from(document.querySelectorAll('#vibe-tags-container .vibe-tag.selected')).map(t=>t.textContent),
+    comment:document.getElementById('f-comment').value.trim(),
+    expires_at:new Date(Date.now()+2*60*60*1000).toISOString()
   }]);
-  if (error) { showToast('投稿に失敗しました'); console.error(error); return; }
-  closeModal('form-overlay');
-  showToast('募集を投稿しました！');
-  await loadPosts();
+  if(error){showToast('投稿に失敗しました');console.error(error);return;}
+  closeModal('form-overlay');showToast('募集を投稿しました！');await loadPosts();
 }
 
-function openJoinModal(idx) {
-  const p = getFiltered()[idx];
-  if (!p) return;
-  selectedPost = p;
-  const emoji = getEmoji(p.user_id||p.id), vibes = Array.isArray(p.vibes)?p.vibes:[];
-  document.getElementById('modal-player-info').innerHTML = `
+// ── 参加申請 ──
+function openJoinModal(idx){
+  const p=getFiltered()[idx];
+  if(!p) return;
+  selectedPost=p;
+  const emoji=getEmoji(p.user_id||p.id),vibes=Array.isArray(p.vibes)?p.vibes:[];
+  document.getElementById('modal-player-info').innerHTML=`
     <div class="modal-avatar">${emoji}</div>
-    <div>
+    <div style="flex:1">
       <div style="font-size:16px;font-weight:700;margin-bottom:4px">${p.nickname||'名無し'}</div>
-      <div class="card-tags">${vibes.map(v=>`<span class="tag tag-vibe">${v}</span>`).join('')}<span class="tag tag-rank">${p.rank||''}</span></div>
-      <div style="font-size:12px;color:var(--silver);margin-top:6px">${p.comment||''}</div>
+      <div class="card-tags" style="margin-bottom:6px">
+        ${vibes.map(v=>`<span class="tag tag-vibe">${v}</span>`).join('')}
+        ${p.platform?`<span class="tag tag-platform">${p.platform}</span>`:''}
+        ${p.game_mode?`<span class="tag ${p.game_mode==='ランク'?'tag-ranked':'tag-unranked'}">${p.game_mode}</span>`:''}
+        <span class="tag tag-rank">${p.rank||''}</span>
+      </div>
+      <div style="font-size:12px;color:var(--silver)">${p.comment||''}</div>
       ${p.battletag?`<div style="font-size:12px;color:var(--orange);margin-top:6px">🎮 ${p.battletag}</div>`:''}
-      ${p.discord_id?`<div style="font-size:12px;color:var(--blue);margin-top:4px">💬 ${p.discord_id}</div>`:''}
     </div>`;
+
+  const applySection=document.getElementById('apply-section');
+  if(!currentUser){
+    applySection.innerHTML=`<div style="font-size:12px;color:var(--text-dim);text-align:center">参加申請するには<button onclick="openAuthModal('login');closeModal('join-modal')" style="background:none;border:none;color:var(--orange);cursor:pointer;font-size:12px">ログイン</button>が必要です</div>`;
+  } else if(p.user_id===currentUser.id){
+    applySection.innerHTML=`<div style="font-size:12px;color:var(--text-dim);text-align:center">自分の募集です</div>`;
+  } else {
+    applySection.innerHTML=`
+      <div class="apply-title">🎮 参加を申請する</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">メインロール</label>
+          <select class="form-select" id="apply-role"><option>タンク</option><option>ダメージ</option><option>サポート</option><option>フレックス</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">現在のランク</label>
+          <select class="form-select" id="apply-rank"><option>ブロンズ</option><option>シルバー</option><option>ゴールド</option><option>プラチナ</option><option>ダイヤ</option><option>マスター以上</option></select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">一言コメント（任意）</label>
+        <textarea class="form-textarea" id="apply-comment" placeholder="よろしくお願いします！" style="min-height:60px"></textarea>
+      </div>
+      <button class="modal-btn modal-btn-primary" onclick="submitApplication()">参加申請を送る</button>`;
+  }
   document.getElementById('join-modal').classList.add('open');
 }
 
-async function copyBattleTag() {
-  if (!selectedPost?.battletag) { showToast('BattleTagが登録されていません'); return; }
-  try { await navigator.clipboard.writeText(selectedPost.battletag); } catch {}
-  showToast('BattleTag: ' + selectedPost.battletag);
+async function submitApplication(){
+  if(!currentUser){showToast('ログインが必要です');return;}
+  if(!selectedPost) return;
+  const role=document.getElementById('apply-role')?.value;
+  const rank=document.getElementById('apply-rank')?.value;
+  const comment=document.getElementById('apply-comment')?.value||'';
+  const {error}=await db.from('applications').insert([{
+    post_id:selectedPost.id,user_id:currentUser.id,
+    nickname:currentNickname,role,rank,comment,status:'pending'
+  }]);
+  if(error){
+    if(error.code==='23505'){showToast('すでに申請済みです');return;}
+    showToast('申請に失敗しました');console.error(error);return;
+  }
   closeModal('join-modal');
+  showToast('参加申請を送りました！募集者からの返事をお待ちください。');
 }
 
-async function copyDiscordId() {
-  if (!selectedPost?.discord_id) { showToast('Discord IDが登録されていません'); return; }
-  try { await navigator.clipboard.writeText(selectedPost.discord_id); } catch {}
-  showToast('Discord ID: ' + selectedPost.discord_id);
-  closeModal('join-modal');
+async function copyPlayerContact(){
+  if(!selectedPost) return;
+  const text=selectedPost.battletag||selectedPost.discord_id||'連絡先未登録';
+  try{await navigator.clipboard.writeText(text);}catch{}
+  showToast('コピーしました: '+text);
 }
 
-async function copyInviteLink() {
-  const url = window.location.href;
-  try { await navigator.clipboard.writeText(url); showToast('招待リンクをコピーしました'); }
-  catch { showToast('URLをコピーしてください: ' + url); }
+async function copyInviteLink(){
+  const url=window.location.href;
+  try{await navigator.clipboard.writeText(url);showToast('招待リンクをコピーしました');}
+  catch{showToast('URLをコピーしてください: '+url);}
 }
 
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-function openForm() {
-  if (!currentUser) { showToast('募集するにはログインが必要です'); openAuthModal('login'); return; }
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function openForm(){
+  if(!currentUser){showToast('募集するにはログインが必要です');openAuthModal('login');return;}
   document.getElementById('form-overlay').classList.add('open');
 }
-function toggleTag(el) { el.classList.toggle('selected'); }
-function switchTab(tab) {
-  document.querySelectorAll('.nav-tab').forEach((t,i) => t.classList.toggle('active',(i===0&&tab==='recruit')||(i===1&&tab==='teams')));
-  document.getElementById('page-recruit').classList.toggle('active', tab==='recruit');
-  document.getElementById('page-teams').classList.toggle('active', tab==='teams');
+function toggleTag(el){el.classList.toggle('selected');}
+function switchTab(tab){
+  document.querySelectorAll('.nav-tab').forEach((t,i)=>t.classList.toggle('active',(i===0&&tab==='recruit')||(i===1&&tab==='teams')));
+  document.getElementById('page-recruit').classList.toggle('active',tab==='recruit');
+  document.getElementById('page-teams').classList.toggle('active',tab==='teams');
 }
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
 }
 
-const mockTeams = [
-  { name:'NIGHT OWL', desc:'社会人中心の夜活チーム。怒らない・楽しむが絶対条件。', members:['み','た','あ','ゆ'], wins:47, games:68, open:true },
-  { name:'RANK CLIMBERS', desc:'プラチナ〜ダイヤ帯でランクを本気で上げたいメンバー募集。VC必須。', members:['R','K','S'], wins:82, games:103, open:true },
-  { name:'CASUAL SQUAD', desc:'週末にわいわいやる緩めのチーム。初心者歓迎。', members:['C','A','S','U','L'], wins:23, games:51, open:false },
-  { name:'SUPPORT CLUB', desc:'サポートメイン同士で固定を作りたい。', members:['S','U','P'], wins:31, games:45, open:true },
+const mockTeams=[
+  {name:'NIGHT OWL',desc:'社会人中心の夜活チーム。怒らない・楽しむが絶対条件。',members:['み','た','あ','ゆ'],wins:47,games:68,open:true},
+  {name:'RANK CLIMBERS',desc:'プラチナ〜ダイヤ帯でランクを本気で上げたいメンバー募集。VC必須。',members:['R','K','S'],wins:82,games:103,open:true},
+  {name:'CASUAL SQUAD',desc:'週末にわいわいやる緩めのチーム。初心者歓迎。',members:['C','A','S','U','L'],wins:23,games:51,open:false},
+  {name:'SUPPORT CLUB',desc:'サポートメイン同士で固定を作りたい。',members:['S','U','P'],wins:31,games:45,open:true},
 ];
 
-function renderTeams() {
-  document.getElementById('team-grid').innerHTML = mockTeams.map(t => `
+function renderTeams(){
+  document.getElementById('team-grid').innerHTML=mockTeams.map(t=>`
     <div class="team-card" onclick="showToast('チーム詳細は近日公開予定です')">
       <div class="team-name">${t.name}</div>
       <div class="team-desc">${t.desc}</div>
@@ -580,27 +708,26 @@ function renderTeams() {
     </div>`).join('');
 }
 
-document.querySelectorAll('.modal-overlay,.form-overlay,.auth-overlay').forEach(el => {
-  el.addEventListener('click', e => { if(e.target===el) el.classList.remove('open'); });
+document.querySelectorAll('.modal-overlay,.form-overlay,.auth-overlay').forEach(el=>{
+  el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open');});
 });
-// メール認証後のトークン処理
-const hash = window.location.hash;
-if (hash && hash.includes('access_token')) {
-  db.auth.getSession().then(({ data: { session } }) => {
-    if (session) {
-      currentUser = session.user;
-      loadNickname().then(() => {
+
+const hash=window.location.hash;
+if(hash&&hash.includes('access_token')){
+  db.auth.getSession().then(({data:{session}})=>{
+    if(session){
+      currentUser=session.user;
+      loadNickname().then(()=>{
         updateHeader(true);
         showToast('メール認証が完了しました！');
-        window.history.replaceState(null, '', window.location.pathname);
+        window.history.replaceState(null,'',window.location.pathname);
       });
     }
   });
 }
-checkAuth();
-loadPosts();
-renderTeams();
-setInterval(loadPosts, 5 * 60 * 1000);
+
+checkAuth();loadPosts();renderTeams();
+setInterval(loadPosts,5*60*1000);
 </script>
 </body>
 </html>
