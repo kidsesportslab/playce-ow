@@ -193,6 +193,7 @@
     <div class="logo">PLAY<span>CE</span></div>
     <div class="logo-sub">for OW</div>
   </div>
+  <button class="btn btn-primary" id="post-btn" onclick="openForm()" style="display:none">＋ 募集する</button>
   <div class="header-right" id="header-right">
     <button class="btn btn-ghost" onclick="openAuthModal('login')">ログイン</button>
     <button class="btn btn-primary" onclick="openAuthModal('signup')">新規登録</button>
@@ -481,7 +482,9 @@ async function loadNickname(){
 function updateHeader(loggedIn){
   const hr=document.getElementById('header-right');
   const mm=document.getElementById('mobile-menu');
+  const postBtn=document.getElementById('post-btn');
   if(loggedIn){
+    if(postBtn) postBtn.style.display='block';
     const loggedInHTML=`<span class="user-nick">👤 ${currentNickname}</span>
       <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="openProfileModal()">プロフィール編集</button>
       <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="openApplicationsModal()">申請管理</button>
@@ -494,6 +497,7 @@ function updateHeader(loggedIn){
     hr.innerHTML=loggedInHTML;
     if(mm) mm.innerHTML=mobileHTML;
   } else {
+    if(postBtn) postBtn.style.display='none';
     hr.innerHTML=`<button class="btn btn-ghost" onclick="openAuthModal('login')">ログイン</button>
       <button class="btn btn-primary" onclick="openAuthModal('signup')">新規登録</button>`;
     if(mm) mm.innerHTML=`<button class="btn btn-ghost" onclick="openAuthModal('login');closeMobileMenu()">ログイン</button>
