@@ -405,6 +405,18 @@
 
 <div class="toast" id="toast"></div>
 
+<!-- 申請管理モーダル -->
+<div class="modal-overlay" id="applications-modal">
+  <div class="modal" style="max-width:560px;max-height:85vh;overflow-y:auto">
+    <button class="modal-close" onclick="closeModal('applications-modal')">✕</button>
+    <div class="modal-title">📬 申請管理</div>
+    <div class="modal-sub">あなたの募集への参加申請一覧です</div>
+    <div id="applications-list">
+      <div style="color:var(--text-dim);font-size:13px;text-align:center;padding:20px">読み込み中...</div>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL = 'https://raevfqxevwvymxshkkfc.supabase.co';
@@ -445,6 +457,7 @@ function updateHeader(loggedIn){
   hr.innerHTML=loggedIn
     ?`<span class="user-nick">👤 ${currentNickname}</span>
       <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="openProfileModal()">編集</button>
+      <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="openApplicationsModal()">📬 申請管理</button>
       <button class="btn btn-ghost" onclick="openForm()">＋ 募集する</button>
       <button class="btn btn-red" onclick="doLogout()">ログアウト</button>`
     :`<button class="btn btn-ghost" onclick="openAuthModal('login')">ログイン</button>
@@ -667,6 +680,104 @@ function openJoinModal(idx){
     }
   }
   document.getElementById('join-modal').classList.add('open');
+}
+
+async function openApplicationsModal(){
+  if(!currentUser) return;
+  document.getElementById('applications-modal').classList.add('open');
+  await loadApplications();
+}
+
+async function loadApplications(){
+  // 自分の募集IDを取得
+  const now=new Date().toISOString();
+  const {data:myPosts}=await db.from('posts').select('id,game_mode,platform,rank,role').eq('user_id',currentUser.id).gt('expires_at',now);
+  
+  if(!myPosts||myPosts.length===0){
+    document.getElementById('applications-list').innerHTML='<div style="color:var(--text-dim);font-size:13px;text-align:center;padding:20px">現在アクティブな募集がありません</div>';
+    return;
+  }
+
+  const postIds=myPosts.map(p=>p.id);
+  const {data:apps}=await db.from('applications').select('*').in('post_id',postIds).order('created_at',{ascending:false});
+
+  if(!apps||apps.length===0){
+    document.getElementById('applications-list').innerHTML='<div style="color:var(--text-dim);font-size:13px;text-align:center;padding:20px">まだ申請がありません</div>';
+    return;
+  }
+
+  const postMap={};
+  myPosts.forEach(p=>postMap[p.id]=p);
+
+  document.getElementById('applications-list').innerHTML=apps.map(app=>{
+    const post=postMap[app.post_id]||{};
+    const statusColor=app.status==='approved'?'var(--green)':app.status==='rejected'?'var(--red)':'var(--orange)';
+    const statusText=app.status==='approved'?'承認済み':app.status==='rejected'?'拒否済み':'申請中';
+    return `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+        <div>
+          <div style="font-size:15px;font-weight:700">${app.nickname||'名無し'}</div>
+          <div style="font-size:11px;color:var(--text-dim);margin-top:2px">
+            募集: ${post.game_mode||''} ${post.platform||''} ${post.rank||''}
+          </div>
+        </div>
+        <span style="font-size:11px;padding:3px 8px;border-radius:3px;color:${statusColor};border:1px solid ${statusColor};background:transparent">${statusText}</span>
+      </div>
+      <div style="font-size:12px;color:var(--silver);margin-bottom:10px">
+        🎮 ロール: ${app.role||'-'} / ランク: ${app.rank||'-'}
+        ${app.comment?`<br>💬 ${app.comment}`:''}
+      </div>
+      ${app.status==='pending'?`
+        <div style="display:flex;gap:8px">
+          <button onclick="approveApplication('${app.id}','${app.user_id}','${app.post_id}')" style="flex:1;padding:8px;background:var(--green);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer">承認する</button>
+          <button onclick="rejectApplication('${app.id}')" style="flex:1;padding:8px;background:transparent;color:var(--red);border:1px solid var(--red);border-radius:6px;font-size:12px;font-weight:700;cursor:pointer">拒否する</button>
+        </div>`:''}
+    </div>`;
+  }).join('');
+}
+
+async function approveApplication(appId, applicantUserId, postId){
+  const {error}=await db.from('applications').update({status:'approved'}).eq('id',appId);
+  if(error){showToast('承認に失敗しました');return;}
+
+  // 承認済み数を確認して満員チェック
+  const {data:post}=await db.from('posts').select('max_players').eq('id',postId).single();
+  const {count}=await db.from('applications').select('*',{count:'exact'}).eq('post_id',postId).eq('status','approved');
+  
+  if(post&&count>=post.max_players){
+    await db.from('posts').update({expires_at:new Date().toISOString()}).eq('id',postId);
+    showToast('承認しました。募集枠が満員になったため募集を終了しました。');
+  } else {
+    showToast('承認しました！');
+  }
+
+  // 申請者にメール通知
+  const {data:applicantData}=await db.from('users').select('email,nickname').eq('id',applicantUserId).single();
+  if(applicantData?.email){
+    await db.functions.invoke('send-notification',{
+      body:{
+        to:applicantData.email,
+        subject:'【PLAYCE】参加申請が承認されました！',
+        html:`<div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px;background:#0a0c0f;color:#e8edf5;">
+          <h2 style="color:#4caf7d">PLAYCE - 参加申請承認通知</h2>
+          <p>おめでとうございます！<strong>${applicantData.nickname||'あなた'}</strong>さんの参加申請が承認されました。</p>
+          <p style="margin-top:12px">募集者からの連絡をお待ちください。</p>
+          <br>
+          <a href="https://kidsesportslab.github.io/playce-ow/" style="background:#f5a623;color:#000;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:bold">PLAYCEを開く</a>
+        </div>`
+      }
+    });
+  }
+
+  await loadApplications();
+  await loadPosts();
+}
+
+async function rejectApplication(appId){
+  const {error}=await db.from('applications').update({status:'rejected'}).eq('id',appId);
+  if(error){showToast('拒否に失敗しました');return;}
+  showToast('拒否しました');
+  await loadApplications();
 }
 
 async function deletePostFromModal(){
