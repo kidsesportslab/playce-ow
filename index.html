@@ -480,7 +480,7 @@ async function doSignup(){
   if(error){showToast('登録失敗: '+error.message);return;}
   if(data.user) await db.from('users').upsert([{id:data.user.id,nickname:nick,email:email}]);
   closeModal('auth-overlay');
-  showToast('確認メールを送信しました。メール内のリンクをクリックして認証してください。');
+  showToast('登録完了！ログインしてください。');
 }
 
 async function doLogout(){
