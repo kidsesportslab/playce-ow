@@ -159,6 +159,28 @@
   .page.active{display:block;}
   .divider{height:1px;background:var(--border);margin:24px 0;}
 
+  /* ハンバーガーメニュー */
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:none;border:none;}
+  .hamburger span{display:block;width:22px;height:2px;background:var(--silver);border-radius:2px;transition:all 0.2s;}
+  .mobile-menu{display:none;position:fixed;top:56px;right:0;background:var(--surface);border-left:1px solid var(--border);border-bottom:1px solid var(--border);padding:16px;z-index:99;min-width:200px;flex-direction:column;gap:8px;border-radius:0 0 0 10px;}
+  .mobile-menu.open{display:flex;}
+  .mobile-menu .btn{width:100%;text-align:left;justify-content:flex-start;}
+
+  @media(max-width:768px){
+    .hamburger{display:flex;}
+    .header-right{display:none!important;}
+    .nav-tab{padding:10px 12px;font-size:12px;}
+    .filter-bar{gap:6px;}
+    .filter-select{font-size:11px;padding:6px 8px;}
+    .container{padding:16px;}
+    .cards-scroll{gap:10px;}
+    .player-card{min-width:180px;max-width:180px;padding:12px;}
+    .post-card{padding:12px 14px;gap:10px;}
+    .post-avatar{width:36px;height:36px;font-size:15px;}
+    .post-name{font-size:13px;}
+    .team-grid{grid-template-columns:1fr;}
+  }
+
   /* APPLICATION MODAL */
   .apply-section{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:16px;margin-top:16px;}
   .apply-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px;}
@@ -175,7 +197,11 @@
     <button class="btn btn-ghost" onclick="openAuthModal('login')">ログイン</button>
     <button class="btn btn-primary" onclick="openAuthModal('signup')">新規登録</button>
   </div>
+  <button class="hamburger" id="hamburger-btn" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+<div class="mobile-menu" id="mobile-menu"></div>
 
 <div class="nav-tabs">
   <div class="nav-tab active" onclick="switchTab('recruit')">メンバー募集</div>
@@ -246,7 +272,7 @@
 
     <!-- 参加申請フォーム -->
     <div class="apply-section" id="apply-section">
-      <div class="apply-title">🎮 参加を申請する</div>
+      <div class="apply-title">参加を申請する</div>
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">メインロール</label>
@@ -272,10 +298,10 @@
 
     <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
       <button class="modal-btn modal-btn-secondary" onclick="copyPlayerContact()">
-        📋 IDをコピーして直接連絡
+        IDをコピーして直接連絡
       </button>
       <button id="modal-delete-btn" class="modal-btn" style="display:none;background:transparent;color:var(--red);border:1px solid var(--red)" onclick="deletePostFromModal()">
-        🗑️ この募集を削除する
+        この募集を削除する
       </button>
     </div>
   </div>
@@ -409,7 +435,7 @@
 <div class="modal-overlay" id="applications-modal">
   <div class="modal" style="max-width:560px;max-height:85vh;overflow-y:auto">
     <button class="modal-close" onclick="closeModal('applications-modal')">✕</button>
-    <div class="modal-title">📬 申請管理</div>
+    <div class="modal-title">申請管理</div>
     <div class="modal-sub">あなたの募集への参加申請一覧です</div>
     <div id="applications-list">
       <div style="color:var(--text-dim);font-size:13px;text-align:center;padding:20px">読み込み中...</div>
@@ -454,14 +480,35 @@ async function loadNickname(){
 
 function updateHeader(loggedIn){
   const hr=document.getElementById('header-right');
-  hr.innerHTML=loggedIn
-    ?`<span class="user-nick">👤 ${currentNickname}</span>
-      <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="openProfileModal()">編集</button>
-      <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="openApplicationsModal()">📬 申請管理</button>
+  const mm=document.getElementById('mobile-menu');
+  if(loggedIn){
+    const loggedInHTML=`<span class="user-nick">👤 ${currentNickname}</span>
+      <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="openProfileModal()">プロフィール編集</button>
+      <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="openApplicationsModal()">申請管理</button>
       <button class="btn btn-ghost" onclick="openForm()">＋ 募集する</button>
-      <button class="btn btn-red" onclick="doLogout()">ログアウト</button>`
-    :`<button class="btn btn-ghost" onclick="openAuthModal('login')">ログイン</button>
+      <button class="btn btn-red" onclick="doLogout()">ログアウト</button>`;
+    const mobileHTML=`<button class="btn btn-ghost" onclick="openProfileModal();closeMobileMenu()">プロフィール編集</button>
+      <button class="btn btn-ghost" onclick="openApplicationsModal();closeMobileMenu()">申請管理</button>
+      <button class="btn btn-ghost" onclick="openForm();closeMobileMenu()">＋ 募集する</button>
+      <button class="btn btn-red" onclick="doLogout();closeMobileMenu()">ログアウト</button>`;
+    hr.innerHTML=loggedInHTML;
+    if(mm) mm.innerHTML=mobileHTML;
+  } else {
+    hr.innerHTML=`<button class="btn btn-ghost" onclick="openAuthModal('login')">ログイン</button>
       <button class="btn btn-primary" onclick="openAuthModal('signup')">新規登録</button>`;
+    if(mm) mm.innerHTML=`<button class="btn btn-ghost" onclick="openAuthModal('login');closeMobileMenu()">ログイン</button>
+      <button class="btn btn-primary" onclick="openAuthModal('signup');closeMobileMenu()">新規登録</button>`;
+  }
+}
+
+function toggleMobileMenu(){
+  const mm=document.getElementById('mobile-menu');
+  if(mm) mm.classList.toggle('open');
+}
+
+function closeMobileMenu(){
+  const mm=document.getElementById('mobile-menu');
+  if(mm) mm.classList.remove('open');
 }
 
 function openAuthModal(tab){document.getElementById('auth-overlay').classList.add('open');switchAuthTab(tab);}
@@ -520,7 +567,20 @@ async function loadPosts(){
   const now=new Date().toISOString();
   const {data,error}=await db.from('posts').select('*').gt('expires_at',now).order('created_at',{ascending:false});
   if(error){console.error(error);return;}
-  allPosts=data||[];renderAll();
+  const posts=data||[];
+
+  // 各募集の承認数を取得
+  if(posts.length>0){
+    const postIds=posts.map(p=>p.id);
+    const {data:apps}=await db.from('applications').select('post_id').in('post_id',postIds).eq('status','approved');
+    const approvedCount={};
+    (apps||[]).forEach(a=>{
+      approvedCount[a.post_id]=(approvedCount[a.post_id]||0)+1;
+    });
+    posts.forEach(p=>{p.approved_count=approvedCount[p.id]||0;});
+  }
+
+  allPosts=posts;renderAll();
 }
 
 function getFiltered(){
@@ -576,7 +636,14 @@ function postCardHTML(p,idx){
   const mc=modeClass(p);
   const isOwner=currentUser&&p.user_id===currentUser.id;
   const modeBadge=p.game_mode?`<span style="display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:700;margin-bottom:4px;${p.game_mode==='ランク'?'background:rgba(245,166,35,0.15);color:var(--orange);border:1px solid rgba(245,166,35,0.3)':'background:rgba(138,155,181,0.1);color:var(--silver);border:1px solid rgba(138,155,181,0.2)'}">${p.game_mode}</span>`:'';
-  return `<div class="post-card ${mc}" onclick="openJoinModal(${idx})">
+  const maxP=p.max_players||5;
+  const approvedP=p.approved_count||0;
+  const remainP=Math.max(0,maxP-approvedP);
+  const isFull=remainP===0;
+  const slotColor=isFull?'var(--red)':remainP<=1?'var(--orange)':'var(--green)';
+  const slotText=isFull?'満員':`残り${remainP}/${maxP}人`;
+
+  return `<div class="post-card ${mc}" onclick="openJoinModal(${idx})" style="${isFull?'opacity:0.6':''}">
     <div class="post-avatar">${emoji}</div>
     <div class="post-info">
       <div style="margin-bottom:2px">${modeBadge}</div>
@@ -590,9 +657,11 @@ function postCardHTML(p,idx){
       <div style="font-size:12px;color:var(--silver);margin-top:5px">${p.comment||''}</div>
     </div>
     <div class="post-right">
+      <div style="font-size:12px;font-weight:700;color:${slotColor};margin-bottom:4px">${slotText}</div>
       <div class="post-timer">⏳ ${timer}</div>
       ${isOwner
         ?`<button class="post-action" style="border-color:var(--red);color:var(--red);margin-top:6px" onclick="event.stopPropagation();deletePost('${p.id}')">削除</button>`
+        :isFull?`<button class="post-action" style="margin-top:6px;opacity:0.5;cursor:not-allowed" disabled>満員</button>`
         :`<button class="post-action" style="margin-top:6px">参加申請</button>`}
     </div>
   </div>`;
@@ -653,7 +722,7 @@ function openJoinModal(idx){
     applySection.innerHTML=`<div style="font-size:12px;color:var(--text-dim);text-align:center">自分の募集です</div>`;
   } else {
     applySection.innerHTML=`
-      <div class="apply-title">🎮 参加を申請する</div>
+      <div class="apply-title">参加を申請する</div>
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">メインロール</label>
