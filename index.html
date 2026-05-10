@@ -478,7 +478,7 @@ async function doSignup(){
   if(password.length<6){showToast('パスワードは6文字以上にしてください');return;}
   const {data,error}=await db.auth.signUp({email,password,options:{data:{nickname:nick}}});
   if(error){showToast('登録失敗: '+error.message);return;}
-  if(data.user) await db.from('users').upsert([{id:data.user.id,nickname:nick}]);
+  if(data.user) await db.from('users').upsert([{id:data.user.id,nickname:nick,email:email}]);
   closeModal('auth-overlay');
   showToast('確認メールを送信しました。メール内のリンクをクリックして認証してください。');
 }
@@ -692,6 +692,32 @@ async function submitApplication(){
     if(error.code==='23505'){showToast('すでに申請済みです');return;}
     showToast('申請に失敗しました');console.error(error);return;
   }
+
+  // 募集者のメールアドレスを取得して通知を送る
+  const {data:ownerData}=await db.from('users').select('email').eq('id',selectedPost.user_id).single();
+  if(ownerData?.email){
+    await db.functions.invoke('send-notification',{
+      body:{
+        to: ownerData.email,
+        subject: `【PLAYCE】${currentNickname}さんから参加申請が届きました`,
+        html: `
+          <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px;background:#0a0c0f;color:#e8edf5;">
+            <h2 style="color:#f5a623">PLAYCE - 参加申請通知</h2>
+            <p><strong>${currentNickname}</strong>さんがあなたの募集に参加申請しました。</p>
+            <hr style="border-color:#252b36">
+            <p>🎮 ロール: ${role}</p>
+            <p>🏅 ランク: ${rank}</p>
+            ${comment?`<p>💬 コメント: ${comment}</p>`:''}
+            <hr style="border-color:#252b36">
+            <p>募集: ${selectedPost.game_mode||''} / ${selectedPost.platform||''} / ${selectedPost.rank||''}</p>
+            <br>
+            <a href="https://kidsesportslab.github.io/playce-ow/" style="background:#f5a623;color:#000;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:bold">PLAYCEで確認する</a>
+          </div>
+        `
+      }
+    });
+  }
+
   closeModal('join-modal');
   showToast('参加申請を送りました！募集者からの返事をお待ちください。');
 }
