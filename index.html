@@ -542,7 +542,10 @@ async function doSignup(){
   if(password.length<6){showToast('パスワードは6文字以上にしてください');return;}
   const {data,error}=await db.auth.signUp({email,password,options:{data:{nickname:nick}}});
   if(error){showToast('登録失敗: '+error.message);return;}
-  if(data.user) await db.from('users').upsert([{id:data.user.id,nickname:nick,email:email}]);
+  // 招待者IDを取得
+  const urlParams=new URLSearchParams(window.location.search);
+  const refId=urlParams.get('ref')||null;
+  if(data.user) await db.from('users').upsert([{id:data.user.id,nickname:nick,email:email,invited_by:refId}]);
   closeModal('auth-overlay');
   showToast('登録完了！ログインしてください。');
 }
@@ -552,8 +555,32 @@ async function doLogout(){
   updateHeader(false);showToast('ログアウトしました');
 }
 
-function openProfileModal(){
+async function openProfileModal(){
   document.getElementById('profile-nick').value=currentNickname;
+  
+  // 招待した人数を取得
+  const {count}=await db.from('users').select('*',{count:'exact'}).eq('invited_by',currentUser.id);
+  const inviteCount=count||0;
+  const inviteUrl=`https://playcegg.com?ref=${currentUser.id}`;
+  
+  // プロフィールモーダルに招待情報を追加
+  const existingInfo=document.getElementById('invite-info');
+  if(existingInfo) existingInfo.remove();
+  
+  const infoDiv=document.createElement('div');
+  infoDiv.id='invite-info';
+  infoDiv.style.cssText='background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:16px';
+  infoDiv.innerHTML=`
+    <div style="font-size:12px;color:var(--text-dim);margin-bottom:8px">招待実績</div>
+    <div style="font-size:22px;font-weight:700;color:var(--orange);font-family:Rajdhani,sans-serif;margin-bottom:8px">${inviteCount}人を招待</div>
+    <div style="font-size:11px;color:var(--silver);margin-bottom:8px;word-break:break-all">${inviteUrl}</div>
+    <button onclick="copyInviteLink()" style="width:100%;padding:8px;background:transparent;border:1px solid var(--orange);color:var(--orange);border-radius:6px;font-size:12px;cursor:pointer;font-family:'Noto Sans JP',sans-serif">招待リンクをコピー</button>
+  `;
+  
+  const modal=document.getElementById('profile-modal');
+  const firstChild=modal.querySelector('.modal-sub');
+  firstChild.after(infoDiv);
+  
   document.getElementById('profile-modal').classList.add('open');
 }
 
@@ -914,7 +941,8 @@ async function copyPlayerContact(){
 }
 
 async function copyInviteLink(){
-  const url=window.location.href;
+  const base='https://playcegg.com';
+  const url=currentUser?`${base}?ref=${currentUser.id}`:base;
   try{await navigator.clipboard.writeText(url);showToast('招待リンクをコピーしました');}
   catch{showToast('URLをコピーしてください: '+url);}
 }
