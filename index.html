@@ -649,7 +649,13 @@ function modeClass(p){return p.game_mode==='ランク'?'ranked':p.game_mode==='�
 function playerCardHTML(p,idx){
   const emoji=getEmoji(p.user_id||p.id),timer=calcTimer(p.expires_at),vibes=Array.isArray(p.vibes)?p.vibes:[];
   const mc=modeClass(p);
-  return `<div class="player-card ${mc}" onclick="openJoinModal(${idx})">
+  const maxP=p.max_players||5;
+  const approvedP=p.approved_count||0;
+  const remainP=Math.max(0,maxP-approvedP);
+  const isFull=remainP===0;
+  const slotColor=isFull?'var(--red)':remainP<=1?'var(--orange)':'var(--green)';
+  const slotText=isFull?'満員':`残り${remainP}/${maxP}人`;
+  return `<div class="player-card ${mc}" onclick="openJoinModal(${idx})" style="${isFull?'opacity:0.6':''}">
     <div class="card-role">${p.role||''} · ${p.rank||''}</div>
     <div class="card-name">${emoji} ${p.nickname||'名無し'}</div>
     <div class="card-tags">
@@ -659,8 +665,13 @@ function playerCardHTML(p,idx){
       <span class="tag tag-rank">${p.rank||''}</span>
     </div>
     <div class="card-comment">${p.comment||''}</div>
-    <div class="card-meta"><span class="card-time">${p.play_style||''}</span><span class="card-timer">⏳ ${timer}</span></div>
-    <button class="card-btn">参加を申請する</button>
+    <div class="card-meta">
+      <span style="font-size:11px;font-weight:700;color:${slotColor}">${slotText}</span>
+      <span class="card-timer">⏳ ${timer}</span>
+    </div>
+    <button class="card-btn" ${isFull?'disabled style="opacity:0.5;cursor:not-allowed"':''}>
+      ${isFull?'満員':'参加を申請する'}
+    </button>
   </div>`;
 }
 
