@@ -729,11 +729,15 @@ async function submitPost(){
 }
 
 // ── 参加申請 ──
-function openJoinModal(idx){
+async function openJoinModal(idx){
   const p=getFiltered()[idx];
   if(!p) return;
   selectedPost=p;
   const emoji=getEmoji(p.user_id||p.id),vibes=Array.isArray(p.vibes)?p.vibes:[];
+  // 招待数を取得
+  const {count:inviteCount}=await db.from('users').select('*',{count:'exact'}).eq('invited_by',p.user_id);
+  const inviteText=inviteCount>0?`<span style="font-size:11px;color:var(--silver);margin-top:6px;display:block">🔗 ${inviteCount}人を招待済み</span>`:'';
+
   document.getElementById('modal-player-info').innerHTML=`
     <div class="modal-avatar">${emoji}</div>
     <div style="flex:1">
@@ -746,6 +750,7 @@ function openJoinModal(idx){
       </div>
       <div style="font-size:12px;color:var(--silver)">${p.comment||''}</div>
       ${p.battletag?`<div style="font-size:12px;color:var(--orange);margin-top:6px">🎮 ${p.battletag}</div>`:''}
+      ${inviteText}
     </div>`;
 
   const applySection=document.getElementById('apply-section');
