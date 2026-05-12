@@ -357,7 +357,7 @@
     <div class="form-group">
       <label class="form-label">募集人数</label>
       <select class="form-select" id="f-maxplayers">
-        <option value="1">1人</option><option value="2">2人</option><option value="3">3人</option><option value="4">4人</option><option value="5" selected>5人（フルパ）</option>
+        <option value="1">1人</option><option value="2">2人</option><option value="3">3人</option><option value="4" selected>4人（フルパ）</option>
       </select>
     </div>
     <div class="form-group">
@@ -649,7 +649,7 @@ function modeClass(p){return p.game_mode==='ランク'?'ranked':p.game_mode==='�
 function playerCardHTML(p,idx){
   const emoji=getEmoji(p.user_id||p.id),timer=calcTimer(p.expires_at),vibes=Array.isArray(p.vibes)?p.vibes:[];
   const mc=modeClass(p);
-  const maxP=p.max_players||5;
+  const maxP=p.max_players||4;
   const approvedP=p.approved_count||0;
   const remainP=Math.max(0,maxP-approvedP);
   const isFull=remainP===0;
@@ -680,7 +680,7 @@ function postCardHTML(p,idx){
   const mc=modeClass(p);
   const isOwner=currentUser&&p.user_id===currentUser.id;
   const modeBadge=p.game_mode?`<span style="display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:700;margin-bottom:4px;${p.game_mode==='ランク'?'background:rgba(245,166,35,0.15);color:var(--orange);border:1px solid rgba(245,166,35,0.3)':'background:rgba(138,155,181,0.1);color:var(--silver);border:1px solid rgba(138,155,181,0.2)'}">${p.game_mode}</span>`:'';
-  const maxP=p.max_players||5;
+  const maxP=p.max_players||4;
   const approvedP=p.approved_count||0;
   const remainP=Math.max(0,maxP-approvedP);
   const isFull=remainP===0;
