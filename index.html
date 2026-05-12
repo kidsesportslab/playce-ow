@@ -858,10 +858,20 @@ async function loadApplications(){
   const postMap={};
   myPosts.forEach(p=>postMap[p.id]=p);
 
-  document.getElementById('applications-list').innerHTML=apps.map(app=>{
+  // 各申請者の実績を並列取得
+  const statsPromises=apps.map(app=>Promise.all([
+    db.from('posts').select('*',{count:'exact'}).eq('user_id',app.user_id),
+    db.from('applications').select('*',{count:'exact'}).eq('user_id',app.user_id),
+    db.from('applications').select('*',{count:'exact'}).eq('user_id',app.user_id).eq('status','approved'),
+    db.from('users').select('*',{count:'exact'}).eq('invited_by',app.user_id),
+  ]));
+  const allStats=await Promise.all(statsPromises);
+
+  document.getElementById('applications-list').innerHTML=apps.map((app,i)=>{
     const post=postMap[app.post_id]||{};
     const statusColor=app.status==='approved'?'var(--green)':app.status==='rejected'?'var(--red)':'var(--orange)';
     const statusText=app.status==='approved'?'承認済み':app.status==='rejected'?'拒否済み':'申請中';
+    const [postC,applyC,matchC,inviteC]=allStats[i].map(r=>r.count||0);
     return `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
         <div>
@@ -873,8 +883,26 @@ async function loadApplications(){
         <span style="font-size:11px;padding:3px 8px;border-radius:3px;color:${statusColor};border:1px solid ${statusColor};background:transparent">${statusText}</span>
       </div>
       <div style="font-size:12px;color:var(--silver);margin-bottom:10px">
-        🎮 ロール: ${app.role||'-'} / ランク: ${app.rank||'-'}
+        ロール: ${app.role||'-'} / ランク: ${app.rank||'-'}
         ${app.comment?`<br>💬 ${app.comment}`:''}
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-bottom:10px">
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px;text-align:center">
+          <div style="font-size:14px;font-weight:700;color:var(--orange);font-family:Rajdhani,sans-serif">${postC}</div>
+          <div style="font-size:9px;color:var(--text-dim)">募集</div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px;text-align:center">
+          <div style="font-size:14px;font-weight:700;color:var(--orange);font-family:Rajdhani,sans-serif">${applyC}</div>
+          <div style="font-size:9px;color:var(--text-dim)">申請</div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px;text-align:center">
+          <div style="font-size:14px;font-weight:700;color:var(--green);font-family:Rajdhani,sans-serif">${matchC}</div>
+          <div style="font-size:9px;color:var(--text-dim)">マッチ</div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px;text-align:center">
+          <div style="font-size:14px;font-weight:700;color:var(--blue);font-family:Rajdhani,sans-serif">${inviteC}</div>
+          <div style="font-size:9px;color:var(--text-dim)">招待</div>
+        </div>
       </div>
       ${app.status==='pending'?`
         <div style="display:flex;gap:8px">
