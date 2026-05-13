@@ -658,14 +658,14 @@ function playerCardHTML(p,idx){
   return `<div class="player-card ${mc}" onclick="openJoinModal(${idx})" style="${isFull?'opacity:0.6':''}">
     <div class="card-role">${p.role||''} · ${p.rank||''}</div>
     <div class="card-name">${emoji} ${p.nickname||'名無し'}</div>
-    <div style="display:flex;gap:6px;margin-bottom:7px;flex-wrap:wrap">
-      ${p.platform?`<span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(206,147,216,0.15);color:var(--purple);border:1px solid rgba(206,147,216,0.3)">${p.platform}</span>`:''}
-      ${p.game_mode?`<span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;${p.game_mode==='ランク'?'background:rgba(245,166,35,0.15);color:var(--orange);border:1px solid rgba(245,166,35,0.3)':'background:rgba(138,155,181,0.15);color:var(--silver);border:1px solid rgba(138,155,181,0.3)'}">${p.game_mode}</span>`:''}
-      ${p.rank?`<span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(79,195,247,0.1);color:var(--blue);border:1px solid rgba(79,195,247,0.2)">${p.rank}</span>`:''}
+    <div style="display:flex;gap:5px;margin-bottom:8px;flex-wrap:wrap">
+      ${p.platform?`<span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;background:rgba(206,147,216,0.15);color:var(--purple);border:1px solid rgba(206,147,216,0.4)">${p.platform}</span>`:''}
+      ${p.game_mode?`<span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;${p.game_mode==='ランク'?'background:rgba(245,166,35,0.15);color:var(--orange);border:1px solid rgba(245,166,35,0.4)':'background:rgba(138,155,181,0.15);color:var(--silver);border:1px solid rgba(138,155,181,0.4)'}">${p.game_mode}</span>`:''}
+      ${p.rank?`<span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;background:rgba(79,195,247,0.1);color:var(--blue);border:1px solid rgba(79,195,247,0.3)">${p.rank}</span>`:''}
     </div>
-    <div class="card-tags">
-      ${vibes.map(v=>`<span class="tag tag-vibe">${v}</span>`).join('')}
-    </div>
+    ${vibes.length>0?`<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:7px">
+      ${vibes.map(v=>`<span style="font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(245,166,35,0.08);color:var(--orange);border:1px solid rgba(245,166,35,0.15)">${v}</span>`).join('')}
+    </div>`:``}
     <div class="card-comment">${p.comment||''}</div>
     <div class="card-meta">
       <span style="font-size:11px;font-weight:700;color:${slotColor}">${slotText}</span>
@@ -706,16 +706,16 @@ function postCardHTML(p,idx){
         ${p.comment?`<div style="font-size:12px;color:var(--silver);padding:6px 10px;background:var(--bg);border-radius:6px;border-left:2px solid var(--border)">${p.comment}</div>`:''}
       </div>
     </div>
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid var(--border)">
-      <div style="display:flex;gap:16px;align-items:center">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
+      <div style="display:flex;gap:20px;align-items:center">
         <span style="font-size:13px;font-weight:700;color:${slotColor}">${slotText}</span>
         <span style="font-size:12px;color:var(--text-dim)">⏳ ${timer}</span>
       </div>
       ${isOwner
-        ?`<button style="padding:6px 16px;background:transparent;border:1px solid var(--red);color:var(--red);border-radius:5px;font-size:12px;cursor:pointer;font-family:'Noto Sans JP',sans-serif" onclick="event.stopPropagation();deletePost('${p.id}')">削除</button>`
+        ?`<button style="padding:8px 20px;background:transparent;border:1px solid var(--red);color:var(--red);border-radius:6px;font-size:12px;cursor:pointer;font-family:'Noto Sans JP',sans-serif" onclick="event.stopPropagation();deletePost('${p.id}')">削除</button>`
         :isFull
-        ?`<button style="padding:6px 16px;background:transparent;border:1px solid var(--border);color:var(--text-dim);border-radius:5px;font-size:12px;cursor:not-allowed" disabled>満員</button>`
-        :`<button style="padding:6px 16px;background:var(--orange);color:#000;border:none;border-radius:5px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Noto Sans JP',sans-serif" onclick="event.stopPropagation();openJoinModal(${idx})">参加申請</button>`}
+        ?`<button style="padding:8px 20px;background:transparent;border:1px solid var(--border);color:var(--text-dim);border-radius:6px;font-size:12px;cursor:not-allowed" disabled>満員</button>`
+        :`<button style="padding:8px 24px;background:var(--orange);color:#000;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans JP',sans-serif" onclick="event.stopPropagation();openJoinModal(${idx})">参加申請</button>`}
     </div>
   </div>`;
 }
