@@ -658,11 +658,13 @@ function playerCardHTML(p,idx){
   return `<div class="player-card ${mc}" onclick="openJoinModal(${idx})" style="${isFull?'opacity:0.6':''}">
     <div class="card-role">${p.role||''} · ${p.rank||''}</div>
     <div class="card-name">${emoji} ${p.nickname||'名無し'}</div>
+    <div style="display:flex;gap:6px;margin-bottom:7px;flex-wrap:wrap">
+      ${p.platform?`<span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(206,147,216,0.15);color:var(--purple);border:1px solid rgba(206,147,216,0.3)">${p.platform}</span>`:''}
+      ${p.game_mode?`<span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;${p.game_mode==='ランク'?'background:rgba(245,166,35,0.15);color:var(--orange);border:1px solid rgba(245,166,35,0.3)':'background:rgba(138,155,181,0.15);color:var(--silver);border:1px solid rgba(138,155,181,0.3)'}">${p.game_mode}</span>`:''}
+      ${p.rank?`<span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(79,195,247,0.1);color:var(--blue);border:1px solid rgba(79,195,247,0.2)">${p.rank}</span>`:''}
+    </div>
     <div class="card-tags">
       ${vibes.map(v=>`<span class="tag tag-vibe">${v}</span>`).join('')}
-      ${p.platform?`<span class="tag tag-platform">${p.platform}</span>`:''}
-      ${p.game_mode?`<span class="tag ${p.game_mode==='ランク'?'tag-ranked':'tag-unranked'}">${p.game_mode}</span>`:''}
-      <span class="tag tag-rank">${p.rank||''}</span>
     </div>
     <div class="card-comment">${p.comment||''}</div>
     <div class="card-meta">
@@ -692,10 +694,13 @@ function postCardHTML(p,idx){
     <div class="post-info">
       <div style="margin-bottom:2px">${modeBadge}</div>
       <div class="post-name">${p.nickname||'名無し'}</div>
+      <div style="display:flex;gap:5px;margin-bottom:5px;flex-wrap:wrap">
+        ${p.platform?`<span style="font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;background:rgba(206,147,216,0.15);color:var(--purple);border:1px solid rgba(206,147,216,0.3)">${p.platform}</span>`:''}
+        ${p.game_mode?`<span style="font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;${p.game_mode==='ランク'?'background:rgba(245,166,35,0.15);color:var(--orange);border:1px solid rgba(245,166,35,0.3)':'background:rgba(138,155,181,0.15);color:var(--silver);border:1px solid rgba(138,155,181,0.3)'}">${p.game_mode}</span>`:''}
+        ${p.rank?`<span style="font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;background:rgba(79,195,247,0.1);color:var(--blue);border:1px solid rgba(79,195,247,0.2)">${p.rank}</span>`:''}
+      </div>
       <div class="post-tags">
         ${vibes.map(v=>`<span class="tag tag-vibe">${v}</span>`).join('')}
-        ${p.platform?`<span class="tag tag-platform">${p.platform}</span>`:''}
-        <span class="tag tag-rank">${p.rank||''}</span>
         <span class="tag tag-role">${p.role||''}</span>
       </div>
       <div style="font-size:12px;color:var(--silver);margin-top:5px">${p.comment||''}</div>
