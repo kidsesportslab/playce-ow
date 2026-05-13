@@ -169,6 +169,9 @@
   #post-btn{ display:none!important; }
   @media(max-width:768px){
     #post-btn{ display:block!important; }
+    .post-card{ padding:14px; }
+    .post-card .post-avatar{ width:38px!important; height:38px!important; font-size:16px!important; }
+    .post-card .post-name{ font-size:14px!important; }
     .hamburger{display:flex;}
     .header-right{display:none!important;}
     .nav-tab{padding:10px 12px;font-size:12px;}
@@ -706,16 +709,16 @@ function postCardHTML(p,idx){
         ${p.comment?`<div style="font-size:12px;color:var(--silver);padding:6px 10px;background:var(--bg);border-radius:6px;border-left:2px solid var(--border)">${p.comment}</div>`:''}
       </div>
     </div>
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
-      <div style="display:flex;gap:20px;align-items:center">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);flex-wrap:wrap;gap:10px">
+      <div style="display:flex;gap:16px;align-items:center">
         <span style="font-size:13px;font-weight:700;color:${slotColor}">${slotText}</span>
         <span style="font-size:12px;color:var(--text-dim)">⏳ ${timer}</span>
       </div>
       ${isOwner
-        ?`<button style="padding:8px 20px;background:transparent;border:1px solid var(--red);color:var(--red);border-radius:6px;font-size:12px;cursor:pointer;font-family:'Noto Sans JP',sans-serif" onclick="event.stopPropagation();deletePost('${p.id}')">削除</button>`
+        ?`<button style="padding:8px 20px;background:transparent;border:1px solid var(--red);color:var(--red);border-radius:6px;font-size:12px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;white-space:nowrap" onclick="event.stopPropagation();deletePost('${p.id}')">削除</button>`
         :isFull
-        ?`<button style="padding:8px 20px;background:transparent;border:1px solid var(--border);color:var(--text-dim);border-radius:6px;font-size:12px;cursor:not-allowed" disabled>満員</button>`
-        :`<button style="padding:8px 24px;background:var(--orange);color:#000;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans JP',sans-serif" onclick="event.stopPropagation();openJoinModal(${idx})">参加申請</button>`}
+        ?`<button style="padding:8px 20px;background:transparent;border:1px solid var(--border);color:var(--text-dim);border-radius:6px;font-size:12px;cursor:not-allowed;white-space:nowrap" disabled>満員</button>`
+        :`<button style="padding:8px 24px;background:var(--orange);color:#000;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans JP',sans-serif;white-space:nowrap" onclick="event.stopPropagation();openJoinModal(${idx})">参加申請</button>`}
     </div>
   </div>`;
 }
