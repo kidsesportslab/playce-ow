@@ -363,6 +363,19 @@
       <input class="form-input" id="f-discord" type="text" placeholder="username">
     </div>
     <div class="form-group">
+      <label class="form-label">募集したいランク帯</label>
+      <select class="form-select" id="f-rankreq">
+        <option value="指定なし">指定なし（誰でも）</option>
+        <option>ブロンズ</option>
+        <option>シルバー</option>
+        <option>ゴールド</option>
+        <option>プラチナ</option>
+        <option>ダイヤ</option>
+        <option>マスター</option>
+        <option>グランドマスター</option>
+      </select>
+    </div>
+    <div class="form-group">
       <label class="form-label">募集人数</label>
       <select class="form-select" id="f-maxplayers">
         <option value="1">1人</option><option value="2">2人</option><option value="3">3人</option><option value="4" selected>4人（フルパ）</option>
@@ -633,7 +646,7 @@ function getFiltered(){
     (!p||post.platform===p)&&
     (!m||post.game_mode===m)&&
     (!r||post.role===r)&&
-    (!rk||post.rank===rk)
+    (!rk||post.rank===rk||post.rank_req===rk||post.rank_req==='指定なし')
   );
 }
 
@@ -708,6 +721,7 @@ function postCardHTML(p,idx){
             ${p.platform?`<span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;background:rgba(206,147,216,0.15);color:var(--purple);border:1px solid rgba(206,147,216,0.4)">${p.platform}</span>`:''}
             ${p.game_mode?`<span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;${p.game_mode==='ランク'?'background:rgba(245,166,35,0.15);color:var(--orange);border:1px solid rgba(245,166,35,0.4)':'background:rgba(138,155,181,0.15);color:var(--silver);border:1px solid rgba(138,155,181,0.4)'}">${p.game_mode}</span>`:''}
             ${p.rank?`<span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;background:rgba(79,195,247,0.1);color:var(--blue);border:1px solid rgba(79,195,247,0.3)">${p.rank}</span>`:''}
+          ${p.rank_req&&p.rank_req!=='指定なし'?`<span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;background:rgba(76,175,125,0.1);color:var(--green);border:1px solid rgba(76,175,125,0.3)">求: ${p.rank_req}</span>`:''}
           </div>
         </div>
         ${vibes.length>0?`<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:7px">
@@ -747,6 +761,7 @@ async function submitPost(){
     game_mode:document.getElementById('f-mode').value,
     role:document.getElementById('f-role').value,
     rank:document.getElementById('f-rank').value,
+    rank_req:document.getElementById('f-rankreq').value,
     play_style:document.getElementById('f-mode').value,
     battletag,discord_id:document.getElementById('f-discord').value.trim(),
     max_players:parseInt(document.getElementById('f-maxplayers').value),
