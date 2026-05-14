@@ -363,17 +363,17 @@
       <input class="form-input" id="f-discord" type="text" placeholder="username">
     </div>
     <div class="form-group">
-      <label class="form-label">募集したいランク帯</label>
-      <select class="form-select" id="f-rankreq">
-        <option value="指定なし">指定なし（誰でも）</option>
-        <option>ブロンズ</option>
-        <option>シルバー</option>
-        <option>ゴールド</option>
-        <option>プラチナ</option>
-        <option>ダイヤ</option>
-        <option>マスター</option>
-        <option>グランドマスター</option>
-      </select>
+      <label class="form-label">募集したいランク帯（複数選択可）</label>
+      <div class="vibe-tags" id="rankreq-tags">
+        <div class="vibe-tag" onclick="toggleTag(this)">指定なし</div>
+        <div class="vibe-tag" onclick="toggleTag(this)">ブロンズ</div>
+        <div class="vibe-tag" onclick="toggleTag(this)">シルバー</div>
+        <div class="vibe-tag" onclick="toggleTag(this)">ゴールド</div>
+        <div class="vibe-tag" onclick="toggleTag(this)">プラチナ</div>
+        <div class="vibe-tag" onclick="toggleTag(this)">ダイヤ</div>
+        <div class="vibe-tag" onclick="toggleTag(this)">マスター</div>
+        <div class="vibe-tag" onclick="toggleTag(this)">グランドマスター</div>
+      </div>
     </div>
     <div class="form-group">
       <label class="form-label">募集人数</label>
@@ -454,6 +454,19 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
+<div class="modal-overlay" id="approve-modal">
+  <div class="modal" style="max-width:400px">
+    <button class="modal-close" onclick="closeModal('approve-modal')">✕</button>
+    <div class="modal-title">承認する</div>
+    <div class="modal-sub">申請者へのメッセージを添えることができます</div>
+    <div class="form-group">
+      <label class="form-label">メッセージ（任意）</label>
+      <textarea class="form-textarea" id="approve-comment" placeholder="よろしくお願いします！一緒に頑張りましょう。" style="min-height:80px"></textarea>
+    </div>
+    <button class="modal-btn modal-btn-primary" onclick="confirmApprove()">承認を確定する</button>
+  </div>
+</div>
 
 <!-- 申請管理モーダル -->
 <div class="modal-overlay" id="applications-modal">
@@ -761,7 +774,7 @@ async function submitPost(){
     game_mode:document.getElementById('f-mode').value,
     role:document.getElementById('f-role').value,
     rank:document.getElementById('f-rank').value,
-    rank_req:document.getElementById('f-rankreq').value,
+    rank_req:Array.from(document.querySelectorAll('#rankreq-tags .vibe-tag.selected')).map(t=>t.textContent),
     play_style:document.getElementById('f-mode').value,
     battletag,discord_id:document.getElementById('f-discord').value.trim(),
     max_players:parseInt(document.getElementById('f-maxplayers').value),
@@ -942,14 +955,30 @@ async function loadApplications(){
       </div>
       ${app.status==='pending'?`
         <div style="display:flex;gap:8px">
-          <button onclick="approveApplication('${app.id}','${app.user_id}','${app.post_id}')" style="flex:1;padding:8px;background:var(--green);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer">承認する</button>
+          <button onclick="openApproveModal('${app.id}','${app.user_id}','${app.post_id}')" style="flex:1;padding:8px;background:var(--green);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer">承認する</button>
           <button onclick="rejectApplication('${app.id}')" style="flex:1;padding:8px;background:transparent;color:var(--red);border:1px solid var(--red);border-radius:6px;font-size:12px;font-weight:700;cursor:pointer">拒否する</button>
         </div>`:''}
     </div>`;
   }).join('');
 }
 
-async function approveApplication(appId, applicantUserId, postId){
+let _pendingApprove = null;
+
+function openApproveModal(appId, applicantUserId, postId){
+  _pendingApprove = {appId, applicantUserId, postId};
+  document.getElementById('approve-comment').value = '';
+  document.getElementById('approve-modal').classList.add('open');
+}
+
+async function confirmApprove(){
+  if(!_pendingApprove) return;
+  const comment = document.getElementById('approve-comment').value.trim();
+  closeModal('approve-modal');
+  await approveApplication(_pendingApprove.appId, _pendingApprove.applicantUserId, _pendingApprove.postId, comment);
+  _pendingApprove = null;
+}
+
+async function approveApplication(appId, applicantUserId, postId, approveComment=''){
   const {error}=await db.from('applications').update({status:'approved'}).eq('id',appId);
   if(error){showToast('承認に失敗しました');return;}
 
