@@ -47,7 +47,7 @@
   .cards-scroll::-webkit-scrollbar{display:none;}
 
   /* PLAYER CARD */
-  .player-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;min-width:220px;max-width:220px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
+  .player-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;min-width:220px;max-width:220px;min-height:260px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;display:flex;flex-direction:column;}
   .player-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--orange),transparent);opacity:0;transition:opacity 0.2s;}
   .player-card:hover{border-color:var(--orange);transform:translateY(-2px);box-shadow:0 8px 24px rgba(245,166,35,0.1);}
   .player-card:hover::before{opacity:1;}
@@ -77,7 +77,7 @@
 
   /* POST LIST */
   .post-list{display:flex;flex-direction:column;gap:10px;}
-  .post-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:all 0.2s;}
+  .post-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;cursor:pointer;transition:all 0.2s;min-height:130px;display:flex;flex-direction:column;justify-content:space-between;}
   .post-card:hover{border-color:rgba(245,166,35,0.4);background:var(--surface2);}
   .post-card.ranked{border-left:3px solid var(--orange);background:rgba(245,166,35,0.10);}
   .post-card.ranked:hover{background:rgba(245,166,35,0.16);}
@@ -169,9 +169,14 @@
   #post-btn{ display:none!important; }
   @media(max-width:768px){
     #post-btn{ display:block!important; }
-    .post-card{ padding:14px; }
-    .post-card .post-avatar{ width:38px!important; height:38px!important; font-size:16px!important; }
-    .post-card .post-name{ font-size:14px!important; }
+    .post-card{ padding:14px; min-height:unset; }
+    .player-card{ min-width:160px; max-width:160px; min-height:220px; padding:12px; }
+    .cards-scroll{ gap:10px; padding-bottom:8px; }
+    .filter-bar{ gap:5px; }
+    .filter-select{ font-size:11px; padding:5px 6px; }
+    .container{ padding:14px; }
+    .section-title{ font-size:13px; }
+    .post-list{ gap:8px; }
     .hamburger{display:flex;}
     .header-right{display:none!important;}
     .nav-tab{padding:10px 12px;font-size:12px;}
@@ -669,14 +674,16 @@ function playerCardHTML(p,idx){
     ${vibes.length>0?`<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:7px">
       ${vibes.map(v=>`<span style="font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(245,166,35,0.08);color:var(--orange);border:1px solid rgba(245,166,35,0.15)">${v}</span>`).join('')}
     </div>`:``}
-    <div class="card-comment">${p.comment||''}</div>
-    <div class="card-meta">
-      <span style="font-size:11px;font-weight:700;color:${slotColor}">${slotText}</span>
-      <span class="card-timer">⏳ ${timer}</span>
+    ${p.comment?`<div class="card-comment" style="flex:1">${p.comment}</div>`:`<div style="flex:1"></div>`}
+    <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="font-size:12px;font-weight:700;color:${slotColor}">${slotText}</span>
+        <span class="card-timer">⏳ ${timer}</span>
+      </div>
+      <button class="card-btn" ${isFull?'disabled style="opacity:0.5;cursor:not-allowed"':''}>
+        ${isFull?'満員':'参加を申請する'}
+      </button>
     </div>
-    <button class="card-btn" ${isFull?'disabled style="opacity:0.5;cursor:not-allowed"':''}>
-      ${isFull?'満員':'参加を申請する'}
-    </button>
   </div>`;
 }
 
