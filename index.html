@@ -16,26 +16,21 @@
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:14px;min-height:100vh;overflow-x:hidden;}
-
   header{position:sticky;top:0;z-index:100;background:rgba(10,12,15,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;}
   .logo{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;letter-spacing:3px;}
   .logo span{color:var(--orange);}
   .logo-sub{font-size:10px;color:var(--text-dim);letter-spacing:2px;margin-left:8px;font-family:'Rajdhani',sans-serif;}
   .header-right{display:flex;gap:10px;align-items:center;}
   .user-nick{font-size:13px;color:var(--silver);}
-
   .btn{padding:8px 18px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;border:none;font-family:'Noto Sans JP',sans-serif;transition:all 0.2s;}
   .btn-primary{background:var(--orange);color:#000;}
   .btn-primary:hover{background:#ffb83f;}
   .btn-ghost{background:transparent;color:var(--silver);border:1px solid var(--border);}
   .btn-ghost:hover{border-color:var(--silver);color:var(--text);}
   .btn-red{background:transparent;color:var(--red);border:1px solid var(--red);font-size:12px;padding:6px 12px;}
-  .btn-blue{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(79,195,247,0.3);padding:9px 16px;font-size:13px;}
-
   .nav-tabs{display:flex;border-bottom:1px solid var(--border);padding:0 24px;background:var(--surface);}
   .nav-tab{padding:14px 20px;font-size:13px;color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;font-weight:500;}
   .nav-tab.active{color:var(--orange);border-bottom-color:var(--orange);}
-
   .container{max-width:1100px;margin:0 auto;padding:24px;}
   .now-online-section{margin-bottom:32px;}
   .section-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
@@ -45,56 +40,31 @@
   @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
   .cards-scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;}
   .cards-scroll::-webkit-scrollbar{display:none;}
-
-  /* PLAYER CARD */
   .player-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;min-width:220px;max-width:220px;min-height:260px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;display:flex;flex-direction:column;}
   .player-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--orange),transparent);opacity:0;transition:opacity 0.2s;}
   .player-card:hover{border-color:var(--orange);transform:translateY(-2px);box-shadow:0 8px 24px rgba(245,166,35,0.1);}
   .player-card:hover::before{opacity:1;}
-  .player-card.ranked{border-left:3px solid var(--orange);}
-  .player-card.unranked{border-left:3px solid var(--silver);}
+  .player-card.ranked{border-left:3px solid var(--orange);background:rgba(245,166,35,0.10);}
+  .player-card.unranked{border-left:3px solid var(--silver);background:rgba(138,155,181,0.10);}
   .card-role{font-size:10px;color:var(--text-dim);letter-spacing:1px;font-family:'Rajdhani',sans-serif;margin-bottom:6px;}
   .card-name{font-size:16px;font-weight:700;margin-bottom:6px;}
-  .card-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;}
-  .tag{font-size:10px;padding:2px 7px;border-radius:3px;font-weight:500;}
-  .tag-vibe{background:var(--orange-dim);color:var(--orange);border:1px solid rgba(245,166,35,0.2);}
-  .tag-rank{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(79,195,247,0.2);}
-  .tag-role{background:rgba(138,155,181,0.1);color:var(--silver);border:1px solid rgba(138,155,181,0.2);}
-  .tag-platform{background:rgba(206,147,216,0.1);color:var(--purple);border:1px solid rgba(206,147,216,0.2);}
-  .tag-unranked{background:rgba(138,155,181,0.1);color:var(--silver);border:1px solid rgba(138,155,181,0.2);}
-  .tag-ranked{background:var(--orange-dim);color:var(--orange);border:1px solid rgba(245,166,35,0.2);}
   .card-comment{font-size:12px;color:var(--silver);line-height:1.5;margin-bottom:10px;border-left:2px solid var(--border);padding-left:8px;}
-  .card-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
-  .card-time{font-size:11px;color:var(--text-dim);}
   .card-timer{font-size:11px;color:var(--orange);font-family:'Rajdhani',sans-serif;font-weight:600;}
   .card-btn{width:100%;padding:9px;background:var(--orange);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Noto Sans JP',sans-serif;}
   .card-btn:hover{background:#ffb83f;}
-
-  /* FILTER */
   .filter-bar{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
   .filter-select{background:var(--surface);border:1px solid var(--border);color:var(--silver);padding:7px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;}
   .filter-select:focus{outline:none;border-color:var(--orange);}
-
-  /* POST LIST */
   .post-list{display:flex;flex-direction:column;gap:10px;}
-  .post-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;cursor:pointer;transition:all 0.2s;min-height:130px;display:flex;flex-direction:column;justify-content:space-between;}
+  .post-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;cursor:pointer;transition:all 0.2s;}
   .post-card:hover{border-color:rgba(245,166,35,0.4);background:var(--surface2);}
   .post-card.ranked{border-left:3px solid var(--orange);background:rgba(245,166,35,0.10);}
   .post-card.ranked:hover{background:rgba(245,166,35,0.16);}
   .post-card.unranked{border-left:3px solid var(--silver);background:rgba(138,155,181,0.10);}
   .post-card.unranked:hover{background:rgba(138,155,181,0.14);}
-  .player-card.ranked{border-left:3px solid var(--orange);background:rgba(245,166,35,0.10);}
-  .player-card.unranked{border-left:3px solid var(--silver);background:rgba(138,155,181,0.10);}
-  .post-avatar{width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--orange),#ff6b35);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-  .post-info{flex:1;}
   .post-name{font-size:15px;font-weight:600;margin-bottom:4px;}
-  .post-tags{display:flex;gap:4px;flex-wrap:wrap;}
-  .post-right{text-align:right;flex-shrink:0;}
-  .post-timer{font-size:12px;color:var(--orange);font-family:'Rajdhani',sans-serif;font-weight:600;}
   .post-action{margin-top:6px;padding:6px 14px;background:transparent;border:1px solid var(--orange);color:var(--orange);border-radius:5px;font-size:12px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all 0.2s;}
   .post-action:hover{background:var(--orange);color:#000;}
-
-  /* TEAM */
   .team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
   .team-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;cursor:pointer;transition:all 0.2s;}
   .team-card:hover{border-color:var(--blue);transform:translateY(-2px);}
@@ -108,8 +78,6 @@
   .recruiting-badge{font-size:11px;padding:3px 8px;border-radius:3px;font-weight:600;}
   .recruiting-open{background:rgba(76,175,125,0.12);color:var(--green);border:1px solid rgba(76,175,125,0.3);}
   .recruiting-closed{background:rgba(138,155,181,0.08);color:var(--text-dim);border:1px solid var(--border);}
-
-  /* MODAL */
   .modal-overlay,.form-overlay,.auth-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:200;align-items:center;justify-content:center;}
   .modal-overlay.open,.form-overlay.open,.auth-overlay.open{display:flex;}
   .modal,.form-modal,.auth-modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;width:90%;position:relative;animation:slideUp 0.2s ease;}
@@ -122,14 +90,10 @@
   .modal-sub{font-size:12px;color:var(--text-dim);margin-bottom:20px;}
   .modal-player{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:20px;display:block;}
   .modal-avatar{width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--orange),#ff6b35);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-  .modal-actions{display:flex;flex-direction:column;gap:10px;}
   .modal-btn{width:100%;padding:12px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;font-family:'Noto Sans JP',sans-serif;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
   .modal-btn-primary{background:var(--orange);color:#000;}
   .modal-btn-primary:hover{background:#ffb83f;}
   .modal-btn-secondary{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(79,195,247,0.3);}
-  .modal-btn-secondary:hover{background:rgba(79,195,247,0.2);}
-
-  /* FORM */
   .form-group{margin-bottom:16px;}
   .form-label{display:block;font-size:12px;color:var(--silver);margin-bottom:6px;font-weight:500;}
   .form-input,.form-select,.form-textarea{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:7px;font-size:13px;font-family:'Noto Sans JP',sans-serif;transition:border-color 0.2s;}
@@ -139,59 +103,39 @@
   .vibe-tag{padding:5px 12px;border-radius:4px;font-size:12px;cursor:pointer;border:1px solid var(--border);color:var(--text-dim);background:var(--surface2);transition:all 0.15s;user-select:none;}
   .vibe-tag.selected{background:var(--orange-dim);border-color:var(--orange);color:var(--orange);}
   .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-
-  /* AUTH */
   .auth-tabs{display:flex;margin-bottom:24px;border-bottom:1px solid var(--border);}
   .auth-tab{flex:1;padding:10px;text-align:center;font-size:14px;font-weight:600;cursor:pointer;color:var(--text-dim);border-bottom:2px solid transparent;transition:all 0.2s;}
   .auth-tab.active{color:var(--orange);border-bottom-color:var(--orange);}
-
-  /* INVITE */
   .invite-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-top:24px;text-align:center;}
   .invite-title{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:600;margin-bottom:8px;color:var(--silver-light);}
   .invite-desc{font-size:12px;color:var(--text-dim);margin-bottom:16px;}
   .invite-link{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 16px;font-size:12px;color:var(--blue);font-family:'Rajdhani',sans-serif;display:inline-block;margin-bottom:12px;}
-
-  /* TOAST */
   .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--surface2);border:1px solid var(--orange);color:var(--text);padding:12px 24px;border-radius:8px;font-size:13px;z-index:300;transition:transform 0.3s ease;}
   .toast.show{transform:translateX(-50%) translateY(0);}
-
   .page{display:none;}
   .page.active{display:block;}
   .divider{height:1px;background:var(--border);margin:24px 0;}
-
-  /* ハンバーガーメニュー */
   .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:none;border:none;}
   .hamburger span{display:block;width:22px;height:2px;background:var(--silver);border-radius:2px;transition:all 0.2s;}
   .mobile-menu{display:none;position:fixed;top:56px;right:0;background:var(--surface);border-left:1px solid var(--border);border-bottom:1px solid var(--border);padding:16px;z-index:99;min-width:200px;flex-direction:column;gap:8px;border-radius:0 0 0 10px;}
   .mobile-menu.open{display:flex;}
   .mobile-menu .btn{width:100%;text-align:left;justify-content:flex-start;}
-
-  #post-btn{ display:none!important; }
+  #post-btn{display:none!important;}
   @media(max-width:768px){
-    #post-btn{ display:block!important; }
-    .post-card{ padding:14px; min-height:unset; }
-    .player-card{ min-width:160px; max-width:160px; min-height:220px; padding:12px; }
-    .cards-scroll{ gap:10px; padding-bottom:8px; }
-    .filter-bar{ gap:5px; }
-    .filter-select{ font-size:11px; padding:5px 6px; }
-    .container{ padding:14px; }
-    .section-title{ font-size:13px; }
-    .post-list{ gap:8px; }
+    #post-btn{display:block!important;}
     .hamburger{display:flex;}
     .header-right{display:none!important;}
     .nav-tab{padding:10px 12px;font-size:12px;}
-    .filter-bar{gap:6px;}
-    .filter-select{font-size:11px;padding:6px 8px;}
-    .container{padding:16px;}
+    .filter-bar{gap:5px;}
+    .filter-select{font-size:11px;padding:5px 6px;}
+    .container{padding:14px;}
+    .section-title{font-size:13px;}
+    .post-list{gap:8px;}
+    .post-card{padding:12px 14px;}
+    .player-card{min-width:160px;max-width:160px;min-height:220px;padding:12px;}
     .cards-scroll{gap:10px;}
-    .player-card{min-width:180px;max-width:180px;padding:12px;}
-    .post-card{padding:12px 14px;gap:10px;}
-    .post-avatar{width:36px;height:36px;font-size:15px;}
-    .post-name{font-size:13px;}
     .team-grid{grid-template-columns:1fr;}
   }
-
-  /* APPLICATION MODAL */
   .apply-section{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:16px;margin-top:16px;}
   .apply-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px;}
 </style>
@@ -256,8 +200,7 @@
     <div class="invite-box">
       <div class="invite-title">フレンドを招待する</div>
       <div class="invite-desc">招待リンクを送ると、信頼できる仲間だけが参加できます</div>
-      <div class="invite-link">playcegg.com</div>
-      <br>
+      <div class="invite-link">playcegg.com</div><br>
       <button class="btn btn-primary" onclick="copyInviteLink()">リンクをコピー</button>
     </div>
   </div>
@@ -273,15 +216,12 @@
   </div>
 </div>
 
-<!-- JOIN MODAL -->
 <div class="modal-overlay" id="join-modal">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('join-modal')">✕</button>
     <div class="modal-title">募集詳細</div>
     <div class="modal-sub">参加申請を送りましょう</div>
     <div class="modal-player" id="modal-player-info"></div>
-
-    <!-- 参加申請フォーム -->
     <div class="apply-section" id="apply-section">
       <div class="apply-title">参加を申請する</div>
       <div class="form-row">
@@ -302,29 +242,20 @@
         <label class="form-label">一言コメント（任意）</label>
         <textarea class="form-textarea" id="apply-comment" placeholder="よろしくお願いします！" style="min-height:60px"></textarea>
       </div>
-      <button class="modal-btn modal-btn-primary" onclick="submitApplication()">
-        参加申請を送る
-      </button>
+      <button class="modal-btn modal-btn-primary" onclick="submitApplication()">参加申請を送る</button>
     </div>
-
     <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
-      <button class="modal-btn modal-btn-secondary" onclick="copyPlayerContact()">
-        IDをコピーして直接連絡
-      </button>
-      <button id="modal-delete-btn" class="modal-btn" style="display:none;background:transparent;color:var(--red);border:1px solid var(--red)" onclick="deletePostFromModal()">
-        この募集を削除する
-      </button>
+      <button class="modal-btn modal-btn-secondary" onclick="copyPlayerContact()">IDをコピーして直接連絡</button>
+      <button id="modal-delete-btn" class="modal-btn" style="display:none;background:transparent;color:var(--red);border:1px solid var(--red)" onclick="deletePostFromModal()">この募集を削除する</button>
     </div>
   </div>
 </div>
 
-<!-- POST FORM -->
 <div class="form-overlay" id="form-overlay">
   <div class="form-modal">
     <button class="modal-close" onclick="closeModal('form-overlay')">✕</button>
     <div class="modal-title" style="margin-bottom:4px">募集を作る</div>
     <div class="modal-sub">一緒に遊ぶメンバーを探しましょう</div>
-
     <div class="form-row">
       <div class="form-group">
         <label class="form-label">プラットフォーム</label>
@@ -362,9 +293,8 @@
         <div class="vibe-tag" onclick="toggleTag(this)">フレックス</div>
       </div>
     </div>
-
     <div class="form-group">
-      <label class="form-label" id="id-label">BattleTag / PS ID</label>
+      <label class="form-label">BattleTag / PS ID</label>
       <input class="form-input" id="f-battletag" type="text" placeholder="例: 名前#1234 または PSN名">
     </div>
     <div class="form-group">
@@ -411,7 +341,6 @@
   </div>
 </div>
 
-<!-- AUTH MODAL -->
 <div class="auth-overlay" id="auth-overlay">
   <div class="auth-modal">
     <button class="modal-close" onclick="closeModal('auth-overlay')">✕</button>
@@ -420,44 +349,25 @@
       <div class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">新規登録</div>
     </div>
     <div id="auth-login">
-      <div class="form-group">
-        <label class="form-label">メールアドレス</label>
-        <input class="form-input" id="login-email" type="email" placeholder="example@email.com">
-      </div>
-      <div class="form-group">
-        <label class="form-label">パスワード</label>
-        <input class="form-input" id="login-password" type="password" placeholder="パスワード">
-      </div>
+      <div class="form-group"><label class="form-label">メールアドレス</label><input class="form-input" id="login-email" type="email" placeholder="example@email.com"></div>
+      <div class="form-group"><label class="form-label">パスワード</label><input class="form-input" id="login-password" type="password" placeholder="パスワード"></div>
       <button class="btn btn-primary" style="width:100%;padding:12px;font-size:14px" onclick="doLogin()">ログイン</button>
     </div>
     <div id="auth-signup" style="display:none">
-      <div class="form-group">
-        <label class="form-label">ニックネーム</label>
-        <input class="form-input" id="signup-nick" type="text" placeholder="ゲーム内で表示される名前">
-      </div>
-      <div class="form-group">
-        <label class="form-label">メールアドレス</label>
-        <input class="form-input" id="signup-email" type="email" placeholder="example@email.com">
-      </div>
-      <div class="form-group">
-        <label class="form-label">パスワード（6文字以上）</label>
-        <input class="form-input" id="signup-password" type="password" placeholder="パスワード">
-      </div>
+      <div class="form-group"><label class="form-label">ニックネーム</label><input class="form-input" id="signup-nick" type="text" placeholder="ゲーム内で表示される名前"></div>
+      <div class="form-group"><label class="form-label">メールアドレス</label><input class="form-input" id="signup-email" type="email" placeholder="example@email.com"></div>
+      <div class="form-group"><label class="form-label">パスワード（6文字以上）</label><input class="form-input" id="signup-password" type="password" placeholder="パスワード"></div>
       <button class="btn btn-primary" style="width:100%;padding:12px;font-size:14px" onclick="doSignup()">登録する</button>
     </div>
   </div>
 </div>
 
-<!-- PROFILE EDIT MODAL -->
 <div class="modal-overlay" id="profile-modal">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('profile-modal')">✕</button>
     <div class="modal-title">プロフィール編集</div>
     <div class="modal-sub">ニックネームを変更できます</div>
-    <div class="form-group">
-      <label class="form-label">ニックネーム</label>
-      <input class="form-input" id="profile-nick" type="text">
-    </div>
+    <div class="form-group"><label class="form-label">ニックネーム</label><input class="form-input" id="profile-nick" type="text"></div>
     <button class="btn btn-primary" style="width:100%;padding:12px" onclick="updateNickname()">保存する</button>
   </div>
 </div>
@@ -471,56 +381,123 @@
     <div class="modal-sub">申請者へのメッセージを添えることができます</div>
     <div class="form-group">
       <label class="form-label">メッセージ（任意）</label>
-      <textarea class="form-textarea" id="approve-comment" placeholder="よろしくお願いします！一緒に頑張りましょう。" style="min-height:80px"></textarea>
+      <textarea class="form-textarea" id="approve-comment" placeholder="よろしくお願いします！" style="min-height:80px"></textarea>
     </div>
     <button class="modal-btn modal-btn-primary" onclick="confirmApprove()">承認を確定する</button>
   </div>
 </div>
 
-<!-- 申請管理モーダル -->
 <div class="modal-overlay" id="applications-modal">
   <div class="modal" style="max-width:560px;max-height:85vh;overflow-y:auto">
     <button class="modal-close" onclick="closeModal('applications-modal')">✕</button>
     <div class="modal-title">申請管理</div>
     <div class="modal-sub">あなたの募集への参加申請一覧です</div>
-    <div id="applications-list">
-      <div style="color:var(--text-dim);font-size:13px;text-align:center;padding:20px">読み込み中...</div>
-    </div>
+    <div id="applications-list"><div style="color:var(--text-dim);font-size:13px;text-align:center;padding:20px">読み込み中...</div></div>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = 'https://raevfqxevwvymxshkkfc.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJhZXZmcXhldnd2eW14c2hra2ZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NTExNDIsImV4cCI6MjA5MzEyNzE0Mn0.slh6NUucM6JqICRosOBrvyqKMRUrDBN6DEJoqUal7D8';
-const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL='https://raevfqxevwvymxshkkfc.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJhZXZmcXhldnd2eW14c2hra2ZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NTExNDIsImV4cCI6MjA5MzEyNzE0Mn0.slh6NUucM6JqICRosOBrvyqKMRUrDBN6DEJoqUal7D8';
+const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const emojis=['🐺','🦅','🐉','🦁','🐻','🦊','🐯','🦋'];
+let allPosts=[],currentUser=null,currentNickname='',selectedPost=null;
 
-const emojis = ['🐺','🦅','🐉','🦁','🐻','🦊','🐯','🦋'];
-let allPosts=[], currentUser=null, currentNickname='', selectedPost=null;
+function getEmoji(id){if(!id)return emojis[0];let n=0;for(let i=0;i<Math.min(id.length,8);i++)n+=id.charCodeAt(i);return emojis[n%emojis.length];}
+function calcTimer(expiresAt){const diff=new Date(expiresAt)-new Date();if(diff<=0)return '期限切れ';const h=Math.floor(diff/3600000),m=Math.floor((diff%3600000)/60000);return h>0?`残り${h}時間${m}分`:`残り${m}分`;}
 
-function getEmoji(id){
-  if(!id) return emojis[0];
-  let n=0;
-  for(let i=0;i<Math.min(id.length,8);i++) n+=id.charCodeAt(i);
-  return emojis[n%emojis.length];
+function slotInfo(p){
+  const maxP=p.max_players||4,approvedP=p.approved_count||0,remainP=Math.max(0,maxP-approvedP),isFull=remainP===0;
+  const slotColor=isFull?'var(--red)':remainP<=1?'var(--orange)':'var(--green)';
+  const slotText=isFull?'満員':`残り${remainP}/${maxP}人`;
+  return {isFull,slotColor,slotText};
 }
 
-function calcTimer(expiresAt){
-  const diff=new Date(expiresAt)-new Date();
-  if(diff<=0) return '期限切れ';
-  const h=Math.floor(diff/3600000),m=Math.floor((diff%3600000)/60000);
-  return h>0?`残り${h}時間${m}分`:`残り${m}分`;
+function mainTags(p){
+  const pil=(text,color,bg,border)=>`<span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;background:${bg};color:${color};border:1px solid ${border}">${text}</span>`;
+  return [
+    p.platform?pil(p.platform,'var(--purple)','rgba(206,147,216,0.15)','rgba(206,147,216,0.4)'):'',
+    p.game_mode?pil(p.game_mode,p.game_mode==='ランク'?'var(--orange)':'var(--silver)',p.game_mode==='ランク'?'rgba(245,166,35,0.15)':'rgba(138,155,181,0.15)',p.game_mode==='ランク'?'rgba(245,166,35,0.4)':'rgba(138,155,181,0.4)'):'',
+    p.rank?pil(p.rank,'var(--blue)','rgba(79,195,247,0.1)','rgba(79,195,247,0.3)'):'',
+  ].join('');
 }
 
-// ── 認証 ──
+function vibeTags(vibes){
+  if(!vibes||!vibes.length)return '';
+  return `<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:7px">${vibes.map(v=>`<span style="font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(245,166,35,0.08);color:var(--orange);border:1px solid rgba(245,166,35,0.15)">${v}</span>`).join('')}</div>`;
+}
+
+function remainingRolesTag(p){
+  if(!p.remaining_roles||!p.remaining_roles.length)return '';
+  return `<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:6px;align-items:center"><span style="font-size:11px;color:var(--text-dim)">空き:</span>${p.remaining_roles.map(r=>`<span style="font-size:11px;padding:2px 8px;border-radius:20px;background:rgba(76,175,125,0.12);color:var(--green);border:1px solid rgba(76,175,125,0.3)">${r}</span>`).join('')}</div>`;
+}
+
+function modeClass(p){return p.game_mode==='ランク'?'ranked':p.game_mode==='アンランク'?'unranked':'';}
+
+function playerCardHTML(p,idx){
+  const emoji=getEmoji(p.user_id||p.id),timer=calcTimer(p.expires_at),vibes=Array.isArray(p.vibes)?p.vibes:[];
+  const mc=modeClass(p);const{isFull,slotColor,slotText}=slotInfo(p);
+  return `<div class="player-card ${mc}" onclick="openJoinModal(${idx})" style="${isFull?'opacity:0.6':''}">
+    <div class="card-role">${p.role||''} · ${p.rank||''}</div>
+    <div class="card-name">${emoji} ${p.nickname||'名無し'}</div>
+    <div style="display:flex;gap:5px;margin-bottom:8px;flex-wrap:wrap">${mainTags(p)}</div>
+    ${vibeTags(vibes)}
+    ${p.comment?`<div class="card-comment" style="flex:1">${p.comment}</div>`:`<div style="flex:1"></div>`}
+    <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-size:12px;font-weight:700;color:${slotColor}">${slotText}</span>
+        <span class="card-timer">⏳ ${timer}</span>
+      </div>
+      ${remainingRolesTag(p)}
+      <button class="card-btn" style="margin-top:8px" ${isFull?'disabled style="opacity:0.5;cursor:not-allowed"':''}>
+        ${isFull?'満員':'参加を申請する'}
+      </button>
+    </div>
+  </div>`;
+}
+
+function postCardHTML(p,idx){
+  const emoji=getEmoji(p.user_id||p.id),timer=calcTimer(p.expires_at),vibes=Array.isArray(p.vibes)?p.vibes:[];
+  const mc=modeClass(p);const isOwner=currentUser&&p.user_id===currentUser.id;
+  const{isFull,slotColor,slotText}=slotInfo(p);
+  return `<div class="post-card ${mc}" onclick="openJoinModal(${idx})" style="${isFull?'opacity:0.6':''}">
+    <div style="display:flex;gap:14px;align-items:flex-start">
+      <div style="width:48px;height:48px;border-radius:8px;background:linear-gradient(135deg,var(--orange),#ff6b35);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${emoji}</div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+          <div class="post-name" style="margin-bottom:0;font-size:16px">${p.nickname||'名無し'}</div>
+          <div style="display:flex;gap:4px;flex-wrap:wrap">${mainTags(p)}</div>
+        </div>
+        ${vibeTags(vibes)}
+        ${p.comment?`<div style="font-size:12px;color:var(--silver);padding:6px 10px;background:var(--bg);border-radius:6px;border-left:2px solid var(--border)">${p.comment}</div>`:''}
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);flex-wrap:wrap;gap:10px">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;gap:12px;align-items:center">
+          <span style="font-size:13px;font-weight:700;color:${slotColor}">${slotText}</span>
+          <span style="font-size:12px;color:var(--text-dim)">⏳ ${timer}</span>
+        </div>
+        ${remainingRolesTag(p)}
+      </div>
+      ${isOwner
+        ?`<button style="padding:8px 20px;background:transparent;border:1px solid var(--red);color:var(--red);border-radius:6px;font-size:12px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;white-space:nowrap" onclick="event.stopPropagation();deletePost('${p.id}')">削除</button>`
+        :isFull
+        ?`<button style="padding:8px 20px;background:transparent;border:1px solid var(--border);color:var(--text-dim);border-radius:6px;font-size:12px;cursor:not-allowed;white-space:nowrap" disabled>満員</button>`
+        :`<button style="padding:8px 24px;background:var(--orange);color:#000;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans JP',sans-serif;white-space:nowrap" onclick="event.stopPropagation();openJoinModal(${idx})">参加申請</button>`}
+    </div>
+  </div>`;
+}
+
 async function checkAuth(){
-  const {data:{user}}=await db.auth.getUser();
+  const{data:{user}}=await db.auth.getUser();
   if(user){currentUser=user;await loadNickname();updateHeader(true);}
   else updateHeader(false);
 }
 
 async function loadNickname(){
-  const {data}=await db.from('users').select('nickname').eq('id',currentUser.id).single();
+  const{data}=await db.from('users').select('nickname').eq('id',currentUser.id).single();
   currentNickname=data?.nickname||currentUser.email.split('@')[0];
 }
 
@@ -529,37 +506,27 @@ function updateHeader(loggedIn){
   const mm=document.getElementById('mobile-menu');
   const postBtn=document.getElementById('post-btn');
   if(loggedIn){
-    if(postBtn) postBtn.style.display='block';
-    const loggedInHTML=`<span class="user-nick">👤 ${currentNickname}</span>
+    if(postBtn)postBtn.style.display='block';
+    hr.innerHTML=`<span class="user-nick">👤 ${currentNickname}</span>
       <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="openProfileModal()">プロフィール編集</button>
       <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="openApplicationsModal()">申請管理</button>
       <button class="btn btn-primary" onclick="openForm()">＋ 募集する</button>
       <button class="btn btn-red" onclick="doLogout()">ログアウト</button>`;
-    const mobileHTML=`<button class="btn btn-ghost" onclick="openProfileModal();closeMobileMenu()">プロフィール編集</button>
+    if(mm)mm.innerHTML=`<button class="btn btn-ghost" onclick="openProfileModal();closeMobileMenu()">プロフィール編集</button>
       <button class="btn btn-ghost" onclick="openApplicationsModal();closeMobileMenu()">申請管理</button>
       <button class="btn btn-ghost" onclick="openForm();closeMobileMenu()">＋ 募集する</button>
       <button class="btn btn-red" onclick="doLogout();closeMobileMenu()">ログアウト</button>`;
-    hr.innerHTML=loggedInHTML;
-    if(mm) mm.innerHTML=mobileHTML;
   } else {
-    if(postBtn) postBtn.style.display='none';
+    if(postBtn)postBtn.style.display='none';
     hr.innerHTML=`<button class="btn btn-ghost" onclick="openAuthModal('login')">ログイン</button>
       <button class="btn btn-primary" onclick="openAuthModal('signup')">新規登録</button>`;
-    if(mm) mm.innerHTML=`<button class="btn btn-ghost" onclick="openAuthModal('login');closeMobileMenu()">ログイン</button>
+    if(mm)mm.innerHTML=`<button class="btn btn-ghost" onclick="openAuthModal('login');closeMobileMenu()">ログイン</button>
       <button class="btn btn-primary" onclick="openAuthModal('signup');closeMobileMenu()">新規登録</button>`;
   }
 }
 
-function toggleMobileMenu(){
-  const mm=document.getElementById('mobile-menu');
-  if(mm) mm.classList.toggle('open');
-}
-
-function closeMobileMenu(){
-  const mm=document.getElementById('mobile-menu');
-  if(mm) mm.classList.remove('open');
-}
-
+function toggleMobileMenu(){document.getElementById('mobile-menu').classList.toggle('open');}
+function closeMobileMenu(){document.getElementById('mobile-menu').classList.remove('open');}
 function openAuthModal(tab){document.getElementById('auth-overlay').classList.add('open');switchAuthTab(tab);}
 function switchAuthTab(tab){
   document.getElementById('auth-login').style.display=tab==='login'?'block':'none';
@@ -572,7 +539,7 @@ async function doLogin(){
   const email=document.getElementById('login-email').value.trim();
   const password=document.getElementById('login-password').value;
   if(!email||!password){showToast('メールとパスワードを入力してください');return;}
-  const {data,error}=await db.auth.signInWithPassword({email,password});
+  const{data,error}=await db.auth.signInWithPassword({email,password});
   if(error){showToast('ログイン失敗: '+error.message);return;}
   currentUser=data.user;await loadNickname();updateHeader(true);
   closeModal('auth-overlay');showToast(`おかえりなさい、${currentNickname}さん！`);
@@ -585,14 +552,12 @@ async function doSignup(){
   if(!nick){showToast('ニックネームを入力してください');return;}
   if(!email||!password){showToast('メールとパスワードを入力してください');return;}
   if(password.length<6){showToast('パスワードは6文字以上にしてください');return;}
-  const {data,error}=await db.auth.signUp({email,password,options:{data:{nickname:nick}}});
+  const{data,error}=await db.auth.signUp({email,password,options:{data:{nickname:nick}}});
   if(error){showToast('登録失敗: '+error.message);return;}
-  // 招待者IDを取得
   const urlParams=new URLSearchParams(window.location.search);
   const refId=urlParams.get('ref')||null;
-  if(data.user) await db.from('users').upsert([{id:data.user.id,nickname:nick,email:email,invited_by:refId}]);
-  closeModal('auth-overlay');
-  showToast('登録完了！ログインしてください。');
+  if(data.user)await db.from('users').upsert([{id:data.user.id,nickname:nick,email:email,invited_by:refId}]);
+  closeModal('auth-overlay');showToast('登録完了！ログインしてください。');
 }
 
 async function doLogout(){
@@ -602,77 +567,57 @@ async function doLogout(){
 
 async function openProfileModal(){
   document.getElementById('profile-nick').value=currentNickname;
-  
-  // 招待した人数を取得
-  const {count}=await db.from('users').select('*',{count:'exact'}).eq('invited_by',currentUser.id);
+  const{count}=await db.from('users').select('*',{count:'exact'}).eq('invited_by',currentUser.id);
   const inviteCount=count||0;
   const inviteUrl=`https://playcegg.com?ref=${currentUser.id}`;
-  
-  // プロフィールモーダルに招待情報を追加
   const existingInfo=document.getElementById('invite-info');
-  if(existingInfo) existingInfo.remove();
-  
+  if(existingInfo)existingInfo.remove();
   const infoDiv=document.createElement('div');
   infoDiv.id='invite-info';
   infoDiv.style.cssText='background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:16px';
-  infoDiv.innerHTML=`
-    <div style="font-size:12px;color:var(--text-dim);margin-bottom:8px">招待実績</div>
+  infoDiv.innerHTML=`<div style="font-size:12px;color:var(--text-dim);margin-bottom:8px">招待実績</div>
     <div style="font-size:22px;font-weight:700;color:var(--orange);font-family:Rajdhani,sans-serif;margin-bottom:8px">${inviteCount}人を招待</div>
     <div style="font-size:11px;color:var(--silver);margin-bottom:8px;word-break:break-all">${inviteUrl}</div>
-    <button onclick="copyInviteLink()" style="width:100%;padding:8px;background:transparent;border:1px solid var(--orange);color:var(--orange);border-radius:6px;font-size:12px;cursor:pointer;font-family:'Noto Sans JP',sans-serif">招待リンクをコピー</button>
-  `;
-  
-  const modal=document.getElementById('profile-modal');
-  const firstChild=modal.querySelector('.modal-sub');
-  firstChild.after(infoDiv);
-  
+    <button onclick="copyInviteLink()" style="width:100%;padding:8px;background:transparent;border:1px solid var(--orange);color:var(--orange);border-radius:6px;font-size:12px;cursor:pointer;font-family:'Noto Sans JP',sans-serif">招待リンクをコピー</button>`;
+  document.getElementById('profile-modal').querySelector('.modal-sub').after(infoDiv);
   document.getElementById('profile-modal').classList.add('open');
 }
 
 async function updateNickname(){
   const nick=document.getElementById('profile-nick').value.trim();
   if(!nick){showToast('ニックネームを入力してください');return;}
-  const {error}=await db.from('users').update({nickname:nick}).eq('id',currentUser.id);
+  const{error}=await db.from('users').update({nickname:nick}).eq('id',currentUser.id);
   if(error){showToast('更新失敗');return;}
   currentNickname=nick;updateHeader(true);closeModal('profile-modal');
   showToast('ニックネームを更新しました');
 }
 
-// ── 投稿 ──
 async function loadPosts(){
   const now=new Date().toISOString();
-  const {data,error}=await db.from('posts').select('*').gt('expires_at',now).order('created_at',{ascending:false});
+  const{data,error}=await db.from('posts').select('*').gt('expires_at',now).order('created_at',{ascending:false});
   if(error){console.error(error);return;}
   const posts=data||[];
-
-  // 各募集の承認数と承認済みロールを取得
   if(posts.length>0){
     const postIds=posts.map(p=>p.id);
-    const {data:apps}=await db.from('applications').select('post_id,role').in('post_id',postIds).eq('status','approved');
-    const approvedCount={};
-    const approvedRoles={};
+    const{data:apps}=await db.from('applications').select('post_id,role').in('post_id',postIds).eq('status','approved');
+    const approvedCount={},approvedRoles={};
     (apps||[]).forEach(a=>{
       approvedCount[a.post_id]=(approvedCount[a.post_id]||0)+1;
-      if(!approvedRoles[a.post_id]) approvedRoles[a.post_id]=[];
-      if(a.role) approvedRoles[a.post_id].push(a.role);
+      if(!approvedRoles[a.post_id])approvedRoles[a.post_id]=[];
+      if(a.role)approvedRoles[a.post_id].push(a.role);
     });
     posts.forEach(p=>{
       p.approved_count=approvedCount[p.id]||0;
       p.approved_roles=approvedRoles[p.id]||[];
-      // 残り空きロールを計算
       if(p.roles_req&&p.roles_req.length>0){
         const remaining=[...p.roles_req];
-        (p.approved_roles||[]).forEach(r=>{
-          const idx=remaining.indexOf(r);
-          if(idx>-1) remaining.splice(idx,1);
-        });
+        (p.approved_roles||[]).forEach(r=>{const idx=remaining.indexOf(r);if(idx>-1)remaining.splice(idx,1);});
         p.remaining_roles=remaining;
       } else {
         p.remaining_roles=[];
       }
     });
   }
-
   allPosts=posts;renderAll();
 }
 
@@ -681,18 +626,13 @@ function getFiltered(){
   const m=document.getElementById('filter-mode')?.value||'';
   const r=document.getElementById('filter-role')?.value||'';
   const rk=document.getElementById('filter-rank')?.value||'';
-  return allPosts.filter(post=>
-    (!p||post.platform===p)&&
-    (!m||post.game_mode===m)&&
-    (!r||post.role===r)&&
-    (!rk||post.rank===rk||post.rank_req===rk||post.rank_req==='指定なし')
-  );
+  return allPosts.filter(post=>(!p||post.platform===p)&&(!m||post.game_mode===m)&&(!r||post.role===r)&&(!rk||post.rank===rk));
 }
 
 function renderAll(){
   const filtered=getFiltered();
   const badge=document.querySelector('.online-badge');
-  if(badge) badge.innerHTML=`<div class="dot-pulse"></div>今すぐ遊べる ${filtered.length}人`;
+  if(badge)badge.innerHTML=`<div class="dot-pulse"></div>今すぐ遊べる ${filtered.length}人`;
   const onlineEl=document.getElementById('online-cards');
   const listEl=document.getElementById('post-list');
   if(filtered.length===0){
@@ -704,113 +644,11 @@ function renderAll(){
   listEl.innerHTML=filtered.map((p,i)=>postCardHTML(p,i)).join('');
 }
 
-function modeClass(p){return p.game_mode==='ランク'?'ranked':p.game_mode==='アンランク'?'unranked':'';}
-
-function playerCardHTML(p,idx){
-  const emoji=getEmoji(p.user_id||p.id),timer=calcTimer(p.expires_at),vibes=Array.isArray(p.vibes)?p.vibes:[];
-  const mc=modeClass(p);
-  const maxP=p.max_players||4;
-  const approvedP=p.approved_count||0;
-  const remainP=Math.max(0,maxP-approvedP);
-  const isFull=remainP===0;
-  const slotColor=isFull?'var(--red)':remainP<=1?'var(--orange)':'var(--green)';
-  const slotText=isFull?'満員':`残り${remainP}/${maxP}人`;
-  return `<div class="player-card ${mc}" onclick="openJoinModal(${idx})" style="${isFull?'opacity:0.6':''}">
-    <div class="card-role">${p.role||''} · ${p.rank||''}</div>
-    <div class="card-name">${emoji} ${p.nickname||'名無し'}</div>
-    <div style="display:flex;gap:5px;margin-bottom:8px;flex-wrap:wrap">
-      ${p.platform?`<span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;background:rgba(206,147,216,0.15);color:var(--purple);border:1px solid rgba(206,147,216,0.4)">${p.platform}</span>`:''}
-      ${p.game_mode?`<span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;${p.game_mode==='ランク'?'background:rgba(245,166,35,0.15);color:var(--orange);border:1px solid rgba(245,166,35,0.4)':'background:rgba(138,155,181,0.15);color:var(--silver);border:1px solid rgba(138,155,181,0.4)'}">${p.game_mode}</span>`:''}
-      ${p.rank?`<span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;background:rgba(79,195,247,0.1);color:var(--blue);border:1px solid rgba(79,195,247,0.3)">${p.rank}</span>`:''}
-    </div>
-    ${vibes.length>0?`<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:7px">
-      ${vibes.map(v=>`<span style="font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(245,166,35,0.08);color:var(--orange);border:1px solid rgba(245,166,35,0.15)">${v}</span>`).join('')}
-    </div>`:``}
-    ${p.comment?`<div class="card-comment" style="flex:1">${p.comment}</div>`:`<div style="flex:1"></div>`}
-    <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <span style="font-size:12px;font-weight:700;color:${slotColor}">${slotText}</span>
-        <span class="card-timer">⏳ ${timer}</span>
-      </div>
-      ${p.remaining_roles&&p.remaining_roles.length>0?`<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;align-items:center">
-        <span style="font-size:10px;color:var(--text-dim)">空き:</span>
-        ${p.remaining_roles.map(r=>`<span style="font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(76,175,125,0.12);color:var(--green);border:1px solid rgba(76,175,125,0.3)">${r}</span>`).join('')}
-      </div>`:''}
-      </div>
-      <button class="card-btn" ${isFull?'disabled style="opacity:0.5;cursor:not-allowed"':''}>
-        ${isFull?'満員':'参加を申請する'}
-      </button>
-    </div>
-  </div>`;
-}
-
-function postCardHTML(p,idx){
-  const emoji=getEmoji(p.user_id||p.id),timer=calcTimer(p.expires_at),vibes=Array.isArray(p.vibes)?p.vibes:[];
-  const mc=modeClass(p);
-  const isOwner=currentUser&&p.user_id===currentUser.id;
-  const maxP=p.max_players||4;
-  const remainingRolesHTML=p.remaining_roles&&p.remaining_roles.length>0
-    ?`<div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;align-items:center">
-        <span style="font-size:11px;color:var(--text-dim)">空き枠:</span>
-        ${p.remaining_roles.map(r=>`<span style="font-size:11px;padding:2px 8px;border-radius:20px;background:rgba(76,175,125,0.12);color:var(--green);border:1px solid rgba(76,175,125,0.3)">${r}</span>`).join('')}
-      </div>`
-    :'';
-  const approvedP=p.approved_count||0;
-  const remainP=Math.max(0,maxP-approvedP);
-  const isFull=remainP===0;
-  const slotColor=isFull?'var(--red)':remainP<=1?'var(--orange)':'var(--green)';
-  const slotText=isFull?'満員':`残り${remainP}/${maxP}人`;
-
-  return `<div class="post-card ${mc}" onclick="openJoinModal(${idx})" style="${isFull?'opacity:0.6':''}">
-    <div style="display:flex;gap:14px;align-items:flex-start">
-      <div class="post-avatar" style="width:48px;height:48px;font-size:22px;flex-shrink:0">${emoji}</div>
-      <div style="flex:1;min-width:0">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-          <div class="post-name" style="margin-bottom:0;font-size:16px">${p.nickname||'名無し'}</div>
-          <div style="display:flex;gap:4px;flex-wrap:wrap">
-            ${p.platform?`<span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;background:rgba(206,147,216,0.15);color:var(--purple);border:1px solid rgba(206,147,216,0.4)">${p.platform}</span>`:''}
-            ${p.game_mode?`<span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;${p.game_mode==='ランク'?'background:rgba(245,166,35,0.15);color:var(--orange);border:1px solid rgba(245,166,35,0.4)':'background:rgba(138,155,181,0.15);color:var(--silver);border:1px solid rgba(138,155,181,0.4)'}">${p.game_mode}</span>`:''}
-            ${p.rank?`<span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;background:rgba(79,195,247,0.1);color:var(--blue);border:1px solid rgba(79,195,247,0.3)">${p.rank}</span>`:''}
-          ${p.rank_req&&p.rank_req!=='指定なし'?`<span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;background:rgba(76,175,125,0.1);color:var(--green);border:1px solid rgba(76,175,125,0.3)">求: ${p.rank_req}</span>`:''}
-          </div>
-        </div>
-        ${vibes.length>0?`<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:7px">
-          ${vibes.map(v=>`<span style="font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(245,166,35,0.08);color:var(--orange);border:1px solid rgba(245,166,35,0.15)">${v}</span>`).join('')}
-        </div>`:''}
-        ${p.comment?`<div style="font-size:12px;color:var(--silver);padding:6px 10px;background:var(--bg);border-radius:6px;border-left:2px solid var(--border)">${p.comment}</div>`:''}
-      </div>
-    </div>
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);flex-wrap:wrap;gap:10px">
-      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-        <span style="font-size:13px;font-weight:700;color:${slotColor}">${slotText}</span>
-        <span style="font-size:12px;color:var(--text-dim)">⏳ ${timer}</span>
-      </div>
-      ${p.remaining_roles&&p.remaining_roles.length>0?`<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:6px;align-items:center">
-        <span style="font-size:11px;color:var(--text-dim)">空き:</span>
-        ${p.remaining_roles.map(r=>`<span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(76,175,125,0.12);color:var(--green);border:1px solid rgba(76,175,125,0.3)">${r}</span>`).join('')}
-      </div>`:''}
-      </div>
-      ${isOwner
-        ?`<button style="padding:8px 20px;background:transparent;border:1px solid var(--red);color:var(--red);border-radius:6px;font-size:12px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;white-space:nowrap" onclick="event.stopPropagation();deletePost('${p.id}')">削除</button>`
-        :isFull
-        ?`<button style="padding:8px 20px;background:transparent;border:1px solid var(--border);color:var(--text-dim);border-radius:6px;font-size:12px;cursor:not-allowed;white-space:nowrap" disabled>満員</button>`
-        :`<button style="padding:8px 24px;background:var(--orange);color:#000;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans JP',sans-serif;white-space:nowrap">参加申請</button>`}
-    </div>
-  </div>`;
-}
-
-async function deletePost(postId){
-  if(!confirm('この募集を削除しますか？')) return;
-  const {error}=await db.from('posts').delete().eq('id',postId).eq('user_id',currentUser.id);
-  if(error){showToast('削除に失敗しました');return;}
-  showToast('募集を削除しました');await loadPosts();
-}
-
 async function submitPost(){
   if(!currentUser){showToast('募集するにはログインが必要です');openAuthModal('login');return;}
   const battletag=document.getElementById('f-battletag').value.trim();
   if(!battletag){showToast('BattleTag / PS IDを入力してください');return;}
-  const {error}=await db.from('posts').insert([{
+  const{error}=await db.from('posts').insert([{
     user_id:currentUser.id,nickname:currentNickname,
     platform:document.getElementById('f-platform').value,
     game_mode:document.getElementById('f-mode').value,
@@ -829,215 +667,139 @@ async function submitPost(){
   closeModal('form-overlay');showToast('募集を投稿しました！');await loadPosts();
 }
 
-// ── 参加申請 ──
+async function deletePost(postId){
+  if(!confirm('この募集を削除しますか？'))return;
+  const{error}=await db.from('posts').delete().eq('id',postId).eq('user_id',currentUser.id);
+  if(error){showToast('削除に失敗しました');return;}
+  showToast('募集を削除しました');await loadPosts();
+}
+
 async function openJoinModal(idx){
   const p=getFiltered()[idx];
-  if(!p) return;
+  if(!p)return;
   selectedPost=p;
   const emoji=getEmoji(p.user_id||p.id),vibes=Array.isArray(p.vibes)?p.vibes:[];
-  // 実績データを並列取得
-  const [
-    {count:inviteCount},
-    {count:postCount},
-    {count:applyCount},
-    {count:matchCount}
-  ] = await Promise.all([
+  const[{count:inviteCount},{count:postCount},{count:applyCount},{count:matchCount}]=await Promise.all([
     db.from('users').select('*',{count:'exact'}).eq('invited_by',p.user_id),
     db.from('posts').select('*',{count:'exact'}).eq('user_id',p.user_id),
     db.from('applications').select('*',{count:'exact'}).eq('user_id',p.user_id),
     db.from('applications').select('*',{count:'exact'}).eq('user_id',p.user_id).eq('status','approved'),
   ]);
-
-  const statsHTML=`
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px">
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center">
-        <div style="font-size:16px;font-weight:700;color:var(--orange);font-family:Rajdhani,sans-serif">${postCount||0}</div>
-        <div style="font-size:10px;color:var(--text-dim)">募集回数</div>
-      </div>
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center">
-        <div style="font-size:16px;font-weight:700;color:var(--orange);font-family:Rajdhani,sans-serif">${applyCount||0}</div>
-        <div style="font-size:10px;color:var(--text-dim)">参加申請回数</div>
-      </div>
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center">
-        <div style="font-size:16px;font-weight:700;color:var(--green);font-family:Rajdhani,sans-serif">${matchCount||0}</div>
-        <div style="font-size:10px;color:var(--text-dim)">マッチング数</div>
-      </div>
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center">
-        <div style="font-size:16px;font-weight:700;color:var(--blue);font-family:Rajdhani,sans-serif">${inviteCount||0}</div>
-        <div style="font-size:10px;color:var(--text-dim)">招待人数</div>
-      </div>
-    </div>`;
-
+  const statsHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px">
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center"><div style="font-size:16px;font-weight:700;color:var(--orange);font-family:Rajdhani,sans-serif">${postCount||0}</div><div style="font-size:10px;color:var(--text-dim)">募集回数</div></div>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center"><div style="font-size:16px;font-weight:700;color:var(--orange);font-family:Rajdhani,sans-serif">${applyCount||0}</div><div style="font-size:10px;color:var(--text-dim)">参加申請回数</div></div>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center"><div style="font-size:16px;font-weight:700;color:var(--green);font-family:Rajdhani,sans-serif">${matchCount||0}</div><div style="font-size:10px;color:var(--text-dim)">マッチング数</div></div>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center"><div style="font-size:16px;font-weight:700;color:var(--blue);font-family:Rajdhani,sans-serif">${inviteCount||0}</div><div style="font-size:10px;color:var(--text-dim)">招待人数</div></div>
+  </div>`;
   document.getElementById('modal-player-info').innerHTML=`
     <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
       <div class="modal-avatar">${emoji}</div>
       <div style="flex:1;min-width:0">
         <div style="font-size:18px;font-weight:700;margin-bottom:8px">${p.nickname||'名無し'}</div>
-        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px">
-          ${p.platform?`<span style="font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;background:rgba(206,147,216,0.15);color:var(--purple);border:1px solid rgba(206,147,216,0.4)">${p.platform}</span>`:''}
-          ${p.game_mode?`<span style="font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;${p.game_mode==='ランク'?'background:rgba(245,166,35,0.15);color:var(--orange);border:1px solid rgba(245,166,35,0.4)':'background:rgba(138,155,181,0.15);color:var(--silver);border:1px solid rgba(138,155,181,0.4)'}">${p.game_mode}</span>`:''}
-          ${p.rank?`<span style="font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;background:rgba(79,195,247,0.1);color:var(--blue);border:1px solid rgba(79,195,247,0.3)">${p.rank}</span>`:''}
-        </div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px">${mainTags(p)}</div>
       </div>
     </div>
-    ${vibes.length>0?`<div style="display:flex;gap:5px;flex-wrap:wrap;padding:10px;background:var(--bg);border-radius:8px;margin-bottom:10px">
-      ${vibes.map(v=>`<span style="font-size:11px;padding:3px 10px;border-radius:4px;background:rgba(245,166,35,0.08);color:var(--orange);border:1px solid rgba(245,166,35,0.15)">${v}</span>`).join('')}
-    </div>`:''}
+    ${vibes.length>0?`<div style="display:flex;gap:5px;flex-wrap:wrap;padding:10px;background:var(--bg);border-radius:8px;margin-bottom:10px">${vibes.map(v=>`<span style="font-size:11px;padding:3px 10px;border-radius:4px;background:rgba(245,166,35,0.08);color:var(--orange);border:1px solid rgba(245,166,35,0.15)">${v}</span>`).join('')}</div>`:''}
     ${p.comment?`<div style="font-size:12px;color:var(--silver);padding:8px 10px;background:var(--bg);border-radius:6px;border-left:2px solid var(--border);margin-bottom:10px">${p.comment}</div>`:''}
     ${p.battletag?`<div style="font-size:12px;color:var(--orange);margin-bottom:10px">🎮 ${p.battletag}</div>`:''}
-    ${remainingRolesHTML}${statsHTML}`;
-
+    ${remainingRolesTag(p)}
+    ${statsHTML}`;
   const applySection=document.getElementById('apply-section');
   if(!currentUser){
     applySection.innerHTML=`<div style="font-size:12px;color:var(--text-dim);text-align:center">参加申請するには<button onclick="openAuthModal('login');closeModal('join-modal')" style="background:none;border:none;color:var(--orange);cursor:pointer;font-size:12px">ログイン</button>が必要です</div>`;
   } else if(p.user_id===currentUser.id){
     applySection.innerHTML=`<div style="font-size:12px;color:var(--text-dim);text-align:center">自分の募集です</div>`;
   } else {
-    applySection.innerHTML=`
-      <div class="apply-title">参加を申請する</div>
+    applySection.innerHTML=`<div class="apply-title">参加を申請する</div>
       <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">メインロール</label>
-          <select class="form-select" id="apply-role"><option>タンク</option><option>ダメージ</option><option>サポート</option><option>フレックス</option></select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">現在のランク</label>
-          <select class="form-select" id="apply-rank"><option>ブロンズ</option><option>シルバー</option><option>ゴールド</option><option>プラチナ</option><option>ダイヤ</option><option>マスター以上</option></select>
-        </div>
+        <div class="form-group"><label class="form-label">メインロール</label><select class="form-select" id="apply-role"><option>タンク</option><option>ダメージ</option><option>サポート</option><option>フレックス</option></select></div>
+        <div class="form-group"><label class="form-label">現在のランク</label><select class="form-select" id="apply-rank"><option>ブロンズ</option><option>シルバー</option><option>ゴールド</option><option>プラチナ</option><option>ダイヤ</option><option>マスター以上</option></select></div>
       </div>
-      <div class="form-group">
-        <label class="form-label">一言コメント（任意）</label>
-        <textarea class="form-textarea" id="apply-comment" placeholder="よろしくお願いします！" style="min-height:60px"></textarea>
-      </div>
+      <div class="form-group"><label class="form-label">一言コメント（任意）</label><textarea class="form-textarea" id="apply-comment" placeholder="よろしくお願いします！" style="min-height:60px"></textarea></div>
       <button class="modal-btn modal-btn-primary" onclick="submitApplication()">参加申請を送る</button>`;
   }
-  // 削除ボタンの表示制御
   const deleteBtn=document.getElementById('modal-delete-btn');
-  if(deleteBtn){
-    if(currentUser&&p.user_id===currentUser.id){
-      deleteBtn.style.display='flex';
-    } else {
-      deleteBtn.style.display='none';
-    }
-  }
+  if(deleteBtn)deleteBtn.style.display=(currentUser&&p.user_id===currentUser.id)?'flex':'none';
   document.getElementById('join-modal').classList.add('open');
 }
 
 async function openApplicationsModal(){
-  if(!currentUser) return;
+  if(!currentUser)return;
   document.getElementById('applications-modal').classList.add('open');
   await loadApplications();
 }
 
 async function loadApplications(){
-  // 自分の募集IDを取得
   const now=new Date().toISOString();
-  const {data:myPosts}=await db.from('posts').select('id,game_mode,platform,rank,role').eq('user_id',currentUser.id).gt('expires_at',now);
-  
+  const{data:myPosts}=await db.from('posts').select('id,game_mode,platform,rank,role').eq('user_id',currentUser.id).gt('expires_at',now);
   if(!myPosts||myPosts.length===0){
     document.getElementById('applications-list').innerHTML='<div style="color:var(--text-dim);font-size:13px;text-align:center;padding:20px">現在アクティブな募集がありません</div>';
     return;
   }
-
   const postIds=myPosts.map(p=>p.id);
-  const {data:apps}=await db.from('applications').select('*').in('post_id',postIds).order('created_at',{ascending:false});
-
+  const{data:apps}=await db.from('applications').select('*').in('post_id',postIds).order('created_at',{ascending:false});
   if(!apps||apps.length===0){
     document.getElementById('applications-list').innerHTML='<div style="color:var(--text-dim);font-size:13px;text-align:center;padding:20px">まだ申請がありません</div>';
     return;
   }
-
-  const postMap={};
-  myPosts.forEach(p=>postMap[p.id]=p);
-
-  // 各申請者の実績を並列取得
-  const statsPromises=apps.map(app=>Promise.all([
+  const postMap={};myPosts.forEach(p=>postMap[p.id]=p);
+  const allStats=await Promise.all(apps.map(app=>Promise.all([
     db.from('posts').select('*',{count:'exact'}).eq('user_id',app.user_id),
     db.from('applications').select('*',{count:'exact'}).eq('user_id',app.user_id),
     db.from('applications').select('*',{count:'exact'}).eq('user_id',app.user_id).eq('status','approved'),
     db.from('users').select('*',{count:'exact'}).eq('invited_by',app.user_id),
-  ]));
-  const allStats=await Promise.all(statsPromises);
-
+  ])));
   document.getElementById('applications-list').innerHTML=apps.map((app,i)=>{
     const post=postMap[app.post_id]||{};
     const statusColor=app.status==='approved'?'var(--green)':app.status==='rejected'?'var(--red)':'var(--orange)';
     const statusText=app.status==='approved'?'承認済み':app.status==='rejected'?'拒否済み':'申請中';
-    const [postC,applyC,matchC,inviteC]=allStats[i].map(r=>r.count||0);
+    const[postC,applyC,matchC,inviteC]=allStats[i].map(r=>r.count||0);
     return `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
-        <div>
-          <div style="font-size:15px;font-weight:700">${app.nickname||'名無し'}</div>
-          <div style="font-size:11px;color:var(--text-dim);margin-top:2px">
-            募集: ${post.game_mode||''} ${post.platform||''} ${post.rank||''}
-          </div>
-        </div>
-        <span style="font-size:11px;padding:3px 8px;border-radius:3px;color:${statusColor};border:1px solid ${statusColor};background:transparent">${statusText}</span>
+        <div><div style="font-size:15px;font-weight:700">${app.nickname||'名無し'}</div><div style="font-size:11px;color:var(--text-dim);margin-top:2px">募集: ${post.game_mode||''} ${post.platform||''} ${post.rank||''}</div></div>
+        <span style="font-size:11px;padding:3px 8px;border-radius:3px;color:${statusColor};border:1px solid ${statusColor}">${statusText}</span>
       </div>
-      <div style="font-size:12px;color:var(--silver);margin-bottom:10px">
-        ロール: ${app.role||'-'} / ランク: ${app.rank||'-'}
-        ${app.comment?`<br>💬 ${app.comment}`:''}
-      </div>
+      <div style="font-size:12px;color:var(--silver);margin-bottom:10px">ロール: ${app.role||'-'} / ランク: ${app.rank||'-'}${app.comment?`<br>💬 ${app.comment}`:''}</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-bottom:10px">
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px;text-align:center">
-          <div style="font-size:14px;font-weight:700;color:var(--orange);font-family:Rajdhani,sans-serif">${postC}</div>
-          <div style="font-size:9px;color:var(--text-dim)">募集</div>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px;text-align:center">
-          <div style="font-size:14px;font-weight:700;color:var(--orange);font-family:Rajdhani,sans-serif">${applyC}</div>
-          <div style="font-size:9px;color:var(--text-dim)">申請</div>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px;text-align:center">
-          <div style="font-size:14px;font-weight:700;color:var(--green);font-family:Rajdhani,sans-serif">${matchC}</div>
-          <div style="font-size:9px;color:var(--text-dim)">マッチ</div>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px;text-align:center">
-          <div style="font-size:14px;font-weight:700;color:var(--blue);font-family:Rajdhani,sans-serif">${inviteC}</div>
-          <div style="font-size:9px;color:var(--text-dim)">招待</div>
-        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px;text-align:center"><div style="font-size:14px;font-weight:700;color:var(--orange);font-family:Rajdhani,sans-serif">${postC}</div><div style="font-size:9px;color:var(--text-dim)">募集</div></div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px;text-align:center"><div style="font-size:14px;font-weight:700;color:var(--orange);font-family:Rajdhani,sans-serif">${applyC}</div><div style="font-size:9px;color:var(--text-dim)">申請</div></div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px;text-align:center"><div style="font-size:14px;font-weight:700;color:var(--green);font-family:Rajdhani,sans-serif">${matchC}</div><div style="font-size:9px;color:var(--text-dim)">マッチ</div></div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px;text-align:center"><div style="font-size:14px;font-weight:700;color:var(--blue);font-family:Rajdhani,sans-serif">${inviteC}</div><div style="font-size:9px;color:var(--text-dim)">招待</div></div>
       </div>
-      ${app.status==='pending'?`
-        <div style="display:flex;gap:8px">
-          <button onclick="openApproveModal('${app.id}','${app.user_id}','${app.post_id}')" style="flex:1;padding:8px;background:var(--green);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer">承認する</button>
-          <button onclick="rejectApplication('${app.id}')" style="flex:1;padding:8px;background:transparent;color:var(--red);border:1px solid var(--red);border-radius:6px;font-size:12px;font-weight:700;cursor:pointer">拒否する</button>
-        </div>`:''}
+      ${app.status==='pending'?`<div style="display:flex;gap:8px">
+        <button onclick="openApproveModal('${app.id}','${app.user_id}','${app.post_id}')" style="flex:1;padding:8px;background:var(--green);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer">承認する</button>
+        <button onclick="rejectApplication('${app.id}')" style="flex:1;padding:8px;background:transparent;color:var(--red);border:1px solid var(--red);border-radius:6px;font-size:12px;font-weight:700;cursor:pointer">拒否する</button>
+      </div>`:''}
     </div>`;
   }).join('');
 }
 
-let _pendingApprove = null;
+let _pendingApprove=null;
 
-function openApproveModal(appId, applicantUserId, postId){
-  _pendingApprove = {appId, applicantUserId, postId};
-  document.getElementById('approve-comment').value = '';
+function openApproveModal(appId,applicantUserId,postId){
+  _pendingApprove={appId,applicantUserId,postId};
+  document.getElementById('approve-comment').value='';
   document.getElementById('approve-modal').classList.add('open');
 }
 
 async function confirmApprove(){
-  if(!_pendingApprove) return;
-  const comment = document.getElementById('approve-comment').value.trim();
+  if(!_pendingApprove)return;
+  const comment=document.getElementById('approve-comment').value.trim();
   closeModal('approve-modal');
-  await approveApplication(_pendingApprove.appId, _pendingApprove.applicantUserId, _pendingApprove.postId, comment);
-  _pendingApprove = null;
+  await approveApplication(_pendingApprove.appId,_pendingApprove.applicantUserId,_pendingApprove.postId,comment);
+  _pendingApprove=null;
 }
 
-async function approveApplication(appId, applicantUserId, postId, approveComment=''){
-  const {error}=await db.from('applications').update({status:'approved'}).eq('id',appId);
+async function approveApplication(appId,applicantUserId,postId,approveComment=''){
+  const{error}=await db.from('applications').update({status:'approved'}).eq('id',appId);
   if(error){showToast('承認に失敗しました');return;}
-
-  // 承認済み数を確認して満員チェック
-  const {data:post}=await db.from('posts').select('max_players').eq('id',postId).single();
-  const {count}=await db.from('applications').select('*',{count:'exact'}).eq('post_id',postId).eq('status','approved');
-  
+  const{data:post}=await db.from('posts').select('max_players').eq('id',postId).single();
+  const{count}=await db.from('applications').select('*',{count:'exact'}).eq('post_id',postId).eq('status','approved');
   if(post&&count>=post.max_players){
     await db.from('posts').update({expires_at:new Date().toISOString()}).eq('id',postId);
     showToast('承認しました。募集枠が満員になったため募集を終了しました。');
-  } else {
-    showToast('承認しました！');
-  }
-
-  // 申請者にメール通知
-  const {data:applicantData}=await db.from('users').select('email,nickname').eq('id',applicantUserId).single();
+  } else {showToast('承認しました！');}
+  const{data:applicantData}=await db.from('users').select('email,nickname').eq('id',applicantUserId).single();
   if(applicantData?.email){
     await db.functions.invoke('send-notification',{
       body:{
@@ -1046,41 +808,36 @@ async function approveApplication(appId, applicantUserId, postId, approveComment
         html:`<div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px;background:#0a0c0f;color:#e8edf5;">
           <h2 style="color:#4caf7d">PLAYCE - 参加申請承認通知</h2>
           <p>おめでとうございます！<strong>${applicantData.nickname||'あなた'}</strong>さんの参加申請が承認されました。</p>
-          <p style="margin-top:12px">募集者からの連絡をお待ちください。</p>
-          <br>
-          <a href="https://kidsesportslab.github.io/playce-ow/" style="background:#f5a623;color:#000;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:bold">PLAYCEを開く</a>
+          <p style="margin-top:12px">${approveComment||'募集者からの連絡をお待ちください。'}</p>
+          <br><a href="https://playcegg.com" style="background:#f5a623;color:#000;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:bold">PLAYCEを開く</a>
         </div>`
       }
     });
   }
-
-  await loadApplications();
-  await loadPosts();
+  await loadApplications();await loadPosts();
 }
 
 async function rejectApplication(appId){
-  const {error}=await db.from('applications').update({status:'rejected'}).eq('id',appId);
+  const{error}=await db.from('applications').update({status:'rejected'}).eq('id',appId);
   if(error){showToast('拒否に失敗しました');return;}
-  showToast('拒否しました');
-  await loadApplications();
+  showToast('拒否しました');await loadApplications();
 }
 
 async function deletePostFromModal(){
-  if(!selectedPost) return;
-  if(!confirm('この募集を削除しますか？')) return;
-  const {error}=await db.from('posts').delete().eq('id',selectedPost.id).eq('user_id',currentUser.id);
+  if(!selectedPost)return;
+  if(!confirm('この募集を削除しますか？'))return;
+  const{error}=await db.from('posts').delete().eq('id',selectedPost.id).eq('user_id',currentUser.id);
   if(error){showToast('削除に失敗しました');return;}
-  closeModal('join-modal');
-  showToast('募集を削除しました');await loadPosts();
+  closeModal('join-modal');showToast('募集を削除しました');await loadPosts();
 }
 
 async function submitApplication(){
   if(!currentUser){showToast('ログインが必要です');return;}
-  if(!selectedPost) return;
+  if(!selectedPost)return;
   const role=document.getElementById('apply-role')?.value;
   const rank=document.getElementById('apply-rank')?.value;
   const comment=document.getElementById('apply-comment')?.value||'';
-  const {error}=await db.from('applications').insert([{
+  const{error}=await db.from('applications').insert([{
     post_id:selectedPost.id,user_id:currentUser.id,
     nickname:currentNickname,role,rank,comment,status:'pending'
   }]);
@@ -1088,38 +845,28 @@ async function submitApplication(){
     if(error.code==='23505'){showToast('すでに申請済みです');return;}
     showToast('申請に失敗しました');console.error(error);return;
   }
-
-  // 募集者のメールアドレスを取得して通知を送る
-  const {data:ownerData}=await db.from('users').select('email').eq('id',selectedPost.user_id).single();
+  const{data:ownerData}=await db.from('users').select('email').eq('id',selectedPost.user_id).single();
   if(ownerData?.email){
     await db.functions.invoke('send-notification',{
       body:{
-        to: ownerData.email,
-        subject: `【PLAYCE】${currentNickname}さんから参加申請が届きました`,
-        html: `
-          <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px;background:#0a0c0f;color:#e8edf5;">
-            <h2 style="color:#f5a623">PLAYCE - 参加申請通知</h2>
-            <p><strong>${currentNickname}</strong>さんがあなたの募集に参加申請しました。</p>
-            <hr style="border-color:#252b36">
-            <p>🎮 ロール: ${role}</p>
-            <p>🏅 ランク: ${rank}</p>
-            ${comment?`<p>💬 コメント: ${comment}</p>`:''}
-            <hr style="border-color:#252b36">
-            <p>募集: ${selectedPost.game_mode||''} / ${selectedPost.platform||''} / ${selectedPost.rank||''}</p>
-            <br>
-            <a href="https://kidsesportslab.github.io/playce-ow/" style="background:#f5a623;color:#000;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:bold">PLAYCEで確認する</a>
-          </div>
-        `
+        to:ownerData.email,
+        subject:`【PLAYCE】${currentNickname}さんから参加申請が届きました`,
+        html:`<div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px;background:#0a0c0f;color:#e8edf5;">
+          <h2 style="color:#f5a623">PLAYCE - 参加申請通知</h2>
+          <p><strong>${currentNickname}</strong>さんがあなたの募集に参加申請しました。</p>
+          <hr style="border-color:#252b36">
+          <p>ロール: ${role} / ランク: ${rank}</p>
+          ${comment?`<p>コメント: ${comment}</p>`:''}
+          <br><a href="https://playcegg.com" style="background:#f5a623;color:#000;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:bold">PLAYCEで確認する</a>
+        </div>`
       }
     });
   }
-
-  closeModal('join-modal');
-  showToast('参加申請を送りました！募集者からの返事をお待ちください。');
+  closeModal('join-modal');showToast('参加申請を送りました！募集者からの返事をお待ちください。');
 }
 
 async function copyPlayerContact(){
-  if(!selectedPost) return;
+  if(!selectedPost)return;
   const text=selectedPost.battletag||selectedPost.discord_id||'連絡先未登録';
   try{await navigator.clipboard.writeText(text);}catch{}
   showToast('コピーしました: '+text);
@@ -1173,20 +920,6 @@ function renderTeams(){
 document.querySelectorAll('.modal-overlay,.form-overlay,.auth-overlay').forEach(el=>{
   el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open');});
 });
-
-const hash=window.location.hash;
-if(hash&&hash.includes('access_token')){
-  db.auth.getSession().then(({data:{session}})=>{
-    if(session){
-      currentUser=session.user;
-      loadNickname().then(()=>{
-        updateHeader(true);
-        showToast('メール認証が完了しました！');
-        window.history.replaceState(null,'',window.location.pathname);
-      });
-    }
-  });
-}
 
 checkAuth();loadPosts();renderTeams();
 setInterval(loadPosts,5*60*1000);
