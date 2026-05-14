@@ -730,8 +730,12 @@ function playerCardHTML(p,idx){
     <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
         <span style="font-size:12px;font-weight:700;color:${slotColor}">${slotText}</span>
-        ${p.remaining_roles&&p.remaining_roles.length>0?p.remaining_roles.map(r=>`<span style="font-size:10px;padding:1px 6px;border-radius:20px;background:rgba(76,175,125,0.12);color:var(--green);border:1px solid rgba(76,175,125,0.3)">空:${r}</span>`).join(''):''}
         <span class="card-timer">⏳ ${timer}</span>
+      </div>
+      ${p.remaining_roles&&p.remaining_roles.length>0?`<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;align-items:center">
+        <span style="font-size:10px;color:var(--text-dim)">空き:</span>
+        ${p.remaining_roles.map(r=>`<span style="font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(76,175,125,0.12);color:var(--green);border:1px solid rgba(76,175,125,0.3)">${r}</span>`).join('')}
+      </div>`:''\}
       </div>
       <button class="card-btn" ${isFull?'disabled style="opacity:0.5;cursor:not-allowed"':''}>
         ${isFull?'満員':'参加を申請する'}
@@ -779,16 +783,18 @@ function postCardHTML(p,idx){
     <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);flex-wrap:wrap;gap:10px">
       <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
         <span style="font-size:13px;font-weight:700;color:${slotColor}">${slotText}</span>
-        ${p.remaining_roles&&p.remaining_roles.length>0
-          ?p.remaining_roles.map(r=>`<span style="font-size:11px;padding:2px 8px;border-radius:20px;background:rgba(76,175,125,0.12);color:var(--green);border:1px solid rgba(76,175,125,0.3)">空: ${r}</span>`).join('')
-          :''}
         <span style="font-size:12px;color:var(--text-dim)">⏳ ${timer}</span>
+      </div>
+      ${p.remaining_roles&&p.remaining_roles.length>0?`<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:6px;align-items:center">
+        <span style="font-size:11px;color:var(--text-dim)">空き:</span>
+        ${p.remaining_roles.map(r=>`<span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(76,175,125,0.12);color:var(--green);border:1px solid rgba(76,175,125,0.3)">${r}</span>`).join('')}
+      </div>`:''\}
       </div>
       ${isOwner
         ?`<button style="padding:8px 20px;background:transparent;border:1px solid var(--red);color:var(--red);border-radius:6px;font-size:12px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;white-space:nowrap" onclick="event.stopPropagation();deletePost('${p.id}')">削除</button>`
         :isFull
         ?`<button style="padding:8px 20px;background:transparent;border:1px solid var(--border);color:var(--text-dim);border-radius:6px;font-size:12px;cursor:not-allowed;white-space:nowrap" disabled>満員</button>`
-        :`<button style="padding:8px 24px;background:var(--orange);color:#000;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans JP',sans-serif;white-space:nowrap" onclick="event.stopPropagation();openJoinModal(${idx})">参加申請</button>`}
+        :`<button style="padding:8px 24px;background:var(--orange);color:#000;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans JP',sans-serif;white-space:nowrap">参加申請</button>`}
     </div>
   </div>`;
 }
