@@ -541,7 +541,7 @@ function updateHeader(loggedIn){
   const postBtn=document.getElementById('post-btn');
   if(loggedIn){
     if(postBtn)postBtn.style.display='block';
-    hr.innerHTML=`<span class="user-nick" onclick="openProfileModal()" style="cursor:pointer" title="プロフィール編集">👤 ${currentNickname}</span>
+    hr.innerHTML=`<span onclick="openProfileModal()" style="cursor:pointer;display:flex;align-items:center;gap:5px;color:var(--silver);font-size:13px;padding:4px 8px;border-radius:5px;border:1px solid var(--border);transition:all 0.2s" onmouseover="this.style.borderColor='var(--orange)'" onmouseout="this.style.borderColor='var(--border)'">👤 ${currentNickname} <span style="font-size:10px;color:var(--text-dim)">✏️</span></span>
       <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="openApplicationsModal()">申請管理</button>
       <button class="btn btn-primary" onclick="openForm()">＋ 募集する</button>
       <button class="btn btn-red" onclick="doLogout()">ログアウト</button>`;
