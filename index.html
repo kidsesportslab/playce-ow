@@ -354,6 +354,17 @@
       <button class="btn btn-primary" style="width:100%;padding:12px;font-size:14px" onclick="doLogin()">ログイン</button>
     </div>
     <div id="auth-signup" style="display:none">
+      <div class="form-group">
+        <label class="form-label">アイコン（任意）</label>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+          <div id="signup-avatar-preview" style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--orange),#ff6b35);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;overflow:hidden;border:2px solid var(--border)">🐺</div>
+          <label style="display:inline-block;padding:7px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-size:12px;color:var(--silver)">
+            画像を選択
+            <input type="file" id="signup-avatar-file" accept="image/*" style="display:none" onchange="previewSignupAvatar(this)">
+          </label>
+        </div>
+        <div id="signup-icon-picker" style="display:flex;flex-wrap:wrap;gap:5px;padding:8px;background:var(--surface2);border-radius:8px;border:1px solid var(--border)"></div>
+      </div>
       <div class="form-group"><label class="form-label">ニックネーム</label><input class="form-input" id="signup-nick" type="text" placeholder="ゲーム内で表示される名前"></div>
       <div class="form-group"><label class="form-label">メールアドレス</label><input class="form-input" id="signup-email" type="email" placeholder="example@email.com"></div>
       <div class="form-group"><label class="form-label">パスワード（6文字以上）</label><input class="form-input" id="signup-password" type="password" placeholder="パスワード"></div>
@@ -554,6 +565,37 @@ function switchAuthTab(tab){
   document.getElementById('auth-signup').style.display=tab==='signup'?'block':'none';
   document.getElementById('tab-login').classList.toggle('active',tab==='login');
   document.getElementById('tab-signup').classList.toggle('active',tab==='signup');
+  if(tab==='signup') initSignupIconPicker();
+}
+
+function initSignupIconPicker(){
+  const signupIcons=['🐺','🦅','🐉','🦁','🐻','🦊','🐯','🦋','🐬','🦄','🐸','🦖','🐙','🦑','🐝','🦩','🦚','🦜','🐧','🦒'];
+  const picker=document.getElementById('signup-icon-picker');
+  if(!picker||picker.children.length>0) return;
+  picker.innerHTML=signupIcons.map((ic,i)=>`<div onclick="selectSignupIcon(this,'${ic}')" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:18px;border-radius:6px;cursor:pointer;border:2px solid ${i===0?'var(--orange)':'transparent'};background:${i===0?'var(--orange-dim)':'transparent'}" data-icon="${ic}">${ic}</div>`).join('');
+}
+
+function selectSignupIcon(el,icon){
+  document.querySelectorAll('#signup-icon-picker div').forEach(d=>{
+    d.style.border='2px solid transparent';
+    d.style.background='transparent';
+  });
+  el.style.border='2px solid var(--orange)';
+  el.style.background='var(--orange-dim)';
+  document.getElementById('signup-avatar-preview').innerHTML=icon;
+  document.getElementById('signup-avatar-file').value='';
+}
+
+function previewSignupAvatar(input){
+  if(!input.files||!input.files[0])return;
+  const file=input.files[0];
+  if(file.size>2*1024*1024){showToast('2MB以内の画像を選択してください');input.value='';return;}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    document.getElementById('signup-avatar-preview').innerHTML=`<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover">`;
+    document.querySelectorAll('#signup-icon-picker div').forEach(d=>{d.style.border='2px solid transparent';d.style.background='transparent';});
+  };
+  reader.readAsDataURL(file);
 }
 
 async function doLogin(){
@@ -577,7 +619,25 @@ async function doSignup(){
   if(error){showToast('登録失敗: '+error.message);return;}
   const urlParams=new URLSearchParams(window.location.search);
   const refId=urlParams.get('ref')||null;
-  if(data.user)await db.from('users').upsert([{id:data.user.id,nickname:nick,email:email,invited_by:refId}]);
+  if(data.user){
+    const userRecord={id:data.user.id,nickname:nick,email:email,invited_by:refId};
+    // 絵文字アイコンを取得
+    const selectedIconEl=document.querySelector('#signup-icon-picker div[style*="var(--orange)"]');
+    if(selectedIconEl) userRecord.icon=selectedIconEl.dataset.icon;
+    await db.from('users').upsert([userRecord]);
+    // 画像アップロード
+    const signupFile=document.getElementById('signup-avatar-file');
+    if(signupFile&&signupFile.files&&signupFile.files[0]){
+      const file=signupFile.files[0];
+      const ext=file.name.split('.').pop();
+      const path=`${data.user.id}/avatar.${ext}`;
+      const{error:upErr}=await db.storage.from('avatars').upload(path,file,{upsert:true});
+      if(!upErr){
+        const{data:urlData}=db.storage.from('avatars').getPublicUrl(path);
+        await db.from('users').update({avatar_url:urlData.publicUrl+'?t='+Date.now(),icon:null}).eq('id',data.user.id);
+      }
+    }
+  }
   closeModal('auth-overlay');showToast('登録完了！ログインしてください。');
 }
 
