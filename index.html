@@ -17,7 +17,7 @@
   *{margin:0;padding:0;box-sizing:border-box;}
   body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:14px;min-height:100vh;overflow-x:hidden;}
   header{position:sticky;top:0;z-index:100;background:rgba(10,12,15,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;}
-  .logo{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;letter-spacing:3px;}
+  .logo{font-family:'Rajdhani',sans-serif;font-size:28px;font-weight:700;letter-spacing:5px;}
   .logo span{color:var(--orange);}
   .logo-sub{font-size:10px;color:var(--text-dim);letter-spacing:2px;margin-left:8px;font-family:'Rajdhani',sans-serif;}
   .header-right{display:flex;gap:10px;align-items:center;}
@@ -366,9 +366,13 @@
   <div class="modal">
     <button class="modal-close" onclick="closeModal('profile-modal')">✕</button>
     <div class="modal-title">プロフィール編集</div>
-    <div class="modal-sub">ニックネームを変更できます</div>
+    <div class="modal-sub">ニックネームとアイコンを変更できます</div>
+    <div class="form-group">
+      <label class="form-label">アイコン</label>
+      <div id="icon-picker" style="display:flex;flex-wrap:wrap;gap:8px;padding:12px;background:var(--surface2);border-radius:8px;border:1px solid var(--border)"></div>
+    </div>
     <div class="form-group"><label class="form-label">ニックネーム</label><input class="form-input" id="profile-nick" type="text"></div>
-    <button class="btn btn-primary" style="width:100%;padding:12px" onclick="updateNickname()">保存する</button>
+    <button class="btn btn-primary" style="width:100%;padding:12px" onclick="saveProfile()">保存する</button>
   </div>
 </div>
 
@@ -404,7 +408,14 @@ const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const emojis=['🐺','🦅','🐉','🦁','🐻','🦊','🐯','🦋'];
 let allPosts=[],currentUser=null,currentNickname='',selectedPost=null;
 
-function getEmoji(id){if(!id)return emojis[0];let n=0;for(let i=0;i<Math.min(id.length,8);i++)n+=id.charCodeAt(i);return emojis[n%emojis.length];}
+const userIconCache={};
+function getEmoji(id,icon){
+  if(icon) return icon;
+  if(userIconCache[id]) return userIconCache[id];
+  if(!id) return emojis[0];
+  let n=0;for(let i=0;i<Math.min(id.length,8);i++)n+=id.charCodeAt(i);
+  return emojis[n%emojis.length];
+}
 function calcTimer(expiresAt){const diff=new Date(expiresAt)-new Date();if(diff<=0)return '期限切れ';const h=Math.floor(diff/3600000),m=Math.floor((diff%3600000)/60000);return h>0?`残り${h}時間${m}分`:`残り${m}分`;}
 
 function slotInfo(p){
@@ -436,7 +447,7 @@ function remainingRolesTag(p){
 function modeClass(p){return p.game_mode==='ランク'?'ranked':p.game_mode==='アンランク'?'unranked':'';}
 
 function playerCardHTML(p,idx){
-  const emoji=getEmoji(p.user_id||p.id),timer=calcTimer(p.expires_at),vibes=Array.isArray(p.vibes)?p.vibes:[];
+  const emoji=getEmoji(p.user_id||p.id,p.icon),timer=calcTimer(p.expires_at),vibes=Array.isArray(p.vibes)?p.vibes:[];
   const mc=modeClass(p);const{isFull,slotColor,slotText}=slotInfo(p);
   return `<div class="player-card ${mc}" onclick="openJoinModal(${idx})" style="${isFull?'opacity:0.6':''}">
     <div class="card-role">${p.role||''} · ${p.rank||''}</div>
@@ -458,7 +469,7 @@ function playerCardHTML(p,idx){
 }
 
 function postCardHTML(p,idx){
-  const emoji=getEmoji(p.user_id||p.id),timer=calcTimer(p.expires_at),vibes=Array.isArray(p.vibes)?p.vibes:[];
+  const emoji=getEmoji(p.user_id||p.id,p.icon),timer=calcTimer(p.expires_at),vibes=Array.isArray(p.vibes)?p.vibes:[];
   const mc=modeClass(p);const isOwner=currentUser&&p.user_id===currentUser.id;
   const{isFull,slotColor,slotText}=slotInfo(p);
   return `<div class="post-card ${mc}" onclick="openJoinModal(${idx})" style="${isFull?'opacity:0.6':''}">
@@ -507,14 +518,12 @@ function updateHeader(loggedIn){
   const postBtn=document.getElementById('post-btn');
   if(loggedIn){
     if(postBtn)postBtn.style.display='block';
-    hr.innerHTML=`<span class="user-nick">👤 ${currentNickname}</span>
-      <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="openProfileModal()">プロフィール編集</button>
+    hr.innerHTML=`<span class="user-nick" onclick="openProfileModal()" style="cursor:pointer" title="プロフィール編集">👤 ${currentNickname}</span>
       <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="openApplicationsModal()">申請管理</button>
       <button class="btn btn-primary" onclick="openForm()">＋ 募集する</button>
       <button class="btn btn-red" onclick="doLogout()">ログアウト</button>`;
     if(mm)mm.innerHTML=`<button class="btn btn-ghost" onclick="openProfileModal();closeMobileMenu()">プロフィール編集</button>
       <button class="btn btn-ghost" onclick="openApplicationsModal();closeMobileMenu()">申請管理</button>
-      <button class="btn btn-ghost" onclick="openForm();closeMobileMenu()">＋ 募集する</button>
       <button class="btn btn-red" onclick="doLogout();closeMobileMenu()">ログアウト</button>`;
   } else {
     if(postBtn)postBtn.style.display='none';
@@ -565,8 +574,20 @@ async function doLogout(){
   updateHeader(false);showToast('ログアウトしました');
 }
 
+const allIcons=['🐺','🦅','🐉','🦁','🐻','🦊','🐯','🦋','🦈','🦊','🐬','🦄','🐸','🦖','🐙','🦑','🦕','🐝','🦩','🦚','🦜','🐧','🦒','🦓','🐘','🦏','🐊','🐢','🐍','🦎','🦅','🦆','🐓','🦃','🦤','🦋','🐌','🦗','🦟','🐛','🐜','🦂'];
+
 async function openProfileModal(){
   document.getElementById('profile-nick').value=currentNickname;
+  
+  // アイコンピッカーを構築
+  const {data:userData}=await db.from('users').select('icon').eq('id',currentUser.id).single();
+  const currentIcon=userData?.icon||getEmoji(currentUser.id);
+  let selectedIcon=currentIcon;
+  
+  const picker=document.getElementById('icon-picker');
+  picker.innerHTML=allIcons.map(icon=>`
+    <div onclick="selectIcon(this,'${icon}')" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:22px;border-radius:8px;cursor:pointer;border:2px solid ${icon===currentIcon?'var(--orange)':'transparent'};background:${icon===currentIcon?'var(--orange-dim)':'transparent'};transition:all 0.15s" data-icon="${icon}">${icon}</div>
+  `).join('');
   const{count}=await db.from('users').select('*',{count:'exact'}).eq('invited_by',currentUser.id);
   const inviteCount=count||0;
   const inviteUrl=`https://playcegg.com?ref=${currentUser.id}`;
@@ -583,18 +604,41 @@ async function openProfileModal(){
   document.getElementById('profile-modal').classList.add('open');
 }
 
-async function updateNickname(){
+function selectIcon(el,icon){
+  document.querySelectorAll('#icon-picker div').forEach(d=>{
+    d.style.border='2px solid transparent';
+    d.style.background='transparent';
+  });
+  el.style.border='2px solid var(--orange)';
+  el.style.background='var(--orange-dim)';
+  el.dataset.selected='true';
+}
+
+function getSelectedIcon(){
+  const sel=document.querySelector('#icon-picker div[data-selected="true"]');
+  return sel?sel.dataset.icon:null;
+}
+
+async function saveProfile(){
   const nick=document.getElementById('profile-nick').value.trim();
   if(!nick){showToast('ニックネームを入力してください');return;}
-  const{error}=await db.from('users').update({nickname:nick}).eq('id',currentUser.id);
+  const icon=getSelectedIcon();
+  const updates={nickname:nick};
+  if(icon) updates.icon=icon;
+  const{error}=await db.from('users').update(updates).eq('id',currentUser.id);
   if(error){showToast('更新失敗');return;}
-  currentNickname=nick;updateHeader(true);closeModal('profile-modal');
-  showToast('ニックネームを更新しました');
+  currentNickname=nick;
+  if(icon) userIconCache[currentUser.id]=icon;
+  updateHeader(true);closeModal('profile-modal');
+  showToast('プロフィールを更新しました');
+  await loadPosts();
 }
+
+async function updateNickname(){await saveProfile();}
 
 async function loadPosts(){
   const now=new Date().toISOString();
-  const{data,error}=await db.from('posts').select('*').gt('expires_at',now).order('created_at',{ascending:false});
+  const{data,error}=await db.from('posts').select('*, users(icon)').gt('expires_at',now).order('created_at',{ascending:false});
   if(error){console.error(error);return;}
   const posts=data||[];
   if(posts.length>0){
@@ -618,6 +662,7 @@ async function loadPosts(){
       }
     });
   }
+  posts.forEach(p=>{if(p.users?.icon) p.icon=p.users.icon;});
   allPosts=posts;renderAll();
 }
 
@@ -678,7 +723,7 @@ async function openJoinModal(idx){
   const p=getFiltered()[idx];
   if(!p)return;
   selectedPost=p;
-  const emoji=getEmoji(p.user_id||p.id),vibes=Array.isArray(p.vibes)?p.vibes:[];
+  const emoji=getEmoji(p.user_id||p.id,p.icon),vibes=Array.isArray(p.vibes)?p.vibes:[];
   const[{count:inviteCount},{count:postCount},{count:applyCount},{count:matchCount}]=await Promise.all([
     db.from('users').select('*',{count:'exact'}).eq('invited_by',p.user_id),
     db.from('posts').select('*',{count:'exact'}).eq('user_id',p.user_id),
