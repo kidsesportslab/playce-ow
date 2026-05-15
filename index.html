@@ -638,7 +638,7 @@ async function updateNickname(){await saveProfile();}
 
 async function loadPosts(){
   const now=new Date().toISOString();
-  const{data,error}=await db.from('posts').select('*, users(icon)').gt('expires_at',now).order('created_at',{ascending:false});
+  const{data,error}=await db.from('posts').select('*').gt('expires_at',now).order('created_at',{ascending:false});
   if(error){console.error(error);return;}
   const posts=data||[];
   if(posts.length>0){
@@ -662,7 +662,14 @@ async function loadPosts(){
       }
     });
   }
-  posts.forEach(p=>{if(p.users?.icon) p.icon=p.users.icon;});
+  // 投稿者のiconを別途取得
+  if(posts.length>0){
+    const userIds=[...new Set(posts.map(p=>p.user_id).filter(Boolean))];
+    const{data:usersData}=await db.from('users').select('id,icon').in('id',userIds);
+    const iconMap={};
+    (usersData||[]).forEach(u=>{if(u.icon)iconMap[u.id]=u.icon;});
+    posts.forEach(p=>{if(iconMap[p.user_id])p.icon=iconMap[p.user_id];});
+  }
   allPosts=posts;renderAll();
 }
 
