@@ -121,9 +121,11 @@
   .mobile-menu.open{display:flex;}
   .mobile-menu .btn{width:100%;text-align:left;justify-content:flex-start;}
   #post-btn{display:none!important;}
+  #applications-btn{display:none!important;}
   @media(max-width:768px){
     #post-btn{display:block!important;}
     #applications-btn{display:block!important;}
+    #applications-btn-desktop{display:none!important;}
     .hamburger{display:flex;}
     .header-right{display:none!important;}
     .nav-tab{padding:10px 12px;font-size:12px;}
@@ -148,7 +150,7 @@
     <div class="logo">PLAY<span>CE</span></div>
     <div class="logo-sub">for OW</div>
   </div>
-  <button class="btn btn-ghost" id="applications-btn" onclick="openApplicationsModal()" style="display:none;font-size:12px;padding:6px 12px">申請管理</button>
+  <button class="btn btn-ghost" id="applications-btn" onclick="openApplicationsModal()" style="display:none;font-size:11px;padding:5px 10px">申請管理</button>
   <button class="btn btn-primary" id="post-btn" onclick="openForm()" style="display:none">＋ 募集する</button>
   <div class="header-right" id="header-right">
     <button class="btn btn-ghost" onclick="openAuthModal('login')">ログイン</button>
