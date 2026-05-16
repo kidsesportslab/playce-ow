@@ -553,8 +553,19 @@ async function checkAuth(){
   const _p=new URLSearchParams(window.location.search);
   if(_p.get('open')==='applications'){
     window.history.replaceState(null,'',window.location.pathname);
-    if(currentUser) setTimeout(()=>openApplicationsModal(),300);
-    else openAuthModal('login');
+    if(currentUser){
+      setTimeout(()=>openApplicationsModal(),300);
+    } else {
+      // ログインモーダルを開いてログイン後に申請管理を開く
+      openAuthModal('login');
+      const _wait=setInterval(()=>{
+        if(currentUser){
+          clearInterval(_wait);
+          closeModal('auth-overlay');
+          setTimeout(()=>openApplicationsModal(),300);
+        }
+      },500);
+    }
   }
 }
 
