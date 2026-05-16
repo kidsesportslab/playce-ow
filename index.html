@@ -283,11 +283,35 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="form-label">募集したいロール（複数選択可・空欄で指定なし）</label>
-      <div class="vibe-tags" id="rolesreq-tags">
-        <div class="vibe-tag" onclick="toggleTag(this)">タンク</div>
-        <div class="vibe-tag" onclick="toggleTag(this)">ダメージ</div>
-        <div class="vibe-tag" onclick="toggleTag(this)">サポート</div>
+      <label class="form-label">募集したいロール人数（OW: タンク1・ダメージ2・サポート2）</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
+          <div style="font-size:12px;color:var(--silver);margin-bottom:8px">タンク</div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px">
+            <button type="button" onclick="adjustSlot('tank',-1)" style="width:28px;height:28px;border-radius:50%;background:var(--border);border:none;color:var(--text);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">−</button>
+            <span id="slot-tank" style="font-size:20px;font-weight:700;color:var(--orange);font-family:Rajdhani,sans-serif;min-width:20px;text-align:center">0</span>
+            <button type="button" onclick="adjustSlot('tank',1)" style="width:28px;height:28px;border-radius:50%;background:var(--border);border:none;color:var(--text);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">＋</button>
+          </div>
+          <div style="font-size:10px;color:var(--text-dim);margin-top:4px">最大1人</div>
+        </div>
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
+          <div style="font-size:12px;color:var(--silver);margin-bottom:8px">ダメージ</div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px">
+            <button type="button" onclick="adjustSlot('damage',-1)" style="width:28px;height:28px;border-radius:50%;background:var(--border);border:none;color:var(--text);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">−</button>
+            <span id="slot-damage" style="font-size:20px;font-weight:700;color:var(--orange);font-family:Rajdhani,sans-serif;min-width:20px;text-align:center">0</span>
+            <button type="button" onclick="adjustSlot('damage',1)" style="width:28px;height:28px;border-radius:50%;background:var(--border);border:none;color:var(--text);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">＋</button>
+          </div>
+          <div style="font-size:10px;color:var(--text-dim);margin-top:4px">最大2人</div>
+        </div>
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
+          <div style="font-size:12px;color:var(--silver);margin-bottom:8px">サポート</div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px">
+            <button type="button" onclick="adjustSlot('support',-1)" style="width:28px;height:28px;border-radius:50%;background:var(--border);border:none;color:var(--text);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">−</button>
+            <span id="slot-support" style="font-size:20px;font-weight:700;color:var(--orange);font-family:Rajdhani,sans-serif;min-width:20px;text-align:center">0</span>
+            <button type="button" onclick="adjustSlot('support',1)" style="width:28px;height:28px;border-radius:50%;background:var(--border);border:none;color:var(--text);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">＋</button>
+          </div>
+          <div style="font-size:10px;color:var(--text-dim);margin-top:4px">最大2人</div>
+        </div>
       </div>
     </div>
     <div class="form-group">
@@ -835,7 +859,7 @@ async function submitPost(){
     role:document.getElementById('f-role').value,
     rank:document.getElementById('f-rank').value,
     rank_req:Array.from(document.querySelectorAll('#rankreq-tags .vibe-tag.selected')).map(t=>t.textContent),
-    roles_req:Array.from(document.querySelectorAll('#rolesreq-tags .vibe-tag.selected')).map(t=>t.textContent),
+    roles_req:getRolesReqArray(),
     play_style:document.getElementById('f-mode').value,
     battletag,discord_id:document.getElementById('f-discord').value.trim(),
     max_players:parseInt(document.getElementById('f-maxplayers').value),
@@ -1069,9 +1093,32 @@ async function copyInviteLink(){
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 function openForm(){
   if(!currentUser){showToast('募集するにはログインが必要です');openAuthModal('login');return;}
+  // スロットをリセット
+  slotValues.tank=0;slotValues.damage=0;slotValues.support=0;
+  ['tank','damage','support'].forEach(r=>{
+    const el=document.getElementById('slot-'+r);
+    if(el) el.textContent='0';
+  });
   document.getElementById('form-overlay').classList.add('open');
 }
 function toggleTag(el){el.classList.toggle('selected');}
+
+const slotMax={tank:1,damage:2,support:2};
+const slotValues={tank:0,damage:0,support:0};
+
+function adjustSlot(role,delta){
+  const max=slotMax[role];
+  slotValues[role]=Math.max(0,Math.min(max,slotValues[role]+delta));
+  document.getElementById('slot-'+role).textContent=slotValues[role];
+}
+
+function getRolesReqArray(){
+  const result=[];
+  for(let i=0;i<slotValues.tank;i++) result.push('タンク');
+  for(let i=0;i<slotValues.damage;i++) result.push('ダメージ');
+  for(let i=0;i<slotValues.support;i++) result.push('サポート');
+  return result;
+}
 function switchTab(tab){
   document.querySelectorAll('.nav-tab').forEach((t,i)=>t.classList.toggle('active',(i===0&&tab==='recruit')||(i===1&&tab==='teams')));
   document.getElementById('page-recruit').classList.toggle('active',tab==='recruit');
