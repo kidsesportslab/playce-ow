@@ -987,7 +987,8 @@ let _pendingApprove=null;
 function openApproveModal(appId,applicantUserId,postId){
   _pendingApprove={appId,applicantUserId,postId};
   document.getElementById('approve-comment').value='';
-  document.getElementById('approve-modal').classList.add('open');
+  closeModal('applications-modal');
+  setTimeout(()=>document.getElementById('approve-modal').classList.add('open'),200);
 }
 
 async function confirmApprove(){
@@ -1068,7 +1069,7 @@ async function submitApplication(){
           <p>ロール: ${role} / ランク: ${rank}</p>
           ${battletag?`<p style="color:#f5a623;font-weight:bold">ID: ${battletag}</p>`:''}
           ${comment?`<p>コメント: ${comment}</p>`:''}
-          <br><a href="https://playcegg.com/applications" style="background:#f5a623;color:#000;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:bold">申請管理を開く</a>
+          <br><a href="https://playcegg.com?open=applications" style="background:#f5a623;color:#000;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:bold">申請管理を開く</a>
         </div>`
       }
     });
@@ -1156,6 +1157,26 @@ document.querySelectorAll('.modal-overlay,.form-overlay,.auth-overlay').forEach(
 });
 
 checkAuth();loadPosts();renderTeams();
+
+// URLパラメータで申請管理を自動オープン
+const _urlParams=new URLSearchParams(window.location.search);
+if(_urlParams.get('open')==='applications'){
+  window.history.replaceState(null,'',window.location.pathname);
+  setTimeout(async()=>{
+    if(currentUser){
+      await openApplicationsModal();
+    } else {
+      // ログインしてから開く
+      const _origCheck=checkAuth;
+      const _waitLogin=setInterval(()=>{
+        if(currentUser){
+          clearInterval(_waitLogin);
+          openApplicationsModal();
+        }
+      },500);
+    }
+  },1000);
+}
 setInterval(loadPosts,5*60*1000);
 </script>
 </body>
