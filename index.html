@@ -916,9 +916,10 @@ async function openJoinModal(idx){
   } else {
     applySection.innerHTML=`<div class="apply-title">参加を申請する</div>
       <div class="form-row">
-        <div class="form-group"><label class="form-label">メインロール</label><select class="form-select" id="apply-role"><option>タンク</option><option>ダメージ</option><option>サポート</option><option>フレックス</option></select></div>
+        <div class="form-group"><label class="form-label">メインロール</label><select class="form-select" id="apply-role"><option>タンク</option><option>ダメージ</option><option>サポート</option></select></div>
         <div class="form-group"><label class="form-label">現在のランク</label><select class="form-select" id="apply-rank"><option>ブロンズ</option><option>シルバー</option><option>ゴールド</option><option>プラチナ</option><option>ダイヤ</option><option>マスター以上</option></select></div>
       </div>
+      <div class="form-group"><label class="form-label">あなたのBattleTag / PS ID</label><input class="form-input" id="apply-battletag" type="text" placeholder="例: 名前#1234 または PSN名"></div>
       <div class="form-group"><label class="form-label">一言コメント（任意）</label><textarea class="form-textarea" id="apply-comment" placeholder="よろしくお願いします！" style="min-height:60px"></textarea></div>
       <button class="modal-btn modal-btn-primary" onclick="submitApplication()">参加申請を送る</button>`;
   }
