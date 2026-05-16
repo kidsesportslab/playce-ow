@@ -123,6 +123,7 @@
   #post-btn{display:none!important;}
   @media(max-width:768px){
     #post-btn{display:block!important;}
+    #applications-btn{display:block!important;}
     .hamburger{display:flex;}
     .header-right{display:none!important;}
     .nav-tab{padding:10px 12px;font-size:12px;}
@@ -147,6 +148,7 @@
     <div class="logo">PLAY<span>CE</span></div>
     <div class="logo-sub">for OW</div>
   </div>
+  <button class="btn btn-ghost" id="applications-btn" onclick="openApplicationsModal()" style="display:none;font-size:12px;padding:6px 12px">申請管理</button>
   <button class="btn btn-primary" id="post-btn" onclick="openForm()" style="display:none">＋ 募集する</button>
   <div class="header-right" id="header-right">
     <button class="btn btn-ghost" onclick="openAuthModal('login')">ログイン</button>
@@ -335,12 +337,7 @@
         <div class="vibe-tag" onclick="toggleTag(this)">グランドマスター</div>
       </div>
     </div>
-    <div class="form-group">
-      <label class="form-label">募集人数</label>
-      <select class="form-select" id="f-maxplayers">
-        <option value="1">1人</option><option value="2">2人</option><option value="3">3人</option><option value="4" selected>4人（フルパ）</option>
-      </select>
-    </div>
+
     <div class="form-group">
       <label class="form-label">雰囲気（複数選択可）</label>
       <div class="vibe-tags" id="vibe-tags-container">
@@ -578,8 +575,10 @@ function updateHeader(loggedIn){
   const hr=document.getElementById('header-right');
   const mm=document.getElementById('mobile-menu');
   const postBtn=document.getElementById('post-btn');
+  const appBtn=document.getElementById('applications-btn');
   if(loggedIn){
     if(postBtn)postBtn.style.display='block';
+    if(appBtn)appBtn.style.display='block';
     hr.innerHTML=`<span onclick="openProfileModal()" style="cursor:pointer;display:flex;align-items:center;gap:5px;color:var(--silver);font-size:13px;padding:4px 8px;border-radius:5px;border:1px solid var(--border);transition:all 0.2s" onmouseover="this.style.borderColor='var(--orange)'" onmouseout="this.style.borderColor='var(--border)'">👤 ${currentNickname} <span style="font-size:10px;color:var(--text-dim)">✏️</span></span>
       <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="openApplicationsModal()">申請管理</button>
       <button class="btn btn-primary" onclick="openForm()">＋ 募集する</button>
@@ -880,7 +879,7 @@ async function submitPost(){
     roles_req:getRolesReqArray(),
     play_style:document.getElementById('f-mode').value,
     battletag,discord_id:document.getElementById('f-discord').value.trim(),
-    max_players:parseInt(document.getElementById('f-maxplayers').value),
+    max_players:getRolesReqArray().length||4,
     vibes:Array.from(document.querySelectorAll('#vibe-tags-container .vibe-tag.selected')).map(t=>t.textContent),
     comment:document.getElementById('f-comment').value.trim(),
     expires_at:new Date(Date.now()+2*60*60*1000).toISOString()
