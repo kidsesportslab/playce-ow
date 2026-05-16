@@ -549,6 +549,13 @@ async function checkAuth(){
   const{data:{user}}=await db.auth.getUser();
   if(user){currentUser=user;await loadNickname();updateHeader(true);}
   else updateHeader(false);
+  // URLパラメータで申請管理を自動オープン
+  const _p=new URLSearchParams(window.location.search);
+  if(_p.get('open')==='applications'){
+    window.history.replaceState(null,'',window.location.pathname);
+    if(currentUser) setTimeout(()=>openApplicationsModal(),300);
+    else openAuthModal('login');
+  }
 }
 
 async function loadNickname(){
@@ -1160,24 +1167,7 @@ document.querySelectorAll('.modal-overlay,.form-overlay,.auth-overlay').forEach(
 checkAuth();loadPosts();renderTeams();
 
 // URLパラメータで申請管理を自動オープン
-const _urlParams=new URLSearchParams(window.location.search);
-if(_urlParams.get('open')==='applications'){
-  window.history.replaceState(null,'',window.location.pathname);
-  setTimeout(async()=>{
-    if(currentUser){
-      await openApplicationsModal();
-    } else {
-      // ログインしてから開く
-      const _origCheck=checkAuth;
-      const _waitLogin=setInterval(()=>{
-        if(currentUser){
-          clearInterval(_waitLogin);
-          openApplicationsModal();
-        }
-      },500);
-    }
-  },1000);
-}
+
 setInterval(loadPosts,5*60*1000);
 </script>
 </body>
