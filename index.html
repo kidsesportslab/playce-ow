@@ -177,9 +177,7 @@
       <select class="filter-select" id="filter-platform" onchange="renderAll()">
         <option value="">PC・CS問わず</option>
         <option value="PC">PC</option>
-        <option value="PS5">PS5</option>
-        <option value="Xbox">Xbox</option>
-        <option value="Switch">Switch</option>
+        <option value="CS">CS（コンソール）</option>
       </select>
       <select class="filter-select" id="filter-mode" onchange="renderAll()">
         <option value="">ランク・アンランク問わず</option>
@@ -188,7 +186,7 @@
       </select>
       <select class="filter-select" id="filter-role" onchange="renderAll()">
         <option value="">すべてのロール</option>
-        <option>タンク</option><option>ダメージ</option><option>サポート</option><option>フレックス</option>
+        <option>タンク</option><option>ダメージ</option><option>サポート</option>
       </select>
       <select class="filter-select" id="filter-rank" onchange="renderAll()">
         <option value="">すべてのランク</option>
@@ -260,7 +258,7 @@
       <div class="form-group">
         <label class="form-label">プラットフォーム</label>
         <select class="form-select" id="f-platform">
-          <option>PC</option><option>PS5</option><option>Xbox</option><option>Switch</option>
+          <option>PC</option><option>CS（PS5/Xbox/Switch）</option>
         </select>
       </div>
       <div class="form-group">
@@ -274,7 +272,7 @@
       <div class="form-group">
         <label class="form-label">メインロール</label>
         <select class="form-select" id="f-role">
-          <option>タンク</option><option>ダメージ</option><option>サポート</option><option>フレックス</option>
+          <option>タンク</option><option>ダメージ</option><option>サポート</option>
         </select>
       </div>
       <div class="form-group">
@@ -290,7 +288,6 @@
         <div class="vibe-tag" onclick="toggleTag(this)">タンク</div>
         <div class="vibe-tag" onclick="toggleTag(this)">ダメージ</div>
         <div class="vibe-tag" onclick="toggleTag(this)">サポート</div>
-        <div class="vibe-tag" onclick="toggleTag(this)">フレックス</div>
       </div>
     </div>
     <div class="form-group">
@@ -809,7 +806,7 @@ function getFiltered(){
   const m=document.getElementById('filter-mode')?.value||'';
   const r=document.getElementById('filter-role')?.value||'';
   const rk=document.getElementById('filter-rank')?.value||'';
-  return allPosts.filter(post=>(!p||post.platform===p)&&(!m||post.game_mode===m)&&(!r||post.role===r)&&(!rk||post.rank===rk));
+  return allPosts.filter(post=>(!p||post.platform===p||(p==='CS'&&['PS5','Xbox','Switch','CS（PS5/Xbox/Switch）'].includes(post.platform)))&&(!m||post.game_mode===m)&&(!r||post.role===r)&&(!rk||post.rank===rk));
 }
 
 function renderAll(){
@@ -942,7 +939,11 @@ async function loadApplications(){
         <div><div style="font-size:15px;font-weight:700">${app.nickname||'名無し'}</div><div style="font-size:11px;color:var(--text-dim);margin-top:2px">募集: ${post.game_mode||''} ${post.platform||''} ${post.rank||''}</div></div>
         <span style="font-size:11px;padding:3px 8px;border-radius:3px;color:${statusColor};border:1px solid ${statusColor}">${statusText}</span>
       </div>
-      <div style="font-size:12px;color:var(--silver);margin-bottom:10px">ロール: ${app.role||'-'} / ランク: ${app.rank||'-'}${app.comment?`<br>💬 ${app.comment}`:''}</div>
+      <div style="font-size:12px;color:var(--silver);margin-bottom:10px">
+        ロール: ${app.role||'-'} / ランク: ${app.rank||'-'}
+        ${app.battletag?`<br><span style="color:var(--orange);font-weight:700">ID: ${app.battletag}</span>`:''}
+        ${app.comment?`<br>💬 ${app.comment}`:''}
+      </div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-bottom:10px">
         <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px;text-align:center"><div style="font-size:14px;font-weight:700;color:var(--orange);font-family:Rajdhani,sans-serif">${postC}</div><div style="font-size:9px;color:var(--text-dim)">募集</div></div>
         <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px;text-align:center"><div style="font-size:14px;font-weight:700;color:var(--orange);font-family:Rajdhani,sans-serif">${applyC}</div><div style="font-size:9px;color:var(--text-dim)">申請</div></div>
@@ -991,7 +992,8 @@ async function approveApplication(appId,applicantUserId,postId,approveComment=''
         html:`<div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px;background:#0a0c0f;color:#e8edf5;">
           <h2 style="color:#4caf7d">PLAYCE - 参加申請承認通知</h2>
           <p>おめでとうございます！<strong>${applicantData.nickname||'あなた'}</strong>さんの参加申請が承認されました。</p>
-          <p style="margin-top:12px">${approveComment||'募集者からの連絡をお待ちください。'}</p>
+          <p style="margin-top:12px">${approveComment||'承認されました。募集者のIDを確認してフレンド申請してください。'}</p>
+          ${selectedPost&&selectedPost.battletag?`<p style="margin-top:8px;padding:10px 14px;background:#1a2a1a;border-left:3px solid #4caf7d;border-radius:4px;font-size:14px;color:#4caf7d;font-weight:bold">募集者ID: ${selectedPost.battletag}</p>`:''}
           <br><a href="https://playcegg.com" style="background:#f5a623;color:#000;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:bold">PLAYCEを開く</a>
         </div>`
       }
@@ -1020,9 +1022,10 @@ async function submitApplication(){
   const role=document.getElementById('apply-role')?.value;
   const rank=document.getElementById('apply-rank')?.value;
   const comment=document.getElementById('apply-comment')?.value||'';
+  const battletag=document.getElementById('apply-battletag')?.value.trim()||'';
   const{error}=await db.from('applications').insert([{
     post_id:selectedPost.id,user_id:currentUser.id,
-    nickname:currentNickname,role,rank,comment,status:'pending'
+    nickname:currentNickname,role,rank,comment,battletag,status:'pending'
   }]);
   if(error){
     if(error.code==='23505'){showToast('すでに申請済みです');return;}
@@ -1039,8 +1042,9 @@ async function submitApplication(){
           <p><strong>${currentNickname}</strong>さんがあなたの募集に参加申請しました。</p>
           <hr style="border-color:#252b36">
           <p>ロール: ${role} / ランク: ${rank}</p>
+          ${battletag?`<p style="color:#f5a623;font-weight:bold">ID: ${battletag}</p>`:''}
           ${comment?`<p>コメント: ${comment}</p>`:''}
-          <br><a href="https://playcegg.com" style="background:#f5a623;color:#000;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:bold">PLAYCEで確認する</a>
+          <br><a href="https://playcegg.com/applications" style="background:#f5a623;color:#000;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:bold">申請管理を開く</a>
         </div>`
       }
     });
