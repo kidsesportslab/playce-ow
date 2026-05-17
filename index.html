@@ -31,6 +31,9 @@
   .nav-tabs{display:flex;border-bottom:1px solid var(--border);padding:0 24px;background:var(--surface);}
   .nav-tab{padding:14px 20px;font-size:13px;color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;font-weight:500;}
   .nav-tab.active{color:var(--orange);border-bottom-color:var(--orange);}
+  .nav-tab-soon{font-size:9px;font-weight:700;letter-spacing:1px;padding:2px 6px;border-radius:3px;background:rgba(245,166,35,0.15);color:var(--orange);border:1px solid rgba(245,166,35,0.3);font-family:'Rajdhani',sans-serif;}
+  @keyframes floatIcon{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  @media(max-width:768px){.nav-tab-soon{display:none;}}
   .container{max-width:1100px;margin:0 auto;padding:24px;}
   .now-online-section{margin-bottom:32px;}
   .section-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
@@ -165,6 +168,7 @@
 <div class="nav-tabs">
   <div class="nav-tab active" onclick="switchTab('recruit')">メンバー募集</div>
   <div class="nav-tab" onclick="switchTab('teams')">チームを探す</div>
+  <div class="nav-tab" onclick="switchTab('tournament')">大会 <span class="nav-tab-soon">COMING SOON</span></div>
 </div>
 
 <div id="page-recruit" class="page active">
@@ -215,6 +219,41 @@
       <button class="btn btn-primary" onclick="showToast('チーム作成機能は近日公開予定です')">チームを作る</button>
     </div>
     <div class="team-grid" id="team-grid"></div>
+  </div>
+</div>
+  <div id="page-tournament" class="page">
+  <div style="position:relative;min-height:420px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px 40px;overflow:hidden">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(245,166,35,0.08) 0%,transparent 70%),repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(37,43,54,0.6) 39px,rgba(37,43,54,0.6) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(37,43,54,0.6) 39px,rgba(37,43,54,0.6) 40px);pointer-events:none"></div>
+    <div style="font-size:64px;margin-bottom:24px;position:relative;animation:floatIcon 3s ease-in-out infinite;filter:drop-shadow(0 0 24px rgba(245,166,35,0.4))">🏆</div>
+    <div style="font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:4px;color:var(--orange);margin-bottom:16px;position:relative;display:flex;align-items:center;gap:12px">
+      <span style="height:1px;width:40px;background:linear-gradient(90deg,transparent,var(--orange));display:inline-block"></span>
+      Coming Soon
+      <span style="height:1px;width:40px;background:linear-gradient(90deg,var(--orange),transparent);display:inline-block"></span>
+    </div>
+    <h1 style="font-family:'Rajdhani',sans-serif;font-size:clamp(36px,6vw,64px);font-weight:700;letter-spacing:2px;line-height:1.1;margin-bottom:16px;position:relative">PLAYCE<br><span style="color:var(--orange)">TOURNAMENT</span></h1>
+    <p style="font-size:14px;color:var(--silver);max-width:480px;line-height:1.8;margin-bottom:40px;position:relative">プロとカジュアルの間にあった空白を埋める。<br>誰もが挑戦できる、草の根大会インフラがまもなく登場。</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;max-width:760px;width:100%;margin:0 auto 48px;position:relative">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:left"><div style="font-size:24px;margin-bottom:10px">⚔️</div><div style="font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;color:var(--silver-light);margin-bottom:6px">大会を作る</div><div style="font-size:12px;color:var(--text-dim);line-height:1.6">コーチ・クリエイターが自分のブランドで大会を主催。参加者募集から結果公開まで一括管理。</div></div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:left"><div style="font-size:24px;margin-bottom:10px">📋</div><div style="font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;color:var(--silver-light);margin-bottom:6px">エントリー管理</div><div style="font-size:12px;color:var(--text-dim);line-height:1.6">参加申請・承認・ブラケット管理をPlayce上で完結。Discordを往復する手間がなくなる。</div></div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:left"><div style="font-size:24px;margin-bottom:10px">🌐</div><div style="font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;color:var(--silver-light);margin-bottom:6px">結果を公開</div><div style="font-size:12px;color:var(--text-dim);line-height:1.6">非ログインユーザーも閲覧できる結果ページを自動生成。SNSでの拡散がそのまま集客になる。</div></div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:left"><div style="font-size:24px;margin-bottom:10px">🎖️</div><div style="font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;color:var(--silver-light);margin-bottom:6px">実績が積み上がる</div><div style="font-size:12px;color:var(--text-dim);line-height:1.6">参加・入賞歴がプロフィールに自動反映。タイトルをまたいで戦績が一箇所に残る。</div></div>
+    </div>
+    <div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:12px">
+      <div style="font-size:12px;color:var(--text-dim);letter-spacing:1px">リリース通知を受け取る</div>
+      <div style="display:flex;gap:8px;width:100%;max-width:400px">
+        <input id="notify-email" type="email" placeholder="メールアドレス" style="flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:11px 16px;border-radius:7px;font-size:13px;font-family:'Noto Sans JP',sans-serif;outline:none" onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border)'">
+        <button onclick="submitNotify()" style="padding:11px 20px;background:var(--orange);color:#000;border:none;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans JP',sans-serif;white-space:nowrap">通知を受け取る</button>
+      </div>
+    </div>
+  </div>
+  <div style="max-width:700px;width:100%;margin:0 auto;padding:0 24px 48px">
+    <div style="font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;letter-spacing:2px;color:var(--text-dim);text-align:center;margin-bottom:24px">開発ロードマップ</div>
+    <div style="display:flex;flex-direction:column">
+      <div style="display:flex;gap:20px;padding:16px 0 16px 24px;border-left:2px solid var(--border);position:relative"><div style="position:absolute;left:-5px;top:22px;width:8px;height:8px;border-radius:50%;background:var(--green);border:2px solid var(--bg)"></div><div style="font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;color:var(--green);min-width:70px;padding-top:2px">✓ PHASE 1</div><div><div style="font-size:14px;font-weight:600;color:var(--green);margin-bottom:4px">メンバー募集・マッチング</div><div style="font-size:12px;color:var(--text-dim);line-height:1.5">募集投稿・参加申請・承認フロー・メール通知</div></div></div>
+      <div style="display:flex;gap:20px;padding:16px 0 16px 24px;border-left:2px solid var(--border);position:relative"><div style="position:absolute;left:-5px;top:22px;width:8px;height:8px;border-radius:50%;background:var(--orange);border:2px solid var(--bg);box-shadow:0 0 8px rgba(245,166,35,0.5)"></div><div style="font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;color:var(--orange);min-width:70px;padding-top:2px">NOW</div><div><div style="font-size:14px;font-weight:600;color:var(--silver-light);margin-bottom:4px">ユーザー拡大</div><div style="font-size:12px;color:var(--text-dim);line-height:1.5">OWコミュニティへの展開・フィードバック収集</div></div></div>
+      <div style="display:flex;gap:20px;padding:16px 0 16px 24px;border-left:2px solid var(--border);position:relative"><div style="position:absolute;left:-5px;top:22px;width:8px;height:8px;border-radius:50%;background:var(--border);border:2px solid var(--bg)"></div><div style="font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;color:var(--text-dim);min-width:70px;padding-top:2px">NEXT</div><div><div style="font-size:14px;font-weight:600;color:var(--silver-light);margin-bottom:4px">大会機能リリース</div><div style="font-size:12px;color:var(--text-dim);line-height:1.5">大会作成・エントリー管理・結果公開ページ</div></div></div>
+      <div style="display:flex;gap:20px;padding:16px 0 16px 24px;border-left:2px solid var(--border);position:relative"><div style="position:absolute;left:-5px;top:22px;width:8px;height:8px;border-radius:50%;background:var(--border);border:2px solid var(--bg)"></div><div style="font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;color:var(--text-dim);min-width:70px;padding-top:2px">FUTURE</div><div><div style="font-size:14px;font-weight:600;color:var(--silver-light);margin-bottom:4px">タイトル横断展開</div><div style="font-size:12px;color:var(--text-dim);line-height:1.5">VALORANT・Apex等への拡張・スポンサー機能</div></div></div>
+    </div>
   </div>
 </div>
 
@@ -1141,9 +1180,20 @@ function getRolesReqArray(){
   return result;
 }
 function switchTab(tab){
-  document.querySelectorAll('.nav-tab').forEach((t,i)=>t.classList.toggle('active',(i===0&&tab==='recruit')||(i===1&&tab==='teams')));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  const tabs=['recruit','teams','tournament'];
+  const idx=tabs.indexOf(tab);
+  if(idx>=0) document.querySelectorAll('.nav-tab')[idx].classList.add('active');
   document.getElementById('page-recruit').classList.toggle('active',tab==='recruit');
   document.getElementById('page-teams').classList.toggle('active',tab==='teams');
+  document.getElementById('page-tournament').classList.toggle('active',tab==='tournament');
+}
+async function submitNotify(){
+  const email=document.getElementById('notify-email').value.trim();
+  if(!email||!email.includes('@')){showToast('有効なメールアドレスを入力してください');return;}
+  try{await db.from('tournament_notify').insert([{email,created_at:new Date().toISOString()}]);}catch(e){}
+  document.getElementById('notify-email').value='';
+  showToast('登録しました！リリース時にお知らせします🏆');
 }
 function showToast(msg){
   const t=document.getElementById('toast');
